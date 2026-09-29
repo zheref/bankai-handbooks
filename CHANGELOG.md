@@ -12,6 +12,12 @@ when the repository is merely edited.
 _(nothing awaiting release.)_
 
 ### v0.6.0 — the canonical home
+
+Release unit for the first tag: [#1](https://github.com/zheref/bankai-handbooks/pull/1)
+(the delivery), and the reconciling
+[#2](https://github.com/zheref/bankai-handbooks/pull/2). There is no previous
+tag, so the range runs from the repository's root commit.
+
 - The handbooks, the constitution and the shared agent conventions now live here.
   This repository is the canonical source they are authored in and tagged from.
 - `CON-13` re-stated: the doctrine now names this repository as that source, and
