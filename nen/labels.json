@@ -1,0 +1,75 @@
+{
+  "$comment": "The GitHub default set, plus the four `bankai:severity/*` bands this repository's own CONVENTIONS.md declares (\u00a7 Severity). The severity bands are load-bearing rather than decorative: `nen release preflight`'s open-criticals precondition queries `bankai:severity/critical` by name, and a label that is not provisioned returns zero matches silently -- the gate then reads 'none open' because nothing could match, not because nothing is open. Hex values are taken from the estate's existing registry and are factual (CON-14): change them there and here together, or not at all. The wider `bankai:` taxonomy -- the stage, agent-routing and wake labels -- is deliberately NOT provisioned here: those route work to a CI roster that does not operate on this repository. Add them if and when it does.",
+  "labels": [
+    {
+      "color": "f143ab",
+      "description": "Barrier affecting people with disabilities",
+      "name": "accessibility"
+    },
+    {
+      "color": "d73a4a",
+      "description": "Something isn't working",
+      "name": "bug"
+    },
+    {
+      "color": "0075ca",
+      "description": "Improvements or additions to documentation",
+      "name": "documentation"
+    },
+    {
+      "color": "cfd3d7",
+      "description": "This issue or pull request already exists",
+      "name": "duplicate"
+    },
+    {
+      "color": "a2eeef",
+      "description": "New feature or request",
+      "name": "enhancement"
+    },
+    {
+      "color": "7057ff",
+      "description": "Good for newcomers",
+      "name": "good first issue"
+    },
+    {
+      "color": "008672",
+      "description": "Extra attention is needed",
+      "name": "help wanted"
+    },
+    {
+      "color": "e4e669",
+      "description": "This doesn't seem right",
+      "name": "invalid"
+    },
+    {
+      "color": "d876e3",
+      "description": "Further information is requested",
+      "name": "question"
+    },
+    {
+      "color": "ffffff",
+      "description": "This will not be worked on",
+      "name": "wontfix"
+    },
+    {
+      "name": "bankai:severity/critical",
+      "description": "Blocks + pages the human",
+      "color": "b60205"
+    },
+    {
+      "name": "bankai:severity/high",
+      "description": "Must fix before merge/release",
+      "color": "d93f0b"
+    },
+    {
+      "name": "bankai:severity/medium",
+      "description": "Fix soon",
+      "color": "fbca04"
+    },
+    {
+      "name": "bankai:severity/low",
+      "description": "Nice to fix",
+      "color": "0e8a16"
+    }
+  ]
+}

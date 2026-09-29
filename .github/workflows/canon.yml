@@ -1,0 +1,95 @@
+# There is no build here: the product is prose. What CI enforces instead is the
+# two things a public canon repository can silently get wrong -- leaking a
+# private name, and shipping a link or a taxonomy that does not resolve.
+#
+# The redaction job is the load-bearing one. This repository is PUBLIC and its
+# sources were PRIVATE, so a reintroduced name is a one-way door: a push is not
+# retractable by a later delete. The patterns are SHAPE-based on purpose -- this
+# repository must never spell a private name in order to find one, which is why
+# there is no allow-list of real names anywhere in this file.
+name: canon
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  redaction:
+    name: redaction
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: No private repository name, slug or linked object id
+        run: |
+          set -uo pipefail
+          fail=0
+          check() {
+            out=$(eval "$2" || true)
+            if [ -n "$out" ]; then
+              printf '::error::%s\n' "$1"
+              printf '%s\n' "$out" | head -40
+              fail=1
+            fi
+          }
+          check "a bankai-<x> slug that is not this repo or a stack id" \
+            "grep -rnoE '\\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode|session)'"
+          check "a zheref/<repo> slug outside the three public ones" \
+            "grep -rnoE 'zheref/[A-Za-z0-9_.-]+' --exclude-dir=.git . | grep -vE 'zheref/(hatsu|nen|bankai-handbooks)\\b'"
+          # The detector requires an ASCII alphanumeric after the slash, so an ELIDED
+          # url -- the 'github.com/<ellipsis>' form used in prose examples -- is never
+          # a match to begin with. Stated as a shape rather than as a literal
+          # exclusion: a non-ASCII character in this file would not survive YAML.
+          check "a github.com link outside the three public repos" \
+            "grep -rnoE 'github\\.com/[A-Za-z0-9][^ )>]*' --exclude-dir=.git . | grep -vE 'github\\.com/zheref/(hatsu|nen|bankai-handbooks)\\b'"
+          check "a LINKED placeholder object id (they stay unlinked)" \
+            "grep -rnoE '\\[(RR|RS|RA|RB|RC|RD)-(IS|PR)-#[0-9]+\\]\\(' --exclude-dir=.git ."
+          exit $fail
+
+  links:
+    name: links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every relative markdown link resolves
+        run: |
+          set -uo pipefail
+          fail=0
+          while IFS= read -r hit; do
+            src="${hit%%:*}"; target="${hit#*:}"
+            # parameter expansion rather than dirname: one less external call,
+            # and a path with no slash resolves against the repository root
+            case "$src" in */*) base="${src%/*}";; *) base=".";; esac
+            path="${target%%#*}"
+            [ -z "$path" ] && continue
+            # A target carrying a placeholder is documentation, not a path:
+            # '{actions run url}', '{{BANKAI_WORKFLOW}}', '<owner/name>'. These
+            # describe a link rather than being one, and no file backs them.
+            case "$path" in
+              http*|mailto:*) continue;;
+              *'{'*|*'}'*|*'<'*|*'>'*) continue;;
+            esac
+            if [ ! -e "$base/$path" ]; then
+              printf '::error file=%s::dangling relative link -> %s\n' "$src" "$path"
+              fail=1
+            fi
+          done < <(grep -rnoE '\]\([^)#][^)]*\)' --include='*.md' --exclude-dir=.git . \
+                    | sed -E 's/^([^:]+):[0-9]+:\]\((.*)\)$/\1:\2/' \
+                    | grep -vE ':https?://' || true)
+          exit $fail
+
+  taxonomy:
+    name: taxonomy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: nen schema check
+        run: |
+          set -euo pipefail
+          curl -fsSL https://raw.githubusercontent.com/zheref/nen/v0.14.0/bootstrap/nen.sh -o /tmp/nen.sh
+          bin=$(bash /tmp/nen.sh --ref v0.14.0 | tail -n 1)
+          "$bin" schema check --repo .

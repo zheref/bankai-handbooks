@@ -1,0 +1,24 @@
+{
+  "$comment": "Issue-routing registry for this canon repository and the tool repositories it consumes. This repository is the single canonical source for the Bankai handbooks, the constitution and the shared agent conventions (CON-13); Hatsu and Nen are the planes that read it. Registered here so the repository is judged by the same taxonomy, gates and commit-trailer policy as the rest of the estate rather than by prose alone -- notably CON-51(c): canonical persona trailers only, never AI, model or session attribution.",
+  "latest": "v0.6.0",
+  "consumers": [],
+  "maintained_tools": [
+    {
+      "repo": "zheref/bankai-handbooks",
+      "role": "Canonical handbooks, constitution and shared agent conventions"
+    },
+    {
+      "repo": "zheref/hatsu",
+      "role": "Hatsu workflow and skill prose"
+    },
+    {
+      "repo": "zheref/nen",
+      "role": "Shared deterministic machinery"
+    }
+  ],
+  "product_codes": {
+    "BH": "zheref/bankai-handbooks",
+    "HA": "zheref/hatsu",
+    "NN": "zheref/nen"
+  }
+}
