@@ -15,6 +15,7 @@ Bankai-consuming repository is built and reviewed against (`CON-13`).
 | Jetpack Compose stack | [`handbooks/stacks/compose-uzf-v2/`](handbooks/stacks/compose-uzf-v2/) | `KT-{n}` |
 | React + Redux Toolkit stack | [`handbooks/stacks/react-uzf-v1/`](handbooks/stacks/react-uzf-v1/) | `RC-{n}` |
 | Bankai machinery (self-review) | [`handbooks/stacks/bankai-machinery/`](handbooks/stacks/bankai-machinery/) | `BC-{n}` |
+| Shared agent conventions | [`CONVENTIONS.md`](CONVENTIONS.md) | — (no rule ids; the output shape every agent follows) |
 
 Start at [`handbooks/INDEX.md`](handbooks/INDEX.md) — the manifest that says which handbooks load
 for a repo — and [`handbooks/stack-matrix.md`](handbooks/stack-matrix.md), the scenario registry.
@@ -38,3 +39,4 @@ per-surface mirror rendered from a **tag** of this repository by Hatsu/Nen, with
   [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md).
 - Where everything came from, what was renamed, reconciled and left behind:
   [`MIGRATION.md`](MIGRATION.md).
+- License: [MIT](LICENSE), matching the rest of the estate.

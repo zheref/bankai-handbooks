@@ -79,7 +79,7 @@ separation and guarantees the report describes the artifact that would actually 
 
 **QA-6 — Search before filing; one open finding per distinct defect.** Before opening a
 finding, search the target repo's open issues by subject and comment on a match — yours or
-another agent's, even within the same run (`CON-11`, the shared agent conventions (`_conventions.md`) *Idempotency*).
+another agent's, even within the same run (`CON-11`, the shared agent conventions ([`CONVENTIONS.md`](../CONVENTIONS.md)) *Idempotency*).
 This lane generates issues in bursts and would otherwise flood the human's queue.
 
 ---
@@ -229,7 +229,7 @@ any `critical`/`high` finding, or any budget breach. **INCONCLUSIVE** = one or m
 `not-testable-here` (`QA-3`), each enumerated.
 
 > **The marker is `Quality-Gate:`, never `Verdict:`.** `Verdict:` is a machine-parsed
-> marker reserved for the review gates (Sasuke, Tenma, Bisky) in the shared agent conventions (`_conventions.md`),
+> marker reserved for the review gates (Sasuke, Tenma, Bisky) in the shared agent conventions ([`CONVENTIONS.md`](../CONVENTIONS.md)),
 > and a malformed one fails a check closed. A quality report pasted onto a PR must not be
 > able to collide with it. `Quality-Gate:` is collision-free today and already parseable for
 > Rukia tomorrow.

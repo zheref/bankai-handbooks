@@ -78,7 +78,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   workflow/script/hook/scaffolder child to **Kisuke** — each authored as a PR the human merges (`CON-7`).
   **The Naruto↔Yamamoto boundary is by artifact:** `CONSTITUTION.md` + top-level governance (the rules
   about the rules) are Naruto's; `handbooks/`, the Stack Matrix, `schemas/` content, and `agents/*/AGENT.md`
-  are Yamamoto's — with one shared edge, **`agents/_conventions.md`** (read by every agent, not an
+  are Yamamoto's — with one shared edge, **[`CONVENTIONS.md`](CONVENTIONS.md)** (read by every agent, not an
   `AGENT.md`): a change to it that a *governance* rule forces is Naruto's, an ordinary convention refresh is
   Yamamoto's. The irreducibly-interactive duties (the `CON-33(b)` tag-cut human-creds fallback, weighing
   governance options with the human) belong to the **local plane — Ichigo's Quincy nature** (`CON-2`/
@@ -157,7 +157,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   G5 — may push-notify:** an agent stopping at any human gate requests a push notification where
   a channel exists (local plane: the harness's `PushNotification`; CI: the stamped comment
   carries the request), and the stop **names its gate** explicitly, so the human can tell at a
-  glance which decision is waiting without opening the run. Cross-refs: `agents/_conventions.md`
+  glance which decision is waiting without opening the run. Cross-refs: [`CONVENTIONS.md`](CONVENTIONS.md)
   § "Every stop for the human names its gate and shows the whole picture" (the artifact-bus
   expression of this rule, including the local reference implementation); `docs/HUMAN-GATES.md`
   (the human-facing gate catalogue).
@@ -346,7 +346,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
     misidentified a local PR as belonging to the other, and a third had to read its own worktree
     reflog to prove it had authored nothing. So **every PR carries the `CON-10` machine stamp
     identifying the run or session that authored it — local PRs included**, and the holder of a claim
-    is read off the artifact rather than guessed. The stamp's exact form is `agents/_conventions.md`
+    is read off the artifact rather than guessed. The stamp's exact form is [`CONVENTIONS.md`](CONVENTIONS.md)
     (canon, Yamamoto's lane, `CON-3`); this clause states only that **a local PR must be as
     attributable as a CI one**. `CON-2` is untouched — the **git identity** stays the human's, the
     **stamp** records the session.
@@ -379,18 +379,18 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   **readable structure** (tables-first for any set of comparable items, a small emoji
   vocabulary as scan anchors — for GitHub *and* local outputs — synthesizing information to be
   traversable **without** dropping any, and **never** altering the machine-parsed markers). See
-  `agents/_conventions.md`.
+  [`CONVENTIONS.md`](CONVENTIONS.md).
 - **CON-11.** A CI agent — or the local plane working in a product repo (Ichigo's Shinigami
   or Hollow nature, `CON-2`) — that finds a handbook/rule gap opens a `bankai:handbook-question`
   issue, **scope-routed to the owning lane** (`CON-37` refines this clause:
   `bankai:agent/yamamoto` for a handbook/schema/agent-def gap, `bankai:agent/naruto` for a
   governance/`CON-{n}` gap, `bankai:agent/kisuke` for a machinery gap — several labels when it
   spans lanes) and **assigned to the human maintainer** (a specific user, never the org login in
-  an org-owned repo; see `agents/_conventions.md`), on the repo it
+  an org-owned repo; see [`CONVENTIONS.md`](CONVENTIONS.md)), on the repo it
   is working in — but **first searches that repo's OPEN `bankai:handbook-question` issues and,
   if the same gap is already filed, comments on that one instead of opening a duplicate**
   (idempotent escalation — one open issue per distinct question, even within a single run; see
-  `agents/_conventions.md`). Assigning the human means the question reaches them immediately
+  [`CONVENTIONS.md`](CONVENTIONS.md)). Assigning the human means the question reaches them immediately
   (GitHub notification + "assigned to me") rather than only at the next local session; **Ichigo's
   Quincy warm-up still sweeps the full open set** (`CON-2`/`CON-37`) and resolves each into a
   handbook/spec PR the human merges (G4). An underspecified *issue* (not a rule gap) is a comment
@@ -593,9 +593,9 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   **(b) A `## How to verify` section**: for each behavior it delivers, concrete numbered
   steps a human can follow plus the exact expected result (or the observable proxy — the test
   to run, the state/log to inspect — when there is no UI surface). It is the human's manual
-  test plan; a PR missing **either** section — or whose summary omits a cost the change imposes — is not merge-ready. Shape and rationale: `agents/_conventions.md` *Delivery summary*. The final `integration/<epic> →
+  test plan; a PR missing **either** section — or whose summary omits a cost the change imposes — is not merge-ready. Shape and rationale: [`CONVENTIONS.md`](CONVENTIONS.md) *Delivery summary*. The final `integration/<epic> →
   main` PR consolidates its children's plans into one end-to-end plan. Format in
-  `agents/_conventions.md` and `schemas/templates/pr.md`.
+  [`CONVENTIONS.md`](CONVENTIONS.md) and `schemas/templates/pr.md`.
 
 - **CON-18.** **Self-healing below the gates.** A failing CI check on an agent's own open PR
   is the agents' problem to resolve or escalate — never a silent bottleneck waiting on the
@@ -1110,7 +1110,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   reviewer or the human submits a **formal review with `changes_requested`** (or a Copilot
   review): that `pull_request_review: submitted` event is what wakes its ITERATE mode. (Token
   chain, so the two are not conflated: a reviewer's bankai verdict **`request_changes`**
-  (`agents/_conventions.md` reviewer-verdict) → a GitHub **`REQUEST_CHANGES`** review → the
+  ([`CONVENTIONS.md`](CONVENTIONS.md) reviewer-verdict) → a GitHub **`REQUEST_CHANGES`** review → the
   payload **`review.state == 'changes_requested'`**, the exact value the ITERATE guard checks.
   `request_changes` is the verdict/action you *produce*; `changes_requested` is the resulting
   state the machinery *reads*.) A plain
@@ -1799,7 +1799,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   editing `CHANGELOG.md`'s `### Unreleased` block directly. A fragment's content is exactly what a
   direct entry would have been — **(1) what changed, (2) why (the problem/bottleneck it addresses),
   (3) the flow-impact** — authored *with* the change (a real commit, `CON-20`), in the form the
-  CHANGELOG Policy block + `agents/_conventions.md` define. Because no two PRs can ever name the same
+  CHANGELOG Policy block + [`CONVENTIONS.md`](CONVENTIONS.md) define. Because no two PRs can ever name the same
   fragment file, this **structurally** — not just procedurally — eliminates the concurrent-`###
   Unreleased`-prepend collision class the `.gitattributes` `merge=union` driver (RR-IS-#379/RR-PR-#381) was a
   mitigation for; once no PR touches `CHANGELOG.md` at all, that `CHANGELOG.md merge=union` driver
@@ -2016,7 +2016,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
     **irreversible** and destroys work no re-run reproduces. A verdict is dismissed only for a
     defect in the review's **content** — a finding refuted, a superseded head (`CON-16`'s
     current-head rule) — never for the colour of the check that carried it.
-  The reviewer-facing behaviour is specified in `agents/_conventions.md` **Reviewer verdict**.
+  The reviewer-facing behaviour is specified in [`CONVENTIONS.md`](CONVENTIONS.md) **Reviewer verdict**.
   **Conformance requirement, and the machinery does NOT conform yet.** To conform, a reviewer job's
   conclusion **MUST** follow its **verdict-cast** step rather than its **agent** step; row 3 needs
   **no new** fail-safe code, because that cast step already runs on `!cancelled()` and already exits

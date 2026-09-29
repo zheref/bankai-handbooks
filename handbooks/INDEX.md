@@ -41,6 +41,7 @@ load a stack folder other than the repo's own.
 | [`stack-matrix.md`](stack-matrix.md) | Registry of supported scenarios → which handbooks govern each; how `bankai_scenario` resolves |
 | [`README.md`](README.md) | Handbook set overview |
 | [`VERSION`](VERSION) | Handbook set version |
+| [`../CONVENTIONS.md`](../CONVENTIONS.md) | The shared agent conventions every agent output follows (header, machine stamp, `Verdict:` line, object notation, human-glance fields, delivery summary, verification plan, discipline). Not a rule family and not part of the always-load set; cited by `CON-3`, `CON-17`, `CON-32` and the stack rules |
 
 > Adding a scenario, handbook, or rule family is a canon-lane PR to this repository, merged by
 > the human (G4): add the file, register it here and in `stack-matrix.md`, bump `VERSION`, and

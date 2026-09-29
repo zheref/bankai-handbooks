@@ -123,7 +123,7 @@ agent-defs) per `CON-3`/`CON-24`.
 `--no-verify` (the commit-msg guard hook is not bypassable). **No AI/assistant
 attribution** in commit messages or bodies. Builder-tier machinery commits carry the
 agent's author identity + `Bankai-Agent:` / `Bankai-Run:` trailers
-(the shared agent conventions (`_conventions.md`)). An agent never merges its own PR and never force-pushes.
+(the shared agent conventions, [`CONVENTIONS.md`](../../../CONVENTIONS.md)). An agent never merges its own PR and never force-pushes.
 
 **BC-8 — The automated-review round and a machinery `## How to verify` are
 mandatory (`CON-16`, `CON-17`).** No machinery PR merges before its automated-review

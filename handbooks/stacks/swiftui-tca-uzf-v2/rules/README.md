@@ -25,7 +25,7 @@ files are the operational expansion. Repo-specific values are [`{{tokens}}`](pla
 | `11-feature-documentation` | `{{DOCS_ROOT}}` specs + mermaid |
 | `12-session-completion-checklist` | Definition-of-done gate |
 | `13-build-execution` | Xcode hung-clang recovery + exec context |
-| `14-github-version-control` | VCS ops (defers to `CON-17/20/21`, `_conventions`) |
+| `14-github-version-control` | VCS ops (defers to `CON-17/20/21`, `CONVENTIONS.md`) |
 | `15-database-migrations` | Pointer → `UZF-25` |
 | `16-ui-screenshots` | Snapshot embed/mirror mechanics (`UZF-26`/`SW-18`) |
 
@@ -39,5 +39,5 @@ reconciled against the OneDrive UZF canon. Decisions the human ratified:
 | **Canon version** | The **Screen/View split** model is canon. This stack id (`swiftui-tca-uzf-v2`) calls it **v2**; the OneDrive synthesis numbers the identical model **v3**; `…Page.swift` is the **retired v1** form. The numbers differ across sources but name the same rules — this note is the mapping. |
 | **OneDrive source** | **Retired / superseded.** The canon repository (then `<reference-repo>`, now `bankai-handbooks`) is the single source; the OneDrive `UZF/` folder is archival and <product-repo-A>'s OneDrive pointers are removed (follow-up <product-repo-A> PR). |
 | **`08` A10/A11 numbering** | <product-repo-A>'s numbering is canon: `A10` = a `<Name>View.swift` importing `ComposableArchitecture`; `A11` = an architecture change shipped without a doc update. |
-| **`14` assignee** | Scoped: **issues** assign `@me` (the running contributor) additively for credit; **PRs** assign `{{MAINTAINER}}` fixed; **bankai CI-agent-tier** artifacts follow the shared agent conventions (`_conventions.md`) (assign the human maintainer, not `@me`). |
+| **`14` assignee** | Scoped: **issues** assign `@me` (the running contributor) additively for credit; **PRs** assign `{{MAINTAINER}}` fixed; **bankai CI-agent-tier** artifacts follow the shared agent conventions (`CONVENTIONS.md`) (assign the human maintainer, not `@me`). |
 | **No rule contradictions** | The three sources agreed on every actual coding rule; the reconciliation was additive (<reference-repo> absorbed <product-repo-A>/OneDrive operational detail it lacked). |

@@ -89,5 +89,5 @@ never renumber. A `KT-{n}` may tighten its `UZF-{n}` parent but never contradict
 
 ## Commit messages
 
-- `Co-Authored-By: Claude …`, `Co-Authored-By: GPT …`, `Co-Authored-By: Gemini …`, `Co-Authored-By: Copilot …`, or any `Co-Authored-By:` trailer crediting an LLM model. Commits are clean Conventional Commits attributed to the human author only. (bankai `_conventions.md`)
-- Multi-page commit bodies with exhaustive bullet lists rehashing what the diff already shows. Subject ≤ 72 chars; the body (when present) is one or two short paragraphs explaining the *why*. (bankai `_conventions.md`)
+- `Co-Authored-By: Claude …`, `Co-Authored-By: GPT …`, `Co-Authored-By: Gemini …`, `Co-Authored-By: Copilot …`, or any `Co-Authored-By:` trailer crediting an LLM model. Commits are clean Conventional Commits attributed to the human author only. (`CONVENTIONS.md` in `bankai-handbooks`)
+- Multi-page commit bodies with exhaustive bullet lists rehashing what the diff already shows. Subject ≤ 72 chars; the body (when present) is one or two short paragraphs explaining the *why*. (`CONVENTIONS.md` in `bankai-handbooks`)

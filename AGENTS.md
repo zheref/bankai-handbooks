@@ -19,7 +19,9 @@ Depth lives in [`.claude/rules/`](.claude/rules/); this file is the contract.
 Layout: [`handbooks/INDEX.md`](handbooks/INDEX.md) (the manifest), [`handbooks/README.md`](handbooks/README.md)
 (the set, versioning, how canon reaches a consumer), [`handbooks/stack-matrix.md`](handbooks/stack-matrix.md)
 (scenario registry), `handbooks/<general>.md`, `handbooks/stacks/<scenario>/{README,architecture}.md`
-+ `rules/`, [`CONSTITUTION.md`](CONSTITUTION.md), [`MIGRATION.md`](MIGRATION.md),
++ `rules/`, [`CONSTITUTION.md`](CONSTITUTION.md), [`CONVENTIONS.md`](CONVENTIONS.md) (the shared
+agent conventions — output header, stamp, verdict line, object notation, gates, discipline),
+[`MIGRATION.md`](MIGRATION.md), [`LICENSE`](LICENSE) (MIT),
 [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md).
 
 ## 2. Rules of engagement

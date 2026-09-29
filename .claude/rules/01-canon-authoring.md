@@ -30,9 +30,14 @@ merges, pushes `main`, or edits a rule "in passing" from another repository.
 7. **Never name a product repo.** A rule that needs a repo-specific value uses a `{{TOKEN}}`
    (see `03-tokens.md`); an example value is fictional.
 
-## The constitution specifically
+## The constitution and the conventions specifically
 
-`CONSTITUTION.md` carries the reference implementation's governance as written (its preamble says
+`CONVENTIONS.md` is edited under the same G4 lane. Its machine-parsed markers — the stamp, the
+`Verdict:` line, the object notation, the `Closes #<n>` wiring — are contracts that consumers'
+machinery parses; changing one is a MAJOR-class change and needs a consumer migration note.
+
+
+`CONSTITUTION.md` (and `CONVENTIONS.md`) carry the reference implementation's text as written (its preamble says
 so). Change `CON-13` and § 6 (`CON-51`) here freely under G4; treat every other clause as text whose
 rewrite is decided elsewhere first — append (`CON-52`…), do not rewrite, unless the PR is that
 governance rewrite landing.
@@ -41,7 +46,7 @@ governance rewrite landing.
 
 ```bash
 # 1. redaction — each line must print nothing (shape-based; see 02-redaction.md)
-grep -rnoE '\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode)'
+grep -rnoE '\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode|session)'
 grep -rnoE 'zheref/[A-Za-z0-9_.-]+' --exclude-dir=.git . | grep -vE 'zheref/(hatsu|nen|bankai-handbooks)\b'
 # 2. dangling relative links — must print "0 dangling"
 python3 - <<'PY'

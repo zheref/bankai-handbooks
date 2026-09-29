@@ -38,7 +38,7 @@ working checklist.
 ## The grep (run before every push; must print nothing)
 
 ```bash
-grep -rnoE '\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode)'   # any other bankai-<x> is a repo name
+grep -rnoE '\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode|session)'   # any other bankai-<x> is a repo name
 grep -rnoE 'zheref/[A-Za-z0-9_.-]+' --exclude-dir=.git . | grep -vE 'zheref/(hatsu|nen|bankai-handbooks)\b'     # only the three public slugs
 grep -rnoE 'github\.com/[^ )>]+' --exclude-dir=.git . | grep -vE 'github\.com/zheref/(hatsu|nen|bankai-handbooks)\b'
 grep -rniE '<the product-family names from your private redaction list>' --exclude-dir=.git .

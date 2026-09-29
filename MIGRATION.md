@@ -17,6 +17,7 @@ Private repositories are named by placeholder throughout ([`docs/PUBLIC-REDACTIO
 | `<reference-repo>` — the frozen, private reference implementation | tag **`v0.11.3`** = commit `2269fe723e355dc69bf535ab40f22556e4fe4081` (2026-09-01). Its `handbooks/` tree (`7b4d5ad207aa52d573c62b3a6de2d60e620b5c90`) and `CONSTITUTION.md` blob (`9ac466249d31995fe0290dc3a7b62633bb38d5dc`) are byte-identical on its `main` (`345c79b2ab316f896e7415fc38734cdd9cd59d0a`), so the tag and the head are the same content. | `handbooks/` — 68 files: 5 always-load handbooks, 4 stack folders, `INDEX.md`, `README.md`, `stack-matrix.md`, `VERSION` (`v0.5`) | `handbooks/` (68 files, one folder renamed; `VERSION` → `v0.6`) |
 | same | same | `CONSTITUTION.md` — 2 831 lines, `CON-1`…`CON-50` | `CONSTITUTION.md` — redacted, `CON-13` rewritten, provenance preamble and § 6 / `CON-51` appended |
 | `<scaffold-repo>` — the private scaffolding repository | commit `46715239d19b38150f4db4f4a8d49e0d99925142` (2026-08-03), local checkout | `constitution.md` — the UZF architecture constitution (Articles 0–VIII, ~15 KB) | **not copied**; reconciled into `CONSTITUTION.md` § 6 and `handbooks/uzf-core.md` (§ 6 below records every divergence) |
+| same | same | `agents/_conventions.md` — the shared agent conventions (665 lines) | `CONVENTIONS.md` at the repository root (ruled 2026-09-28 — see § 4a), redacted, machinery named by role, a precedence note against `CON-51(c)` |
 | `zheref/hatsu` (public) | `ccb91fff616bb5ae79f065327a224870d3f3c954` (2026-09-23) | `docs/PUBLIC-REDACTION.md` — the redaction legend | `docs/PUBLIC-REDACTION.md`, adapted for this repository and extended (`RS-`, the Acme convention) |
 | a consumer's `.claude/canon-values.yml` (private) | — | the shape of the `{{TOKEN}}` → value binding | nothing copied; the convention is described in `.claude/rules/03-tokens.md` with fictional values |
 
@@ -25,6 +26,7 @@ Private repositories are named by placeholder throughout ([`docs/PUBLIC-REDACTIO
 Migrated files (from `<reference-repo>`; every one edited at least for redaction):
 
 - `CONSTITUTION.md`
+- `CONVENTIONS.md`
 - `handbooks/INDEX.md`
 - `handbooks/README.md`
 - `handbooks/VERSION`
@@ -96,6 +98,7 @@ Migrated files (from `<reference-repo>`; every one edited at least for redaction
 
 Authored for this repository:
 
+- `LICENSE` (MIT, the estate's copyright line)
 - `.claude/rules/01-canon-authoring.md`
 - `.claude/rules/02-redaction.md`
 - `.claude/rules/03-tokens.md`
@@ -146,6 +149,30 @@ Authored for this repository:
 - **Manifest gap closed:** `handbooks/README.md`'s family table never listed `react-uzf-v1`
   although `INDEX.md` did; a row was added and the "never in scope together" sentence extended to
   all four stack prefixes.
+
+## 4a. The shared agent conventions — placement and split
+
+`agents/_conventions.md` was first left behind under the plan's `agents/` exclusion and reported
+(§ 8.3). The maintainer ruled on 2026-09-28 that it belongs with the handbooks, so it was brought
+across from the same tag.
+
+- **Placement: repository root, as `CONVENTIONS.md`, beside `CONSTITUTION.md`.** It applies to
+  every agent on every stack and carries no rule-id family, so it is not one of the handbooks
+  `INDEX.md` loads (a row in *Catalog & meta* points at it); the constitution calls it the one
+  shared edge read by every agent (`CON-3`), and eleven handbook passages cite it as "the shared
+  agent conventions" — those now resolve to `CONVENTIONS.md` (links where the citing file is not
+  mirrored, the plain name where it is a mirrored stack rule file).
+- **Split: prose stayed, machinery was never inside.** The file is conventions end to end; no
+  section was cut. What it *describes* and is machinery — the colour registry, the label registry,
+  the consumer registry, the PR/issue templates, the readiness gate, the gate-stop and board
+  helpers, the prompt renderer — stays with the planes (Nen: `nen/colors.yml`, `nen/labels.json`,
+  `nen/repos.json`, `nen pr ready`; Hatsu: templates and the stop/board skills) and is named in the
+  text by role, with the reference implementation's script names kept where the sentence is
+  about that implementation.
+- **Reconciled, not rewritten:** § *Commit attribution* names the reference implementation's
+  `Bankai-Agent:` / `Bankai-Run:` trailers and bot identities; a precedence note at its head and in
+  the preamble makes `CON-51(c)` govern on the successor planes (`Hatsu-Agent:` / `Akatsuki-Agent:`,
+  never AI attribution). The object-notation examples use the placeholder product codes.
 
 ## 5. Tokenisation — repo canon out of stack canon
 
@@ -220,9 +247,9 @@ Applied per [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md), against the 
   Placeholders survive only in provenance/history passages (reconciliation records, incident
   notes); rule text and examples carry tokens or generalised wording instead.
 - **Paths into the reference repo** cited by the handbooks (`docs/SETUP.md`, `schemas/repos.json`,
-  `schemas/templates/…`, `agents/_conventions.md`, `scripts/sync_canon.py`, lane-guard and
+  `schemas/templates/…`, `scripts/sync_canon.py`, lane-guard and
   workflow file names) were replaced by role descriptions ("the CI plane's setup runbook", "the
-  consumer registry (`nen/repos.json`)", "the shared agent conventions (`_conventions.md`)"). Inside
+  consumer registry (`nen/repos.json`)", "the shared agent conventions" — now `CONVENTIONS.md`, § 4a). Inside
   `CONSTITUTION.md` such relative paths are kept and explained once in its preamble.
 - **The maintainer's login** appeared twice in the constitution as a reviewer identity in an incident
   narrative → "the maintainer"; as a token example → `octocat`.
@@ -241,10 +268,8 @@ Applied per [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md), against the 
    named shell scripts, the `v0.11.x` frozen line and `v0.12.0` TypeScript line. They are true of
    `<reference-repo>` and are cited as precedent; whether they bind Akatsuki/Nen as written is a
    canon-lane decision, not made here.
-3. **`agents/_conventions.md` did not move.** It sits under `agents/`, which the plan excludes, yet
-   the end-state description lists "conventions" among this repository's contents and eleven
-   handbook passages cite it ("the shared agent conventions"). Left behind per the explicit
-   exclusion; the conflict is reported.
+3. **`agents/_conventions.md` — resolved.** First left behind under the plan's `agents/` exclusion
+   and reported as a conflict; ruled in on 2026-09-28 and migrated as `CONVENTIONS.md` (§ 4a).
 4. **One product repository the plan listed as private is currently public** (the web PWA), as is
    the product family's snapshot-assets host. Both were tokenised anyway — a handbook naming a product repo is a bug
    regardless of visibility — and `<product-repo-C>` is reserved for the web product.
@@ -261,8 +286,8 @@ Applied per [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md), against the 
 
 ## 9. Deliberately left behind
 
-In `<reference-repo>` (frozen, private, the historical record): `agents/` (including
-`_conventions.md`, see § 8.3), `cli/`, `claude/`, `schemas/`, `scripts/`, `tests/`, `examples/`,
+In `<reference-repo>` (frozen, private, the historical record): `agents/` (the agent definitions —
+only `_conventions.md` came across, § 4a), `cli/`, `claude/`, `schemas/`, `scripts/`, `tests/`, `examples/`,
 `.github/` (including the `sync-canon` workflow), `docs/` (setup runbooks, agent architecture and
 roster, canon-reconciliation method, prompts), `CHANGELOG.md`, `changelog.d/`, `Makefile`,
 `README.md`, the plugin manifest. In `<scaffold-repo>`: the TypeScript/Ink CLI and its tests, the
@@ -277,4 +302,4 @@ scenario scripts, `ARCHITECTURE.md` (the per-scaffold contract template), `READM
 - Register the repository as a **Hatsu consumer** (`nen/contract.json`, `nen/workflow.json`, the
   trailer hook) and point Hatsu's `bankai-handbooks` skill and Nen's `canon` verbs at it.
 - Build the **per-surface sync** in Nen; the doctrine here already accommodates it.
-- Decide a home for `_conventions.md` and rule on § 8.1–8.2. Decide a **license** (none is present).
+- Rule on § 8.1–8.2. (The conventions' home and the license — MIT, matching the estate — were ruled and done on 2026-09-28.)

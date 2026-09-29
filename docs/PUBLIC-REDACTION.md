@@ -60,7 +60,7 @@ and stay as they are; its preamble says so. In the handbooks the same numbers ar
 ## Audit procedure (run before any push)
 
 1. The shape-based greps in `.claude/rules/02-redaction.md` must print nothing: any `bankai-<x>`
-   other than `bankai-handbooks` / `bankai-machinery` / the two skill names, any owner slug or
+   other than `bankai-handbooks` / `bankai-machinery` / the two skill names / the `.bankai-session` marker, any owner slug or
    GitHub URL other than the three public repositories, and the product-family names
    kept in the maintainer's **private** redaction list (never spelled here).
 2. Every `RR-`/`RS-`/`RA-`/`RB-` id is unlinked. Every `[…](https://github.com/…)` link points at a

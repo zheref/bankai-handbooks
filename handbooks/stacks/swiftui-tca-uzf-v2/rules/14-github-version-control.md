@@ -10,7 +10,7 @@ Development links, sub-issues) is always accurate and automation (auto-close, ro
 views) works.
 
 Much of this is already canon — the constitution and the shared agent conventions
-(`_conventions.md`) own the general form. This file keeps only the **SwiftUI-repo-specific operational
+(`CONVENTIONS.md` in `bankai-handbooks`) own the general form. This file keeps only the **SwiftUI-repo-specific operational
 bits** and cites the canon for the rest; it never restates constitution text.
 
 ## Repo-specific placeholders
@@ -29,7 +29,7 @@ bits** and cites the canon for the rest; it never restates constitution text.
 
 On **every** issue/PR create or update, ensure all of the following:
 
-1. **Assignee — never leave either unassigned.** `_conventions.md` (human-glance
+1. **Assignee — never leave either unassigned.** `CONVENTIONS.md` (human-glance
    fields) makes every agent-opened issue/PR assigned to the human maintainer. This
    repo refines *which* identity for human/Claude-Code-authored work:
    - **Pull requests → always the maintainer, fixed: `--assignee {{MAINTAINER}}`.**
@@ -41,7 +41,7 @@ On **every** issue/PR create or update, ensure all of the following:
      **additive**: use `--add-assignee @me` so an already-assigned contributor is
      **not** removed — multiple assignees (co-contributors) are fine. The rule is
      "@me is assigned," not "@me is the *only* assignee." (Bankai agent-tier work
-     follows `_conventions.md` — assign the human maintainer, not `@me`.)
+     follows `CONVENTIONS.md` — assign the human maintainer, not `@me`.)
 2. **Relationships between issues — native.** Connect related issues with GitHub's
    built-in relationships, not only a "depends on #N" line:
    - Epic ↔ children: add children as **sub-issues** of the epic.
@@ -57,7 +57,7 @@ On **every** issue/PR create or update, ensure all of the following:
 4. **Associate the corresponding Project.** Add the issue/PR to `{{GH_PROJECT}}` so
    it shows on the board/roadmap.
 5. **Labels as needed.** Apply the right labels (type + area, plus the `bankai:*` set
-   per `_conventions.md`). Create a missing label first; don't error if it already
+   per `CONVENTIONS.md`). Create a missing label first; don't error if it already
    exists.
 6. **Keep the PR checklist current — on post AND on every update.** Whenever a PR is
    opened **or** updated (new commits, scope change), walk the session-completion
@@ -260,8 +260,8 @@ done.
 - PR content/quality rules live in [12-session-completion-checklist.md](12-session-completion-checklist.md)
   (`UZF-23`); UI **screenshots** in [16-ui-screenshots.md](16-ui-screenshots.md)
   (`UZF-26` / `SW-18`); the human `## How to verify` plan is required on every
-  human-gated PR (**CON-17** / `_conventions.md`); commit-message conventions live in
-  `.claude/CLAUDE.md` / `_conventions.md`.
+  human-gated PR (**CON-17** / `CONVENTIONS.md`); commit-message conventions live in
+  the consumer's own instruction file / `CONVENTIONS.md`.
 - The **branching model & propagation** section is this repo's concrete
   implementation of **`CON-21`**, completion-gated by `UZF-23`. Database-migration
   pins specifically also interact with `UZF-25` (DB migrations are repo-canon,

@@ -138,7 +138,7 @@ against.
 So the `## Screenshots` section does not embed a fetched `<img>` — it **names**
 each changed scene and points the reviewer at its committed path, laid out per
 `UZF-26`'s presentation contract (`handbooks/uzf-core.md`,
-the shared agent conventions (`_conventions.md`)): one table per top-level screen, titled with the
+the shared agent conventions, `CONVENTIONS.md` in `bankai-handbooks`): one table per top-level screen, titled with the
 issue(s) that composed it, changed states across the columns, each cell
 carrying that state's scene name + committed path:
 
