@@ -40,9 +40,12 @@ jobs:
             "grep -rnoE '\\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode|session)'"
           check "a zheref/<repo> slug outside the three public ones" \
             "grep -rnoE 'zheref/[A-Za-z0-9_.-]+' --exclude-dir=.git . | grep -vE 'zheref/(hatsu|nen|bankai-handbooks)\\b'"
-          # the bare ellipsis form is the elided URL used in prose examples, not a link
+          # The detector requires an ASCII alphanumeric after the slash, so an ELIDED
+          # url -- the 'github.com/<ellipsis>' form used in prose examples -- is never
+          # a match to begin with. Stated as a shape rather than as a literal
+          # exclusion: a non-ASCII character in this file would not survive YAML.
           check "a github.com link outside the three public repos" \
-            "grep -rnoE 'github\\.com/[^ )>]+' --exclude-dir=.git . | grep -vE 'github\\.com/(zheref/(hatsu|nen|bankai-handbooks)\\b|\u2026)'"
+            "grep -rnoE 'github\\.com/[A-Za-z0-9][^ )>]*' --exclude-dir=.git . | grep -vE 'github\\.com/zheref/(hatsu|nen|bankai-handbooks)\\b'"
           check "a LINKED placeholder object id (they stay unlinked)" \
             "grep -rnoE '\\[(RR|RS|RA|RB|RC|RD)-(IS|PR)-#[0-9]+\\]\\(' --exclude-dir=.git ."
           exit $fail
@@ -58,10 +61,18 @@ jobs:
           fail=0
           while IFS= read -r hit; do
             src="${hit%%:*}"; target="${hit#*:}"
-            base=$(dirname "$src")
+            # parameter expansion rather than dirname: one less external call,
+            # and a path with no slash resolves against the repository root
+            case "$src" in */*) base="${src%/*}";; *) base=".";; esac
             path="${target%%#*}"
             [ -z "$path" ] && continue
-            case "$path" in http*|mailto:*) continue;; esac
+            # A target carrying a placeholder is documentation, not a path:
+            # '{actions run url}', '{{BANKAI_WORKFLOW}}', '<owner/name>'. These
+            # describe a link rather than being one, and no file backs them.
+            case "$path" in
+              http*|mailto:*) continue;;
+              *'{'*|*'}'*|*'<'*|*'>'*) continue;;
+            esac
             if [ ! -e "$base/$path" ]; then
               printf '::error file=%s::dangling relative link -> %s\n' "$src" "$path"
               fail=1
