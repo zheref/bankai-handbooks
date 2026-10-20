@@ -3,8 +3,9 @@
 # private name, shipping a link that does not resolve, and a nen/ declaration
 # that does not parse. All three live in ONE script, scripts/canon_check.sh,
 # which is also the `lint` verb of the canon lane (nen/contract.json) that
-# every Hatsu turn runs locally; each job below runs one of its checks, so the
-# local loop and CI can never disagree about what clean means.
+# every Hatsu turn runs locally; each job below runs one of its checks over the
+# same committable set, so the local loop and CI read the same files with the
+# same patterns. A fourth job runs the script's own self-test (QA-18).
 #
 # The redaction job is the load-bearing one. This repository is PUBLIC and its
 # sources were PRIVATE, so a reintroduced name is a one-way door: a push is not
@@ -71,7 +72,42 @@ jobs:
           curl -fsSL "https://raw.githubusercontent.com/zheref/nen/${PINNED_REF}/bootstrap/nen.sh" -o "${RUNNER_TEMP}/nen-bootstrap.sh"
           bin="$(bash "${RUNNER_TEMP}/nen-bootstrap.sh" --ref "$PINNED_REF")"
           [ -x "$bin" ] || { echo "::error::bootstrap printed '$bin', which is not executable."; exit 1; }
+          echo "bin=$bin" >> "$GITHUB_OUTPUT"
           mkdir -p "${RUNNER_TEMP}/bin" && ln -sfn "$bin" "${RUNNER_TEMP}/bin/nen"
           echo "${RUNNER_TEMP}/bin" >> "$GITHUB_PATH"
+        id: nen
+      - name: Verify the nen binary against nen/contract.json's sha256
+        # A second root of trust beside the bootstrap's own SHA256SUMS check: the
+        # digest this repository recorded at the repin (dependency.bootstrap.sha256,
+        # linux-x64). main's copy is preferred so a pull request cannot move the
+        # pin and the digest together; on the adoption PR itself main carries no
+        # contract yet, so the head's copy is the one that exists. A missing key
+        # or a mismatch fails the job.
+        env:
+          NEN_BIN: ${{ steps.nen.outputs.bin }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin main >/dev/null 2>&1 || true
+          if git cat-file -e origin/main:nen/contract.json 2>/dev/null; then
+            want="$(git show origin/main:nen/contract.json | jq -r '.dependency.bootstrap.sha256["linux-x64"] // empty')"; src="main"
+          else
+            want="$(jq -r '.dependency.bootstrap.sha256["linux-x64"] // empty' nen/contract.json)"; src="head (main carries no nen/contract.json yet)"
+          fi
+          [ -n "$want" ] || { echo "::error::nen/contract.json carries no dependency.bootstrap.sha256.linux-x64."; exit 1; }
+          have="$(sha256sum "$NEN_BIN" | cut -d' ' -f1)"
+          if [ "$have" != "$want" ]; then
+            echo "::error::nen binary sha256 $have does not match the contract's linux-x64 digest $want (from $src)."
+            exit 1
+          fi
+          echo "nen digest verified against the contract's linux-x64 key (from $src)"
       - name: nen schema check
         run: bash scripts/canon_check.sh taxonomy
+
+  self-test:
+    name: self-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every guard has a negative test
+        run: bash scripts/canon_check.sh --self-test

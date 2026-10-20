@@ -1,6 +1,6 @@
 {
   "$schema": "nen.workflow/v0.1",
-  "$comment": "zheref/bankai-handbooks' workflow policy, the policy half of the two-file model documented in zheref/hatsu docs/WORKFLOW.md: nen/contract.json says what nen EXECUTES (the canon lane and its verbs), this file says what the workflow DECIDES with. Hand-authored at the Hatsu adoption of 2026-10-20 (hatsu:tenkai), modelled on the canon sibling zheref/hatsu's own file: the blocks every skill reads the same way (models, notifications, profile, monitor, commits, reports.sections, futon) are carried verbatim from it; the blocks that are this repository's own (iteration, tests, coverage, review.scopes, release.unitPaths, direct, aiReviewers) are written for a prose repository. nen schema check validates this file at the pinned build; every value is a policy default, never a fact about the machine. The merge gate is G4 (CON-7): this is a canon repository, so every PR here ends at the maintainer's merge prompt and nothing merges it.",
+  "$comment": "zheref/bankai-handbooks' workflow policy, the policy half of the two-file model documented in zheref/hatsu docs/WORKFLOW.md: nen/contract.json says what nen EXECUTES (the canon lane and its verbs), this file says what the workflow DECIDES with. Hand-authored at the Hatsu adoption of 2026-10-20 (hatsu:tenkai), modelled on the canon sibling zheref/hatsu's own file: the blocks every skill reads the same way (models, notifications, profile, monitor, commits, reports.sections, futon) are carried verbatim from it; the blocks that are this repository's own (iteration, tests, coverage, review.scopes, release.unitPaths, direct, aiReviewers) are written for a prose repository. nen schema check validates this file at the pinned build; every value is a policy default, never a fact about the machine. The merge gate is G4 (CON-7): this is a canon repository, so every delivery PR here ends at the maintainer's merge prompt and nothing merges it -- the one exception is hatsu:getsuga section 3a merging its own release-proposal PR inside release.unitPaths (the ruling of 2026-09-26), which is why unitPaths below holds the collation and the registry's latest key and never a handbooks/ path.",
   "branch": {
     "template": "{model}/{persona}/{descriptor}",
     "base": "main",
@@ -23,7 +23,7 @@
     "recommended": 85,
     "ideal": 90,
     "scope": "touched",
-    "$comment": "Prose has no line coverage; byakugan reports `not measurable here` against this ladder. It ships because every consumer that declares none inherits it."
+    "$comment": "Prose has no line coverage. The ladder is the catalogue default (zheref/hatsu contracts/config-catalogue.json) written out by config_values.sh fill, declared so byakugan has a ladder to report `not measurable here` against; nothing reads it from this repository."
   },
   "launch": {
     "default": null,
@@ -107,7 +107,7 @@
     }
   },
   "review": {
-    "$comment": "nen review scopes --base <ref> classifies a branch diff by these rows and hatsu:hanten raises each raised scope's persona within budget (reviews per effort, never per session). code is Nobunaga's and claims every path, deep because this is a process repository; architecture is Chrollo's -- the handbooks, the constitution and the conventions are exactly the architecture canon he cites, and he reviews them without ever authoring them (ROSTER ruling of 2026-09-09); security is Feitan's over the workflow, the scripts and the dependency contract; release is Phinks' over the release unit. ui, performance, surfaces and economics raise nothing in a prose repository and are not declared.",
+    "$comment": "nen review scopes --base <ref> classifies a branch diff by these rows and hatsu:hanten raises each raised scope's persona within budget (reviews per effort, never per session). code is Nobunaga's and claims every path, deep because this is a process repository; architecture is Chrollo's -- the handbooks, the constitution, the conventions and the agent contract are exactly the architecture canon he cites, and he reviews them without ever authoring them (ROSTER ruling of 2026-09-09); security is Feitan's over the workflow, the scripts and the dependency contract; release is Phinks' over the release unit. ui, performance and surfaces declare no row because nothing here renders, runs or mirrors; economics declares no paths row either and is raised BY CONTENT (zheref/hatsu docs/ECONOMICS.md section 1): a change to the model tiers, the review budgets, monitor's cycles or the reviewer round policy raises Leorio.",
     "scopes": {
       "code": {
         "persona": "nobunaga",
@@ -123,12 +123,14 @@
         "tier": "deep",
         "budget": 1,
         "paths": [
+          "AGENTS.md",
+          ".claude/rules/**",
           "CONSTITUTION.md",
           "CONVENTIONS.md",
           "handbooks/**",
           "nen/*.json"
         ],
-        "$comment": "The canon itself: a stack rule refining its UZF parent and naming it, never contradicting it (AGENTS.md section 2 rule 6); a ports ruling citing both stacks' rule ids."
+        "$comment": "The canon itself and the contract for editing it: a stack rule refining its UZF parent and naming it, never contradicting it (AGENTS.md section 2 rule 6); a ports ruling citing both stacks' rule ids; AGENTS.md and .claude/rules/ because they are this repository's architecture notes (the counterpart of the sibling's docs/ROSTER.md and docs/WORKFLOW.md). KNOWN GAP (handbook-question, raised at the adoption PR): nen canon resolve exits 1 on this repository because its own maintained_tools row carries no scenario, and stack-matrix.md says a repository with no scenario is out of scope for automated review; until the maintainer rules how the canon repository resolves its own set, Chrollo reads here by path, not by verb, and zheref/hatsu#355's --always-load interim does not apply to this tree."
       },
       "security": {
         "persona": "feitan",
@@ -165,9 +167,14 @@
     "unitPaths": [
       "CHANGELOG.md",
       "changelog.d/**",
-      "handbooks/VERSION"
+      {
+        "path": "nen/repos.json",
+        "keys": [
+          "latest"
+        ]
+      }
     ],
-    "$comment": "What a release-proposal PR may touch beyond the collation: the fragments it consumes, the changelog it writes, and the handbook set version the tag carries."
+    "$comment": "What a release-proposal PR may touch and still merge itself under hatsu:getsuga section 3a: the collated changelog, the fragments it consumes, and nen/repos.json's latest key (getsuga section 3 step 4 moves it; nen 0.15.1+ reads the key-bound entry). handbooks/VERSION is deliberately NOT here: CON-7 reserves every PR touching handbooks/ to the human, and AGENTS.md section 2 rule 3 puts the VERSION bump in the delivery PR, so getsuga section 3 step 5 is a no-op in this repository."
   },
   "direct": {
     "publish": "none",
@@ -187,7 +194,7 @@
     "sound": "Glass",
     "turn": "rung1",
     "$turn": "one of: rung1 | all",
-    "$comment": "jutaisho's ladder, innermost first: `push` is the surface's own turn-complete signal, `os` an osascript notification, `sound` /System/Library/Sounds/<sound>.aiff through afplay. hooks/stop-bell.sh rings rungs 2 and 3 off .nen/last-stop.json; a rung absent from this list is not rung. `turn` decides how loud an ORDINARY turn is -- one with no gate: `rung1` (the default, and what an absent key reads as) rings only the first rung `rungs` lists, `all` rings every rung it lists. A GATE always rings everything `rungs` lists regardless of `turn`, and `turn` can only WITHHOLD an escalation `rungs` already grants -- it can never conjure a rung `rungs` does not list. nen reads and validates this key from v0.5.0 -- a closed set of `rung1` and `all`, refused by pointer on anything else -- and fires none of the three rungs itself; hooks/stop-bell.sh is what rings them."
+    "$comment": "jutaisho's ladder, innermost first: `push` is the surface's own turn-complete signal, `os` an osascript notification, `sound` /System/Library/Sounds/<sound>.aiff through afplay. the sibling plugin's hooks/stop-bell.sh rings rungs 2 and 3 off .nen/last-stop.json; a rung absent from this list is not rung. `turn` decides how loud an ORDINARY turn is -- one with no gate: `rung1` (the default, and what an absent key reads as) rings only the first rung `rungs` lists, `all` rings every rung it lists. A GATE always rings everything `rungs` lists regardless of `turn`, and `turn` can only WITHHOLD an escalation `rungs` already grants -- it can never conjure a rung `rungs` does not list. nen reads and validates this key from v0.5.0 -- a closed set of `rung1` and `all`, refused by pointer on anything else -- and fires none of the three rungs itself; the sibling plugin's hooks/stop-bell.sh is what rings them."
   },
   "commits": {
     "allowedAttributionTrailers": [
@@ -260,7 +267,7 @@
     "$comment": "A tier is named, never a model version — a pinned version is a pin that rots. The orchestrator tier is the main session's; a SUBAGENT never runs on it, because the frontier tier is where the human's own conversation lives. Below it a subagent's tier is its role's, never its caller's (roles.$comment, zheref/hatsu#222)."
   },
   "futon": {
-    "$comment": "The ADVANCE-GO GATE -- the maintainer's rulings of 2026-09-26 and 2026-09-28 (docs/ROSTER.md § Rulings of 2026-09-26/27/28: getsuga and kagutsuchi take an advance go on any repository kind; mugetsu only on a process or library repository, never a product that deploys or uploads to a store; the three kinds are docs/WORKFLOW.md § Repository kinds). `nen parse futon` annotates every skill-chain step whose skill is listed here with gate: {allowed, kind, reason}, the kind being `nen repo classify`'s own verdict for the resolved repo (unknown fails closed); a skill not listed here gets no gate, and futon § 8 refuses a listed skill's step that carries none. From nen v0.15.1 an ABSENT key falls back to nen's built-in default policy (gate.source \"default\"), and a declared one replaces it wholesale (gate.source \"declared\") -- hatsu declares its own so the policy is read from here. The policy lives here and nowhere in prose: mugetsu § 3 and futon § 8 read the gate line verbatim.",
+    "$comment": "The ADVANCE-GO GATE -- the maintainer's rulings of 2026-09-26 and 2026-09-28 (zheref/hatsu docs/ROSTER.md § Rulings of 2026-09-26/27/28: getsuga and kagutsuchi take an advance go on any repository kind; mugetsu only on a process or library repository, never a product that deploys or uploads to a store; the three kinds are zheref/hatsu docs/WORKFLOW.md § Repository kinds). `nen parse futon` annotates every skill-chain step whose skill is listed here with gate: {allowed, kind, reason}, the kind being `nen repo classify`'s own verdict for the resolved repo (unknown fails closed); a skill not listed here gets no gate, and futon § 8 refuses a listed skill's step that carries none. From nen v0.15.1 an ABSENT key falls back to nen's built-in default policy (gate.source \"default\"), and a declared one replaces it wholesale (gate.source \"declared\") -- the canon sibling declares its own so the policy is read from here. The policy lives here and nowhere in prose: mugetsu § 3 and futon § 8 read the gate line verbatim.",
     "advanceGo": {
       "mugetsu": [
         "process",

@@ -35,18 +35,23 @@ working checklist.
 - Ordinary sample names in code (`UserProfile`, `Endeavor`, `Now`, `ada@example.com`) are
   illustrative vocabulary and stay.
 
-## The grep (run before every push; must print nothing)
+## The check (run before every push; must end `clean`)
 
 ```bash
-grep -rnoE '\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode|session)'   # any other bankai-<x> is a repo name
-grep -rnoE 'zheref/[A-Za-z0-9_.-]+' --exclude-dir=.git . | grep -vE 'zheref/(hatsu|nen|bankai-handbooks)\b'     # only the three public slugs
-grep -rnoE 'github\.com/[^ )>]+' --exclude-dir=.git . | grep -vE 'github\.com/zheref/(hatsu|nen|bankai-handbooks)\b'
-grep -rniE '<the product-family names from your private redaction list>' --exclude-dir=.git .
-grep -rnoE '\[(RR|RS|RA|RB|RC|RD)-(IS|PR)-#[0-9]+\]\(' --exclude-dir=.git .   # linked ids: none
+bash scripts/canon_check.sh redaction      # = the redaction half of `nen shu lint --repo .`
+grep -rniE '<the product-family names from your private redaction list>' --exclude-dir=.git .   # the manual extra
 ```
 
-The patterns are **shape-based on purpose** — this file must not spell a private name to find one.
-The product-family names live in the maintainer's private redaction list, never in this repository.
+`scripts/canon_check.sh` holds the four shape-based detectors — any `bankai-<x>` other than this
+repository, the stack ids and the two skill names; any owner slug other than the three public ones;
+any `github.com` link outside the three public repositories (the one admitted fixture is the fictional
+`acme` widget URL inside the rendered `scripts/release-publish.sh`, that exact URL and nothing wider);
+any **linked** placeholder object id — applied to the match alone and anchored to the whole slug, over
+the committable set (`git ls-files --cached --others --exclude-standard`), binary files included, an
+unreadable file a finding. CI's `redaction` job runs the same function, so the two cannot disagree.
+The patterns are **shape-based on purpose** — neither this file nor the script spells a private name
+to find one. The product-family names live in the maintainer's private redaction list, never in this
+repository, which is why that one grep stays manual.
 
 If a match is legitimate (this file, the policy's own explanation), say so in the PR. If you are
 unsure whether something is a leak, **report it** in the PR and stop — never decide silently.

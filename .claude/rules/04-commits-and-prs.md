@@ -27,7 +27,8 @@ one. `main` is protected in intent even before a ruleset exists: only the human 
 - Body sections, in order: a one-paragraph delivery summary (what changes for a consumer), the rule
   ids touched, the `handbooks/VERSION` bump and its class, the consumer migration note (tokens
   added/renamed, mirrors that will regenerate), `Closes #<n>`, `## How to verify` (`CON-17`: the
-  redaction grep output, the link-check output, the manifest rows to eyeball), and `## Agent
+  `scripts/canon_check.sh all` output — redaction, links and taxonomy in one — the manual
+  private-family grep, the manifest rows to eyeball), and `## Agent
   attribution` (who acted, in which mode, with what evidence — no model or session lines).
 - Open work as a PR whenever the repository already has content on `main`. Direct pushes to `main`
   are for the human only.

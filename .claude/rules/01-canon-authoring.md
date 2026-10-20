@@ -45,21 +45,12 @@ governance rewrite landing.
 ## Checks a canon PR runs (there is no build)
 
 ```bash
-# 1. redaction — each line must print nothing (shape-based; see 02-redaction.md)
-grep -rnoE '\bbankai-[a-z]+' --exclude-dir=.git . | grep -vE 'bankai-(handbooks|machinery|quality|mode|session)'
-grep -rnoE 'zheref/[A-Za-z0-9_.-]+' --exclude-dir=.git . | grep -vE 'zheref/(hatsu|nen|bankai-handbooks)\b'
-# 2. dangling relative links — must print "0 dangling"
-python3 - <<'PY'
-import re, pathlib
-bad=set()
-for p in pathlib.Path('.').rglob('*.md'):
-    if '.git' in p.parts: continue
-    for m in re.finditer(r'\]\(([^)#\s]+)(#[^)]*)?\)', p.read_text(encoding='utf-8')):
-        h=m.group(1)
-        if h.startswith(('http://','https://','mailto:')) or '{{' in h: continue
-        if not (p.parent/h).resolve().exists(): bad.add((str(p),h))
-print(*sorted(bad), sep='\n'); print(len(bad),'dangling')
-PY
+# 1 + 2. redaction and dangling relative links — the lane's lint, one script, the same one CI runs
+#        (scripts/canon_check.sh: shape-based redaction over the committable set, every relative
+#        link resolving, nen schema check); must end "canon_check: all clean"
+nen shu lint --repo .          # = bash scripts/canon_check.sh all
+# the private product-family names stay a manual extra, from the maintainer's private list
+grep -rniE '<the product-family names from your private redaction list>' --exclude-dir=.git .
 # 3. every {{TOKEN}} used in a stack's rules is declared in its placeholders.md
 for s in handbooks/stacks/*/; do
   used=$(grep -rhoE '\{\{[A-Z_]+\}\}' "$s/rules" 2>/dev/null | sort -u | grep -v '{{TOKEN}}')

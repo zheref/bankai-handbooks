@@ -72,11 +72,12 @@ agent conventions — output header, stamp, verdict line, object notation, gates
 ## 4. Checklist before you say "done"
 
 - [ ] Rule ids untouched or appended; `RETIRED` used instead of deletion.
-- [ ] `handbooks/VERSION` bumped with the right class; the bump is explained in the PR.
+- [ ] `handbooks/VERSION` bumped with the right class and explained in the PR — or `n/a`, with the reason, for a
+      change that moves nothing a consumer mirrors (machinery, workflow, this file).
 - [ ] `INDEX.md` / `stack-matrix.md` / stack `README.md` rows agree with the files on disk.
 - [ ] Every `{{TOKEN}}` used is declared; every example value is fictional.
 - [ ] Redaction grep is clean; nothing private is named; nothing placeheld was re-expanded.
-- [ ] No dangling relative link (`python3 - <<'PY'` link check in `.claude/rules/01-canon-authoring.md`).
+- [ ] `nen shu lint --repo .` ends `canon_check: all clean` (redaction, no dangling relative link, `nen schema check`; `.claude/rules/01-canon-authoring.md`).
 - [ ] `MIGRATION.md` updated only if provenance changed (it is a record, not a changelog).
 
 ## 5. Where the depth lives
