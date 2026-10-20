@@ -1,0 +1,1 @@
+- **Release notes for collated headings** (zheref/hatsu#362). Re-render the process publisher and its TypeScript helper with Hatsu Tenkai. The existing `### v0.6.0` changelog section now yields a dry-run release plan. Node 22.18+ is a declared verify-only prerequisite. No handbook rule or mirrored canon content changes.
