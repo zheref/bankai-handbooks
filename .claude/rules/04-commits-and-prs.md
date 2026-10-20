@@ -25,7 +25,8 @@ one. `main` is protected in intent even before a ruleset exists: only the human 
 
 - Assignee: the maintainer. Labels as the repository's taxonomy provides them.
 - Body sections, in order: a one-paragraph delivery summary (what changes for a consumer), the rule
-  ids touched, the `handbooks/VERSION` bump and its class, the consumer migration note (tokens
+  ids touched, the `handbooks/VERSION` bump and its class (or `n/a` with the reason, for a change that moves
+  nothing a consumer mirrors), the consumer migration note (tokens
   added/renamed, mirrors that will regenerate), `Closes #<n>`, `## How to verify` (`CON-17`: the
   `scripts/canon_check.sh all` output — redaction, links and taxonomy in one — the manual
   private-family grep, the manifest rows to eyeball), and `## Agent

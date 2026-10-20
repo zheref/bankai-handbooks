@@ -47,7 +47,7 @@ governance rewrite landing.
 ```bash
 # 1 + 2. redaction and dangling relative links — the lane's lint, one script, the same one CI runs
 #        (scripts/canon_check.sh: shape-based redaction over the committable set, every relative
-#        link resolving, nen schema check); must end "canon_check: all clean"
+#        link resolving, nen schema check); prints "canon_check: all clean (N committable files)" and exits 0
 nen shu lint --repo .          # = bash scripts/canon_check.sh all
 # the private product-family names stay a manual extra, from the maintainer's private list
 grep -rniE '<the product-family names from your private redaction list>' --exclude-dir=.git .

@@ -35,7 +35,7 @@ working checklist.
 - Ordinary sample names in code (`UserProfile`, `Endeavor`, `Now`, `ada@example.com`) are
   illustrative vocabulary and stay.
 
-## The check (run before every push; must end `clean`)
+## The check (run before every push; prints `canon_check: redaction clean (N committable files)` and exits 0)
 
 ```bash
 bash scripts/canon_check.sh redaction      # = the redaction half of `nen shu lint --repo .`
@@ -48,7 +48,8 @@ any `github.com` link outside the three public repositories (the one admitted fi
 `acme` widget URL inside the rendered `scripts/release-publish.sh`, that exact URL and nothing wider);
 any **linked** placeholder object id — applied to the match alone and anchored to the whole slug, over
 the committable set (`git ls-files --cached --others --exclude-standard`), binary files included, an
-unreadable file a finding. CI's `redaction` job runs the same function, so the two cannot disagree.
+unreadable file a finding. CI's `redaction` job runs the same function over the tracked files; the
+local run also sees untracked drafts, so a local pass implies the CI pass.
 The patterns are **shape-based on purpose** — neither this file nor the script spells a private name
 to find one. The product-family names live in the maintainer's private redaction list, never in this
 repository, which is why that one grep stays manual.

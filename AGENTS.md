@@ -76,8 +76,8 @@ agent conventions — output header, stamp, verdict line, object notation, gates
       change that moves nothing a consumer mirrors (machinery, workflow, this file).
 - [ ] `INDEX.md` / `stack-matrix.md` / stack `README.md` rows agree with the files on disk.
 - [ ] Every `{{TOKEN}}` used is declared; every example value is fictional.
-- [ ] Redaction grep is clean; nothing private is named; nothing placeheld was re-expanded.
-- [ ] `nen shu lint --repo .` ends `canon_check: all clean` (redaction, no dangling relative link, `nen schema check`; `.claude/rules/01-canon-authoring.md`).
+- [ ] The manual private-family grep is clean; nothing private is named; nothing placeheld was re-expanded.
+- [ ] `nen shu lint --repo .` prints `canon_check: all clean (N committable files)` and exits 0 (redaction, no dangling relative link, `nen schema check`; `.claude/rules/01-canon-authoring.md`); `scripts/canon_check.sh --self-test` when the script itself changed.
 - [ ] `MIGRATION.md` updated only if provenance changed (it is a record, not a changelog).
 
 ## 5. Where the depth lives

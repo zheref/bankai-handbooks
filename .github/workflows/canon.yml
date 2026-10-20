@@ -3,9 +3,10 @@
 # private name, shipping a link that does not resolve, and a nen/ declaration
 # that does not parse. All three live in ONE script, scripts/canon_check.sh,
 # which is also the `lint` verb of the canon lane (nen/contract.json) that
-# every Hatsu turn runs locally; each job below runs one of its checks over the
-# same committable set, so the local loop and CI read the same files with the
-# same patterns. A fourth job runs the script's own self-test (QA-18).
+# every Hatsu turn runs locally; each job below runs one of its checks with the
+# same patterns over the committable set -- locally that set also holds untracked
+# drafts, so the local run scans a superset of what CI sees and a local pass
+# implies the CI pass. A fourth job runs the script's own self-test (QA-18).
 #
 # The redaction job is the load-bearing one. This repository is PUBLIC and its
 # sources were PRIVATE, so a reintroduced name is a one-way door: a push is not
@@ -45,16 +46,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Read the pinned nen ref from nen/contract.json
+      - name: Read the trusted nen pin and digest
         # The contract is the single source of truth for the nen dependency
-        # (nen/contract.json: authority); the value is shape-checked before it
-        # reaches a URL, the same guard Hatsu's own workflows apply.
+        # (nen/contract.json: authority). main's copy is read for both the pin and
+        # the digest, so they always form one matched pair: a repin PR runs main's
+        # old pair and the merged main runs the new one, and a PR that moves only
+        # one of them fails after merge, never silently. What this guards is a
+        # digest drifting from the contract; what it does not guard is a PR that
+        # edits this workflow itself -- on a pull_request event the PR's own copy
+        # runs, which gains nothing here (contents: read, no secrets). A fetch that
+        # fails fails the step, never a quiet fall back to the head. Only where
+        # main provably carries no contract at all (the adoption PR itself) is the
+        # head's copy read, and the log says so. Both values are shape-checked
+        # before they reach a URL or a shell.
         id: pin
         shell: bash
         run: |
           set -euo pipefail
-          ref="$(jq -r '.dependency.pinned_ref // empty' nen/contract.json)"
-          [ -n "$ref" ] || { echo "::error::nen/contract.json carries no dependency.pinned_ref."; exit 1; }
+          git fetch --depth=1 origin main
+          if git cat-file -e origin/main:nen/contract.json 2>/dev/null; then
+            doc="$(git show origin/main:nen/contract.json)"; src="main"
+          else
+            doc="$(cat nen/contract.json)"; src="head (main carries no nen/contract.json yet)"
+          fi
+          ref="$(printf '%s' "$doc" | jq -r '.dependency.pinned_ref // empty')"
+          digest="$(printf '%s' "$doc" | jq -r '.dependency.bootstrap.sha256["linux-x64"] // empty')"
+          [ -n "$ref" ] || { echo "::error::nen/contract.json ($src) carries no dependency.pinned_ref."; exit 1; }
+          [ -n "$digest" ] || { echo "::error::nen/contract.json ($src) carries no dependency.bootstrap.sha256.linux-x64."; exit 1; }
           case "$ref" in
             *..*|*//*) echo "::error::dependency.pinned_ref '$ref' is not a valid git ref."; exit 1 ;;
           esac
@@ -62,8 +80,15 @@ jobs:
             echo "::error::dependency.pinned_ref is not a plain git ref; refusing to use it in a URL."
             exit 1
           fi
+          if [[ ! "$digest" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "::error::dependency.bootstrap.sha256.linux-x64 is not a sha256 hex digest."
+            exit 1
+          fi
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+          echo "pinned nen ref: $ref · digest from $src"
       - name: Bootstrap nen at the pinned ref (checksum-verified, two steps, never a pipe)
+        id: nen
         env:
           PINNED_REF: ${{ steps.pin.outputs.ref }}
         shell: bash
@@ -75,32 +100,22 @@ jobs:
           echo "bin=$bin" >> "$GITHUB_OUTPUT"
           mkdir -p "${RUNNER_TEMP}/bin" && ln -sfn "$bin" "${RUNNER_TEMP}/bin/nen"
           echo "${RUNNER_TEMP}/bin" >> "$GITHUB_PATH"
-        id: nen
-      - name: Verify the nen binary against nen/contract.json's sha256
+      - name: Verify the nen binary against the trusted contract's sha256
         # A second root of trust beside the bootstrap's own SHA256SUMS check: the
-        # digest this repository recorded at the repin (dependency.bootstrap.sha256,
-        # linux-x64). main's copy is preferred so a pull request cannot move the
-        # pin and the digest together; on the adoption PR itself main carries no
-        # contract yet, so the head's copy is the one that exists. A missing key
-        # or a mismatch fails the job.
+        # digest this repository recorded at the repin, read by the pin step from
+        # the trusted copy. A mismatch fails the job.
         env:
           NEN_BIN: ${{ steps.nen.outputs.bin }}
+          WANT: ${{ steps.pin.outputs.digest }}
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --depth=1 origin main >/dev/null 2>&1 || true
-          if git cat-file -e origin/main:nen/contract.json 2>/dev/null; then
-            want="$(git show origin/main:nen/contract.json | jq -r '.dependency.bootstrap.sha256["linux-x64"] // empty')"; src="main"
-          else
-            want="$(jq -r '.dependency.bootstrap.sha256["linux-x64"] // empty' nen/contract.json)"; src="head (main carries no nen/contract.json yet)"
-          fi
-          [ -n "$want" ] || { echo "::error::nen/contract.json carries no dependency.bootstrap.sha256.linux-x64."; exit 1; }
           have="$(sha256sum "$NEN_BIN" | cut -d' ' -f1)"
-          if [ "$have" != "$want" ]; then
-            echo "::error::nen binary sha256 $have does not match the contract's linux-x64 digest $want (from $src)."
+          if [ "$have" != "$WANT" ]; then
+            echo "::error::nen binary sha256 $have does not match the trusted contract's linux-x64 digest $WANT."
             exit 1
           fi
-          echo "nen digest verified against the contract's linux-x64 key (from $src)"
+          echo "nen digest verified against the trusted contract's linux-x64 key"
       - name: nen schema check
         run: bash scripts/canon_check.sh taxonomy
 

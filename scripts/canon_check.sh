@@ -18,8 +18,10 @@
 # does not exclude. So a draft not yet added is scanned, a generated tree
 # (.nen/, Reports/, .claude/worktrees/) is not, and a file forced past
 # .gitignore with `git add -f` is scanned wherever it sits: there is no
-# directory-name exclusion to hide in. The local run and the CI run read the
-# same set from the same repository, so they agree.
+# directory-name exclusion to hide in. The local run (drafts included) scans a
+# superset of CI's tracked set, so a local pass implies the CI pass. A relative
+# link resolves only against that set: a target that exists on this machine
+# but is ignored or untracked is dangling for every other checkout.
 #
 # HOW A MATCH IS JUDGED. Every detector prints `path:line:match` (grep -o); the
 # allow-list is applied to the MATCH FIELD ALONE and anchored to the whole slug,
@@ -60,45 +62,71 @@ say() { # level, message
 }
 
 load_files() {
+  # The committable set. A tracked file deleted without `git rm` is still listed
+  # and would read as unreadable; it is skipped here and named once, since a
+  # missing file carries nothing to leak.
   FILES=()
-  while IFS= read -r -d '' f; do FILES+=("$f"); done < <(git ls-files -z --cached --others --exclude-standard)
+  while IFS= read -r -d '' f; do
+    if [ -e "$f" ]; then FILES+=("$f"); else say notice "skipped: $f is tracked but absent from the working copy (git rm it)"; fi
+  done < <(git ls-files -z --cached --others --exclude-standard)
 }
 
-scan() { # pattern -> path:line:match lines; grep's own exit code (1 = no match)
+scan() { # pattern, grep flags (-i or empty) -> "path<TAB>line:match" lines; grep's own exit code (1 = no match)
+  # --null ends the path with NUL (the long spelling: BSD grep's -Z means
+  # decompress), so a path that itself carries ':' cannot forge the line-number
+  # or match field; the NUL becomes a TAB for the text tools after it.
+  # -i where the caller says so: a host or an owner is case-insensitive on GitHub.
   [ "${#FILES[@]}" -gt 0 ] || return 1
-  grep -naoE "$1" -- "${FILES[@]}"
+  grep -naoHE --null ${2:-} "$1" -- "${FILES[@]}" | tr '\0' '\t'
+  return "${PIPESTATUS[0]}"
 }
 
-check() { # title, detector (ERE), allow-list (ERE over the match field; empty = admit nothing)
+check() { # title, detector (ERE), allow-list (ERE over the lower-cased match field, whole-slug anchored; empty = admit nothing), grep flags
   local out rc
-  out=$(scan "$2"); rc=$?
+  out=$(scan "$2" "${4:-}"); rc=$?
   if [ "$rc" -ge 2 ]; then
-    say error "$1: grep exited $rc -- a file could not be read, so it was not scanned"
+    say error "a file could not be read (grep exited $rc while scanning for: $1) -- an unread file is not a clean one; the matches in the readable files follow"
     fail=1
-    return
   fi
   if [ -n "$3" ]; then
-    out=$(printf '%s\n' "$out" | awk -F: -v re="$3" 'NF == 0 { next } { m = $0; sub(/^[^:]*:[0-9]+:/, "", m); if (m !~ re) print }')
+    out=$(printf '%s\n' "$out" | awk -F'\t' -v re="$3" 'NF == 0 { next } { m = $2; sub(/^[0-9]+:/, "", m); if (tolower(m) !~ re) print }'); rc=$?
+    if [ "$rc" -ne 0 ]; then say error "$1: the allow-list filter failed (awk exited $rc); nothing was admitted"; fail=1; return; fi
   fi
   if [ -n "$out" ]; then
     say error "$1"
-    printf '%s\n' "$out" | head -40
+    printf '%s\n' "$out" | tr '\t' ':' | head -40
     fail=1
   fi
 }
 
 redaction() {
+  # Every detector takes the WHOLE slug (every slug character after the prefix), so
+  # the anchored allow-list sees an admitted slug with a longer tail whole and
+  # refuses it; a URL is taken as host/owner/repo only, so two URLs side by side in
+  # a JSON array or a table cell are two matches, never one.
+  # Lower-case only, on purpose: a repository slug is lower-case, while `Bankai-Agent:`,
+  # `Bankai-Run:` (trailer keys), `Bankai-owned` (prose) and `BANKAI-AGENTS-ROSTER` (a
+  # document title) are system names the policy keeps (docs/PUBLIC-REDACTION.md,
+  # "What is deliberately not redacted").
   check "a bankai-<x> slug that is not this repo, a stack id or a skill name" \
-    '\bbankai-[a-z]+' \
+    '\bbankai-[a-z0-9_-]+' \
     '^bankai-(handbooks|machinery|quality|mode|session)$'
   check "an owner slug outside the three public repositories" \
     'zheref/[A-Za-z0-9_.-]+' \
-    '^zheref/(hatsu|nen|bankai-handbooks)\\.?$'
+    '^zheref/(hatsu|nen|bankai-handbooks)(\\.git)?\\.?$' \
+    -i
   # The detector requires an ASCII alphanumeric after the slash, so an ELIDED url
   # (github.com/<ellipsis>) used in prose examples is never a match to begin with.
   check "a github.com link outside the three public repos (the one admitted fixture is the publisher's fictional acme widget)" \
-    'github\.com/[A-Za-z0-9][^ )>]*' \
-    '^github\\.com/(zheref/(hatsu|nen|bankai-handbooks)([^A-Za-z0-9_-]|$)|acme/widget\\.git$)'
+    'github\.com/[A-Za-z0-9][A-Za-z0-9_.-]*(/[A-Za-z0-9_.-]+)?' \
+    '^github\\.com/(zheref/(hatsu|nen|bankai-handbooks)(\\.git)?\\.?|acme/widget\\.git)$' \
+    -i
+  # A URL is admitted on its owner/repo alone, so a path that walks back out of an
+  # admitted repository (`/..`) is refused outright: it resolves somewhere else.
+  check "a github.com URL walking back out of its repository with /.." \
+    'github\.com/[^ )>"'"'"'|]*/\.\.' \
+    '' \
+    -i
   check "a LINKED placeholder object id (they stay unlinked)" \
     '\[(RR|RS|RA|RB|RC|RD)-(IS|PR)-#[0-9]+\]\(' \
     ''
@@ -108,10 +136,10 @@ links() {
   local hits rc
   hits=$(scan '\]\([^)#][^)]*\)'); rc=$?
   if [ "$rc" -ge 2 ]; then say error "links: grep exited $rc -- a file could not be read"; fail=1; return; fi
-  hits=$(printf '%s\n' "$hits" | grep -aE '^[^:]*\.md:[0-9]+:' | sed -E 's/^([^:]+):[0-9]+:\]\((.*)\)$/\1:\2/' | grep -avE ':https?://' || true)
+  hits=$(printf '%s\n' "$hits" | awk -F'\t' 'NF == 2 && $1 ~ /\.md$/ { m = $2; sub(/^[0-9]+:\]\(/, "", m); sub(/\)$/, "", m); if (m !~ /^https?:\/\//) print $1 "\t" m }')
   while IFS= read -r hit; do
     [ -n "$hit" ] || continue
-    src="${hit%%:*}"; target="${hit#*:}"
+    src="${hit%%	*}"; target="${hit#*	}"
     case "$src" in */*) base="${src%/*}";; *) base=".";; esac
     path="${target%%#*}"
     [ -z "$path" ] && continue
@@ -120,11 +148,35 @@ links() {
       http*|mailto:*) continue;;
       *'{'*|*'}'*|*'<'*|*'>'*) continue;;
     esac
-    if [ ! -e "$base/$path" ]; then
+    if ! committable "$(normalize "$base/$path")"; then
       say "error file=$src" "dangling relative link -> $path"
       fail=1
     fi
   done <<< "$hits"
+}
+
+normalize() { # a/./b/../c -> a/c, never leaving the repository root
+  local in="$1" out="" seg
+  local IFS='/'
+  for seg in $in; do
+    case "$seg" in
+      ''|.) ;;
+      ..) if [ "$out" = "${out%/*}" ]; then out=""; else out="${out%/*}"; fi ;;
+      *) out="${out:+$out/}$seg" ;;
+    esac
+  done
+  printf '%s' "$out"
+}
+
+committable() { # path -> 0 when it is a committable file, or a directory holding one
+  # A link that resolves only on this machine (an ignored file, a stray draft the
+  # reader will not have) is dangling for every other checkout: the target has to
+  # be in the committable set, as a file or as the directory of one.
+  local p="$1"
+  [ -n "$p" ] || return 0
+  printf '%s\n' "${FILES[@]}" | grep -qxF -- "$p" && return 0
+  printf '%s\n' "${FILES[@]}" | grep -q -- "^$(printf '%s' "$p" | sed 's/[][\\.*^$]/\\&/g')/" && return 0
+  return 1
 }
 
 taxonomy() {
@@ -155,7 +207,7 @@ run() { # the selected checks over the committable set; returns the exit code
 self_test() {
   local me pass=0 total=0
   me="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
-  tmp="$(mktemp -d)"
+  tmp="$(mktemp -d)" && [ -d "$tmp" ] || { echo "canon_check --self-test: mktemp failed" >&2; exit 2; }
   trap 'rm -rf "$tmp"' EXIT
 
   mk() { # name -> a fresh git repository carrying a copy of this script, cwd there
@@ -194,11 +246,23 @@ self_test() {
   d=$(mk ghfx);   printf '%s and %s\n' "https://github.com""/acme/widget.git" "https://github.com""/zheref/hatsu#1" > "$d/a.md"; expect "the publisher fixture and a public issue link pass" 0 "$d" redaction
   d=$(mk ghpfx);  printf '%s\n' "https://github.com""/zheref""/hatsu-private" > "$d/a.md"; expect "a public prefix with more slug characters is refused" 1 "$d" redaction
   d=$(mk linked); printf '%s%s\n' "[RA-IS-#12]" "(https://x)" > "$d/a.md";      expect "a linked placeholder id is refused" 1 "$d" redaction
+  d=$(mk adj);    printf '[\"%s\",\"%s\"]\n' "https://github.com""/zheref/hatsu" "https://github.com""/acme/other" > "$d/a.json"; expect "two URLs side by side in compact JSON are two matches" 1 "$d" redaction
+  d=$(mk pipe);   printf '%s|%s\n' "https://github.com""/zheref/nen" "https://github.com""/acme/other" > "$d/a.md"; expect "a pipe-adjacent URL hides nothing" 1 "$d" redaction
+  d=$(mk dots);   printf '%s/../../acme/other\n' "https://github.com""/zheref/hatsu" > "$d/a.md"; expect "a URL walking past an admitted repo is refused" 1 "$d" redaction
+  d=$(mk caps);   printf '%s\n' "https://GitHub.com""/Acme/other" > "$d/a.md"; expect "a capitalised host or owner is still detected" 1 "$d" redaction
+  d=$(mk capok);  printf '%s and %s\n' "https://GitHub.com""/zheref/Hatsu.git" "Zheref""/nen" > "$d/a.md"; expect "capitalised admitted slugs pass" 0 "$d" redaction
+  d=$(mk btail);  printf '%s %s\n' "bankai-""handbooks-placeholder" "bankai-""session2" > "$d/a.md"; expect "an admitted bankai prefix with a longer tail is refused" 1 "$d" redaction
+  d=$(mk bcap);   printf '%s %s\n' "Bankai-""Agent:" "Bankai-""owned" > "$d/a.md"; expect "a capitalised Bankai- term is a system name, not a slug" 0 "$d" redaction
+  d=$(mk colon);  printf '%s\n' "https://github.com""/acme/other" > "$d/a:1:github.com:x.md"; git -C "$d" add -A >/dev/null; expect "a path carrying colons cannot forge the match field" 1 "$d" redaction
   d=$(mk untr);   printf '%s\n' "$priv" > "$d/draft.md";             expect "an untracked draft is scanned" 1 "$d" redaction
   d=$(mk ign);    mkdir -p "$d/Reports"; printf '%s\n' "$priv" > "$d/Reports/r.md"; expect "an ignored generated file is not scanned" 0 "$d" redaction
   d=$(mk forced); mkdir -p "$d/handbooks/Reports"; printf '%s\n' "$priv" > "$d/handbooks/Reports/r.md"; git -C "$d" add -f handbooks/Reports/r.md >/dev/null; expect "a file forced past .gitignore is scanned wherever it sits" 1 "$d" redaction
   d=$(mk bin);    printf '%s\0\n' "$priv" > "$d/b.bin";                expect "a binary file carrying a slug is refused" 1 "$d" redaction
   d=$(mk dangle); printf '[x](nope.md)\n' > "$d/a.md";                 expect "a dangling relative link is refused" 1 "$d" links
+  d=$(mk coldl);  printf '[x](nope.md)\n' > "$d/c:d.md"; git -C "$d" add -A >/dev/null; expect "a dangling link in a file whose name carries a colon is refused" 1 "$d" links
+  d=$(mk ignl);   mkdir -p "$d/.nen"; printf 'x\n' > "$d/.nen/ignored.md"; printf '[x](.nen/ignored.md) [y](../%s/README.md)\n' "$(basename "$d")" > "$d/a.md"; expect "a link to an ignored file, or out of the root, is dangling" 1 "$d" links
+  d=$(mk dirl);   printf '[x](docs) [y](docs/) [z](./docs/../README.md)\n' > "$d/a.md"; expect "a link to a directory holding committable files, or through ./ and ../, resolves" 0 "$d" links
+  d=$(mk gone);   rm "$d/README.md";                                    expect "a tracked file deleted without git rm is skipped, not refused" 0 "$d" redaction
   d=$(mk anchor); printf '[x](README.md#ok) [y](<owner/name>) [z](%s)\n' "https://github.com""/zheref/nen" > "$d/a.md"; expect "anchors, placeholders and absolute links are not dangling" 0 "$d" links
   if [ "$(id -u)" != 0 ]; then
     d=$(mk unread); printf '%s\n' "$priv" > "$d/u.md"; chmod 000 "$d/u.md"; expect "an unreadable file is a finding, never clean" 1 "$d" redaction; chmod 644 "$d/u.md"
