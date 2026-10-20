@@ -15,8 +15,11 @@
 
 ## Branches
 
-`<persona>/<issue>-<slug>` for issue-driven work (`kurapika/12-ux-13-contrast`), `<persona>/<slug>`
-otherwise. `main` is protected in intent even before a ruleset exists: only the human merges.
+`{model}/{persona}/{descriptor}` — the template `nen/workflow.json` → `branch.template` declares and
+`nen/gates.json` → `delivery.head_ref_prefixes` admits (`fable/kurapika/ports-swiftui-compose`,
+`opus/kurapika/12-ux-13-contrast`): `{model}` is the model alias the actor runs on, `{persona}` the
+roster persona, `{descriptor}` a short kebab noun phrase, with the issue number first where there is
+one. `main` is protected in intent even before a ruleset exists: only the human merges.
 
 ## Pull requests
 

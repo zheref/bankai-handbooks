@@ -11,6 +11,7 @@
     }
   ],
   "approval_policy": "review-round-only",
+  "$approval_policy": "one of: required | review-round-only",
   "default_approvers": [],
   "base_reviewers": [
     "copilot"
