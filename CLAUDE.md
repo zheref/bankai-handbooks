@@ -8,7 +8,13 @@
   a diff stays reviewable. Never rewrite a whole handbook file when one clause changed.
 - When the task is canon or governance authoring, the working mode is Kurapika's **Conjurer**
   (`hatsu:kurapika`); the `Hatsu-Agent: kurapika` trailer follows from that.
-- Before any push: run the redaction audit in `.claude/rules/02-redaction.md` and the link check in
-  `.claude/rules/01-canon-authoring.md`. Paste both outputs into the PR's `## How to verify`.
-- This repository has no build, no tests and no generated mirror of its own. "Green" here means:
-  the audit grep is empty, no link dangles, `VERSION` matches the change class.
+- Before any push: `nen shu lint --repo .` (`scripts/canon_check.sh all`: the redaction audit of
+  `.claude/rules/02-redaction.md`, the link check of `.claude/rules/01-canon-authoring.md` and
+  `nen schema check`, in one script) plus the manual private-family grep. Paste the output into the
+  PR's `## How to verify`.
+- This repository has no build, no general test suite (the one executable, `scripts/canon_check.sh`, has
+  its `--self-test` on the focused `canon-check-guard` lane) and no generated mirror of its own. "Green" here means:
+  `nen shu lint --repo .` is clean — `scripts/canon_check.sh all`: the redaction audit empty, no link
+  dangling, `nen schema check` all `ok` — and `VERSION` matches the change class. That one check is
+  what `nen/workflow.json` → `iteration.checks` declares, so every Hatsu turn (`breath`, `rasengan`,
+  `kokusen`) runs it and CI (`canon.yml`) runs the same script per job.

@@ -15,16 +15,21 @@
 
 ## Branches
 
-`<persona>/<issue>-<slug>` for issue-driven work (`kurapika/12-ux-13-contrast`), `<persona>/<slug>`
-otherwise. `main` is protected in intent even before a ruleset exists: only the human merges.
+`{model}/{persona}/{descriptor}` — the template `nen/workflow.json` → `branch.template` declares and
+`nen/gates.json` → `delivery.head_ref_prefixes` admits (`fable/kurapika/ports-swiftui-compose`,
+`opus/kurapika/12-ux-13-contrast`): `{model}` is the model alias the actor runs on, `{persona}` the
+roster persona, `{descriptor}` a short kebab noun phrase, with the issue number first where there is
+one. `main` is protected in intent even before a ruleset exists: only the human merges.
 
 ## Pull requests
 
 - Assignee: the maintainer. Labels as the repository's taxonomy provides them.
 - Body sections, in order: a one-paragraph delivery summary (what changes for a consumer), the rule
-  ids touched, the `handbooks/VERSION` bump and its class, the consumer migration note (tokens
+  ids touched, the `handbooks/VERSION` bump and its class (or `n/a` with the reason, for a change that moves
+  nothing a consumer mirrors), the consumer migration note (tokens
   added/renamed, mirrors that will regenerate), `Closes #<n>`, `## How to verify` (`CON-17`: the
-  redaction grep output, the link-check output, the manifest rows to eyeball), and `## Agent
+  `scripts/canon_check.sh all` output — redaction, links and taxonomy in one — the manual
+  private-family grep, the manifest rows to eyeball), and `## Agent
   attribution` (who acted, in which mode, with what evidence — no model or session lines).
 - Open work as a PR whenever the repository already has content on `main`. Direct pushes to `main`
   are for the human only.

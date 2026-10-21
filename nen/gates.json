@@ -11,6 +11,7 @@
     }
   ],
   "approval_policy": "review-round-only",
+  "$approval_policy": "one of: required | review-round-only",
   "default_approvers": [],
   "base_reviewers": [
     "copilot"
@@ -34,5 +35,12 @@
     "stallMinutes": 30,
     "minRounds": 1,
     "maxRounds": 3
+  },
+  "round_quorum": {
+    "$comment": "nen pr ready's any_of quorum (the ruling of 2026-10-04, zheref/hatsu#228: one bot reviewer is a round). With aiReviewers optional in nen/workflow.json, every reviewers[] entry must also sit in any_of with an anchored login_pattern at both refs, or the optional reading never applies and the PR waits as if the value were required (zheref/hatsu docs/WORKFLOW.md section 2, aiReviewers). Copilot is the sole automated reviewer here, so the quorum is one of it.",
+    "any_of": [
+      "copilot"
+    ],
+    "minimum": 1
   }
 }

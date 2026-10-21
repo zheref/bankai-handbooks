@@ -34,7 +34,12 @@ per-surface mirror rendered from a **tag** of this repository by Hatsu/Nen, with
 
 - [`AGENTS.md`](AGENTS.md) is the contract for any agent (and human) editing canon here;
   [`.claude/rules/`](.claude/rules/) holds the depth. Every change is a PR the human merges (G4).
-- Rule ids are append-only and stable; `handbooks/VERSION` bumps with every change.
+- Hatsu-adopted (`hatsu:tenkai`): [`nen/contract.json`](nen/contract.json) declares the one `canon`
+  lane (`lint` = [`scripts/canon_check.sh`](scripts/canon_check.sh), `release` = the rendered
+  publisher) and [`nen/workflow.json`](nen/workflow.json) the policy every Hatsu phase reads, so
+  `hatsu:build`, `aka`, `mukai` and `en` drive a PR here to its G4 merge prompt.
+- Rule ids are append-only and stable; `handbooks/VERSION` bumps with every change to the canon a
+  consumer mirrors (`AGENTS.md` § 2 rule 3) — a machinery-only change leaves it where it is.
 - This repository is public by design and **names no private repository** —
   [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md).
 - Where everything came from, what was renamed, reconciled and left behind:
