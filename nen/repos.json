@@ -1,6 +1,6 @@
 {
   "$comment": "Issue-routing registry for this canon repository and the tool repositories it consumes. This repository is the single canonical source for the Bankai handbooks, the constitution and the shared agent conventions (CON-13); Hatsu and Nen are the planes that read it. Registered here so the repository is judged by the same taxonomy, gates and commit-trailer policy as the rest of the estate rather than by prose alone -- notably CON-51(c): canonical persona trailers only, never AI, model or session attribution.",
-  "latest": "v0.6.0",
+  "latest": "v0.11.0",
   "consumers": [],
   "maintained_tools": [
     {
