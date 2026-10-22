@@ -165,7 +165,7 @@ the platform reaches that outcome.
 
 | Id | Category (UX-13) | Web | Mobile | Rationale |
 | --- | --- | --- | --- | --- |
-| AC-1 | business rules | port | n/a | The fictional Acme mobile app has no keyboard-shortcut surface. |
+| AC-1 | business rules | port | n/a | The fictional Acme mobile app does not sell the add-on this rule prices. |
 | AC-2 | back behaviour | port | adapt | The AC-2 outcome mirrors; mobile reaches it through its own back behaviour. |
 
 ## Open questions

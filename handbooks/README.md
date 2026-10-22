@@ -141,7 +141,7 @@ One source, a generated mirror everywhere it is read:
    mirror: `missing` / `extra` / `stale` / `hand-edited` fail the consumer's CI. A mirror is a
    build artifact, not a second source.
 6. **General handbooks** (`UZF-`, `SEC-`, `UX-`, `REL-`, `QA-`, and `SP-` for a spec repository
-   only) are resolved **live** from a
+   or a product repository whose issue, PR or test quotes a spec id) are resolved **live** from a
    checkout at the pin (step 3) — they are not part of the stack `rules/` mirror today.
    Folding them into the per-surface mirror is a machinery change that this doctrine already
    permits; the rule content is authored here first either way.

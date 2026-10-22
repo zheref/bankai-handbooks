@@ -168,18 +168,28 @@ bind every stack's feature-documentation rule file; their severities are in the
   in consumer canon that makes the code the tie-breaker over the spec is retired.
 - **(c) The input to a port is the spec.** A port of a feature to another platform
   reads the spec, never another platform's implementation. Where the spec is silent,
-  the gap is an open question on the spec (clause (f)), not a reading of the other
-  platform's code.
+  the gap is an open question on the spec (clause (f); in a family spec, an `SP-1`
+  marker), not a reading of the other platform's code.
 - **(d) Acceptance and success criteria.** The spec carries `## Acceptance`, with one
   `AC-{n}` row per criterion, each written as Given / When / Then, and
   `## Success criteria`, with one `SC-{n}` row per criterion, each measurable: a
   threshold and how it is measured. Ids are stable within the spec and never reused,
-  so an issue and a pull request can cite them.
-- **(e) Platform notes are a disposition table.** A feature shipped on more than one
-  platform records its platform notes under `## Platform notes` as a table with one row per `AC-{n}` id (and
+  so an issue and a pull request can cite them. A family `spec.md` follows the pinned
+  Spec Kit layout: there an `AC-{n}` is a numbered acceptance scenario under a `US-n`
+  in `## User Scenarios & Testing`, and the success criteria sit under its
+  `## Success Criteria`. Until Hatsu's writer carries `## Acceptance` by name, the
+  section names of this clause and of (e) bind `docs/Features` canon in a repository
+  that declares no family, and this mapping binds a family `spec.md`.
+- **(e) Platform notes are a disposition table.** This clause binds `docs/Features`
+  canon in a repository that declares no family; in a family spec folder a per-member
+  difference lives in `parity.md`, which states how these dispositions correspond to
+  its states (`SP-6`). A feature shipped on more than one platform records its
+  platform notes under `## Platform notes` as a table with one row per `AC-{n}` id (and
   per `FR-{n}` id where the spec numbers its requirements), one column per platform
   holding a disposition — `port`, `adapt` or `n/a` — a **Category** column naming
-  the `UX-13` category the row's difference falls in, and a rationale column that is
+  the `UX-13` category the row's difference falls in (a mirror category outside
+  `UX-13`'s lists, such as business rules or the data lifecycle, is a valid value),
+  and a rationale column that is
   required for every `adapt` and `n/a`. This clause owns the row obligation: every
   id has a row, and a requirement a platform does not carry MUST appear as an `n/a`
   row with its rationale; a requirement missing from the table is silently dropped,
@@ -188,12 +198,14 @@ bind every stack's feature-documentation rule file; their severities are in the
   or `n/a` with its rationale, and never `adapt`. An `AC-{n}` row's outcome always
   mirrors: on an `AC-{n}` row, `adapt` names only the `UX-13` adapt category through
   which the platform reaches that same outcome.
-- **(f) Every open question is an `OQ-{n}` row with an owner and a date.** Open
-  questions take the one shape HR-4 rules for an unresolved question in an issue: a
+- **(f) Every open question is an `OQ-{n}` row with an owner and a date.** In a
+  repository that declares no family, open questions take the one shape HR-4 rules for an unresolved question in an issue: a
   table under `## Open questions` with one `OQ-{n}` row per question and the owner and
   the date raised as columns. A question in any other shape, or with no owner or no
   date, is a finding. An answered question leaves the table, its id is never reused,
-  and the spec states the answer as behavior.
+  and the spec states the answer as behavior. In a family `spec.md` this clause does
+  not apply: an open question there is an `SP-1` `[NEEDS CLARIFICATION: …]` marker,
+  HR-4's prose form, settled by an `SP-12` `CL-nnn` entry.
 
 **UZF-22 — New user-visible behavior is flag-wrapped.** New user-visible behavior
 is reachable only behind a feature flag registered in the platform's flag

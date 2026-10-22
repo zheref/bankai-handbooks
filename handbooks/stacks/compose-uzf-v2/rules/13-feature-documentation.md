@@ -152,7 +152,7 @@ the platform reaches that outcome.
 
 | Id | Category (UX-13) | Android | iOS | Web | Rationale |
 | --- | --- | --- | --- | --- | --- |
-| AC-1 | business rules | port | port | n/a | The fictional Acme web app has no widget surface. |
+| AC-1 | business rules | port | port | n/a | The fictional Acme web app does not sell the add-on this rule prices. |
 | AC-2 | back behaviour | adapt | port | port | The AC-2 outcome mirrors; Android reaches it through its own back behaviour. |
 
 ## Open questions

@@ -17,16 +17,16 @@ product-authored canon, no fallback source. Mechanics:
 | File | Scope | Rule-ID prefix | When to load |
 | --- | --- | --- | --- |
 | [`uzf-core.md`](uzf-core.md) | UZF cross-platform architecture (store shape, action flow, effects, forbidden patterns) and the feature spec: its acceptance, platform-notes and open-question shape, and the product-family spec repository as canon (`UZF-21`) | `UZF-{n}` | Every build/review — the architecture canon |
-| [`security-baseline.md`](security-baseline.md) | Data security, privacy, compliance, agent tool-use & untrusted content | `SEC-{n}` | Every security review (Tenma); any data/secret-handling work; every lane that reads a body, comment, diff or fetched page it did not author (`SEC-15`) |
-| [`ux-baseline.md`](ux-baseline.md) | UI/UX design-quality: accessibility, touch targets, tokens, typography, motion, layout, forms, navigation, data-viz, cross-platform adaptation (`UX-13`) | `UX-{n}` | Every build/review of user-visible UI — Edward builds against it (Phase 1a); the design reviewer (Phase 2) cites it |
-| [`release-policy.md`](release-policy.md) | Versioning, changelog, store submission | `REL-{n}` | Release work (Natsu); version decisions |
-| [`quality-baseline.md`](quality-baseline.md) | Adversarial QA method, E2E tooling by scenario, performance budgets, process-machinery testing, the pre-release gate | `QA-{n}` | Pre-release quality verification (Ichigo — Hollow: local, on-demand, **advisory**, `QA-20`/`QA-21`); any adversarial/E2E or performance test authoring. The CI gate (Rukia) is future work |
+| [`security-baseline.md`](security-baseline.md) | Data security, privacy, compliance, agent tool-use & untrusted content | `SEC-{n}` | Every security review; any data/secret-handling work; every lane that reads a body, comment, diff or fetched page it did not author (`SEC-15`) |
+| [`ux-baseline.md`](ux-baseline.md) | UI/UX design-quality: accessibility, touch targets, tokens, typography, motion, layout, forms, navigation, data-viz, cross-platform adaptation (`UX-13`) | `UX-{n}` | Every build/review of user-visible UI — the builder builds against it (Phase 1a); the design reviewer (Phase 2) cites it |
+| [`release-policy.md`](release-policy.md) | Versioning, changelog, store submission | `REL-{n}` | Release work; version decisions |
+| [`quality-baseline.md`](quality-baseline.md) | Adversarial QA method, E2E tooling by scenario, performance budgets, process-machinery testing, the pre-release gate | `QA-{n}` | Pre-release quality verification (a local builder: on-demand, **advisory**, `QA-20`/`QA-21`); any adversarial/E2E or performance test authoring. The CI gate is future work |
 
 ## Load when authoring or reviewing a family specification
 
 A product family's private spec repository (`specs/<nnn>-<slug>/`) is written and reviewed against
-this handbook, beside the always-load set. A product repository's own build or review does not load
-it; the spec it cites does.
+this handbook, beside the always-load set. A product repository loads it when one of its issues,
+PRs or tests quotes a spec id (`SP-8`, `SP-10`).
 
 | File | Scope | Rule-ID prefix | When to load |
 | --- | --- | --- | --- |
@@ -62,8 +62,8 @@ maintainer's answers and land by G4 PR; the architecture reviewer reviews them a
 target's stack handbook, **never alone** — it states only the relation between the two stacks,
 nothing either handbook already says. It is not a stack handbook, does not change which one
 stack folder loads. Under the bounded interim of `CON-13` (*Port rulings*), no consumer mirror
-carries it yet: it is read live from a checkout at the pin until zheref/nen#457 lands, when the
-family enters the mirrors.
+carries it yet: it is read live from a checkout at the pin until the pair files a consumer's
+scenario is the target of enter its mirror (zheref/nen#457).
 
 | From | To | File | Rule-ID prefix |
 | --- | --- | --- | --- |
