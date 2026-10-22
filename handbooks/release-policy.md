@@ -39,7 +39,7 @@ milestone is escalated, not shipped.
 > GitHub App running these same `QA-{n}` rules in CI) is not provisioned; until it is,
 > `QA-20` is satisfied by the local run above. Same phasing as
 > [`ux-baseline.md`](ux-baseline.md), where the `UX-{n}` baseline landed as process first and
-> the CI gate (Bisky) followed.
+> the CI design gate followed.
 
 **REL-5 — Release from a dedicated ref.** Releases proceed on `release/*` branches
 via ruleset; the release commit/tag is created by the release pipeline, not by

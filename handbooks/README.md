@@ -23,7 +23,7 @@ one stack folder** for the repo under review.
 | --- | --- | --- | --- | --- |
 | [`uzf-core.md`](uzf-core.md) | `UZF-{n}` | Sasuke | general | Cross-platform UZF architecture (flow, artifacts, purity, testing, docs, flags). |
 | [`security-baseline.md`](security-baseline.md) | `SEC-{n}` (+ `CWE`/OWASP) | Tenma | general | Data-security, privacy, and compliance baseline. |
-| [`ux-baseline.md`](ux-baseline.md) | `UX-{n}` (+ `WCAG`/HIG/Material) | Bisky *(Phase 2; Edward self-applies at build in Phase 1a)* | general | UI/UX design-quality baseline — accessibility, touch, tokens, typography, motion, layout, forms, nav, data-viz. |
+| [`ux-baseline.md`](ux-baseline.md) | `UX-{n}` (+ `WCAG`/HIG/Material) | the design reviewer *(Phase 2; Edward self-applies at build in Phase 1a)* | general | UI/UX design-quality baseline — accessibility, touch, tokens, typography, motion, layout, forms, nav, data-viz. |
 | [`release-policy.md`](release-policy.md) | `REL-{n}` | Natsu | general | Versioning, release gates, store-submission policy (G3). |
 | [`quality-baseline.md`](quality-baseline.md) | `QA-{n}` (+ `CWE`/`WCAG`) | Rukia *(future CI gate; Ichigo's Hollow nature self-runs it locally today)* | general | Adversarial QA method, E2E tooling by scenario, performance budgets, process-machinery testing, the advisory pre-release gate. |
 | [`stack-matrix.md`](stack-matrix.md) | — | Naruto | general | Scenario registry + how the right stack folder is resolved per repo. |
@@ -40,7 +40,7 @@ one stack folder** for the repo under review.
   rule and names its parent; it never contradicts it.
 - **Tenma** (security) cites `SEC-{n}` from `security-baseline.md`, or a public
   `CWE-{n}` / OWASP reference when it maps more precisely.
-- **Bisky** (design quality, reviewer tier — Phase 2) cites `UX-{n}` from
+- **The design reviewer** (design quality, reviewer tier — Phase 2) cites `UX-{n}` from
   `ux-baseline.md`, or a public `WCAG` / Apple HIG / Material reference when it maps more
   precisely. In **Phase 1a** there is no design gate yet — **Edward** self-applies the
   `UX-{n}` rules at build time and the human reviews at G2.
@@ -49,7 +49,7 @@ one stack folder** for the repo under review.
   public `CWE-{n}` / `WCAG` reference where one maps more precisely. There is **no CI quality
   gate yet** — **Ichigo's Hollow nature** self-runs these locally, on demand, before a release,
   and its `Quality-Gate:` verdict is **advisory**: the human owns G3 (`QA-21`, `CON-6`). The CI
-  gate (**Rukia**) follows later, exactly as Bisky followed the `UX-{n}` baseline.
+  gate (**Rukia**) follows later, exactly as the design reviewer followed the `UX-{n}` baseline.
 - Because a review loads exactly one stack folder, `SW-{n}`, `KT-{n}`, `RC-{n}` and `BC-{n}`
   are never in scope together — no cross-stack collision.
 - A finding that no rule covers → the reviewer opens a scope-routed

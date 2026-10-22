@@ -26,7 +26,7 @@ the standing rules; where a topic is covered in depth elsewhere, the rule links 
 **Authored and evolved only by the governance lane — CI Naruto (Hokage), or Ichigo's Quincy nature
 locally (`CON-2`/`CON-46`) — via PR; amended only by the human (G4).**
 
-Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CON-{n}`).
+Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these rules by ID (`CON-{n}`).
 
 ## 1. Structure & authority
 
@@ -122,8 +122,8 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
 - **CON-5.** **G2 — merge.** Only the human merges to `main`; no agent ever merges the
   default branch, and branch protection enforces it. **One carve-out:** in bankai mode Roy
   (`roy-bankai[bot]`) may merge child PRs into a `integration/*` branch — and only after
-  the review gauntlet approves — **Sasuke and Tenma** (and **Bisky**, the design-quality
-  reviewer, on UI-bearing PRs — his `bisky / review` check abstains *green* on non-UI /
+  the review gauntlet approves — **Sasuke and Tenma** (and **the design-quality
+  reviewer**, on UI-bearing PRs — its `bisky / review` check abstains *green* on non-UI /
   non-builder PRs so it never deadlocks a non-design change) — CI is green, and the Copilot
   round is addressed (`CON-16`).
   Roy is likewise the authorized merger of the trunk→`integration/*` **cascade-sync** PR of
@@ -464,7 +464,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   human at G2, not by Roy on `integration/*` — until **every configured automated reviewer** has
   **posted** its review AND its observations have been **addressed or explicitly pushed back on**,
   for at least one round. A PR with an unanswered automated review is not mergeable. This is in
-  addition to the required Sasuke/Tenma/Bisky checks, not a substitute. The rule is **reviewer-agnostic**;
+  addition to the required Sasuke/Tenma/design-reviewer checks, not a substitute. The rule is **reviewer-agnostic**;
   the automated reviewers today are **GitHub Copilot** and **Cursor Bugbot** (a repo may enable
   others).
   - **One carve-out (`CON-21` cascade sync).** A **pure** trunk→`integration/*` sync PR — one
@@ -1191,7 +1191,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   prohibits and this clarification exists to foreclose a second time.
   Third, a **first-class invariant**, not merely a consequence of the above: **no PR's route to
   `CON-32` Ready may depend on the maintainer casting a review vote.** "Ready" is exactly `CON-32`
-  (a)–(e) — every required check green, every configured reviewer (Sasuke/Tenma/Bisky and the
+  (a)–(e) — every required check green, every configured reviewer (Sasuke/Tenma/the design reviewer and the
   automated ones) posted against the current head and addressed, zero unresolved threads — **plus**
   `CON-42`(1)'s mergeability predicate (the PR is conflict-free): that bar is met, in full, by every
   non-vote channel above; "the maintainer casts a vote" is never one of its elements. Whether
@@ -1664,7 +1664,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   Every authoring agent — **local or CI** (`CON-2`) — owns driving its **own** open PR to *fully
   green* before it represents that PR as ready for the human's review (`CON-5`/`CON-7`) or for Roy's
   automated `integration/*` merge (`CON-5`). **_Fully green_ is, jointly:** (a) every **required
-  check** passing; (b) every **configured automated reviewer** — Sasuke, Tenma, Bisky, and the `CON-16`
+  check** passing; (b) every **configured automated reviewer** — Sasuke, Tenma, the design reviewer, and the `CON-16`
   reviewers (Copilot, Bugbot where enabled) — has **posted a round against the current head SHA**
   (`CON-16`'s current-head rule: a round on a superseded commit is stale and does not count) —
   **bounded for Copilot, a settled `CON-7` call (2026-08-23):** Copilot is owed a round **only while
@@ -1979,7 +1979,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   body). *(Spec companion to RR-IS-#239; handbook-question RR-IS-#264.)*
 
 - **CON-35.** **A produced verdict outranks its run's step status — the review artifact is the
-  gate's evidence, the process exit code is only a proxy.** When a reviewer (Sasuke/Tenma/Bisky)
+  gate's evidence, the process exit code is only a proxy.** When a reviewer (Sasuke/Tenma/the design reviewer)
   emits a **conforming `Verdict:` line for the current run** and its agent step **then** reports
   failure, the **verdict is authoritative**, and the reviewer's required check **MUST** be made to
   follow the verdict (`approve`/`comment` pass, `request_changes` fails) rather than the step. The gate asks *"did a review
@@ -2510,7 +2510,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   closes three concrete gaps observed on the way to it (one per numbered clause). *(RR-IS-#388, motivated by RR-PR-#370.)*
   1. **The notification boundary is `CON-32`-Ready, not "checks are green."** A human is asked for a
      G2 (product) / G4 (framework) decision on a PR **only** once `CON-32`'s Ready bar holds in full
-     (`CON-32`(a)–(e): every required check green ∧ every configured reviewer — Sasuke/Tenma/Bisky
+     (`CON-32`(a)–(e): every required check green ∧ every configured reviewer — Sasuke/Tenma/the design reviewer
      **and** the `CON-16` automated reviewers — has posted against the current head **and** been
      addressed ∧ zero unresolved threads) **and** the PR is mergeable (conflict-free). Mergeability is
      an **additional** predicate this rule adds to the notification boundary — `CON-32`(a)–(e) itself
@@ -2558,7 +2558,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
      agent's own PR, including the trust gate above) is **Kisuke's** machinery.
   3. **Every configured reviewer's round is owed self-recovery — this reaffirms `CON-16`/`CON-18`/
      `CON-32`, it does not widen them.** `CON-32`(b)–(e) already requires driving **every** reviewer —
-     Sasuke/Tenma/Bisky and the automated ones alike — to zero unresolved, and `CON-18` already makes a
+     Sasuke/Tenma/the design reviewer and the automated ones alike — to zero unresolved, and `CON-18` already makes a
      stuck or erroring check the agent's own to self-remediate. This clause adds no new obligation; it
      names the standing one explicitly because it has been missed in practice — an automated-reviewer
      thread left unresolved past a single agent turn, a swallowed or errored round stranding a PR with
@@ -2754,7 +2754,7 @@ Reviewers (Sasuke, Tenma, Bisky) and every agent may cite these rules by ID (`CO
   authority the lanes themselves did not have. A local persona: **never merges `main`** — under any
   nature, in any circumstance, with the single narrow exception in `(c-i)` below which does **not**
   touch `main`; **never acts as a review gate on its own work** — it never impersonates
-  Sasuke, Tenma or Bisky, never self-reviews, and never casts a `request_changes` review to drive
+  Sasuke, Tenma or the design reviewer, never self-reviews, and never casts a `request_changes` review to drive
   another agent's loop (`CON-26`, the RR-IS-#312 failure mode); **never applies a human gate label**
   beyond `CON-25`'s carve-outs; **never authorizes or edits a permission
   setting** (`CON-2`); and **never force-pushes, `--no-verify`s, or pushes `main`**. These bind
