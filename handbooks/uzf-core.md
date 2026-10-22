@@ -145,7 +145,44 @@ or a top-level entry point has a spec at `docs/Features/<Name>.md` describing
 behavior only — no file paths, type names, or framework terms — with diagrams as
 fenced mermaid code blocks inside the spec. Behavior changes update the spec (and
 its diagram) in the same change. One flag = one spec; the spec body is
-cross-platform canon, platform notes go under a `## <Platform> notes` subsection.
+cross-platform canon. Clauses (a)–(f) were added at `v0.8` (zheref/hatsu ROSTER
+HR-6, HR-4, HR-11) and bind every stack's feature-documentation rule file:
+
+- **(a) A product family's spec repository is the canon.** For a repository that
+  declares a product family, the product canon for a feature is the family's private
+  spec repository: `specs/<nnn>-<slug>/spec.md`, read at a tag. The member's
+  `docs/Features/<Name>.md` becomes a **generated pointer**: it carries that folder
+  path and the tag it was generated from, and states no behavior of its own. It is
+  never a second canon. Behavior written into a pointer is a `high` finding. A
+  behavior change revises the spec first, in the spec repository, and the member's
+  change regenerates the pointer at the new tag. A repository that declares no
+  family keeps `docs/Features/<Name>.md` as its canon, under the rest of this rule.
+- **(b) The spec decides; code never breaks the tie.** When the spec and the code
+  disagree, the code does not win. Either the code is fixed to the spec, or the spec
+  is revised first in its own reviewed change and the code then follows it. Any line
+  in consumer canon that makes the code the tie-breaker over the spec is retired.
+- **(c) The input to a port is the spec.** A port of a feature to another platform
+  reads the spec, never another platform's implementation. Where the spec is silent,
+  the gap is an open question on the spec (clause (f)), not a reading of the other
+  platform's code.
+- **(d) Acceptance and success criteria.** The spec carries `## Acceptance`, with one
+  `AC-{n}` row per criterion, each written as Given / When / Then, and
+  `## Success criteria`, with one `SC-{n}` row per criterion, each measurable: a
+  threshold and how it is measured. Ids are stable within the spec and never reused,
+  so an issue and a pull request can cite them.
+- **(e) Platform notes are a disposition table.** A feature shipped on more than one
+  platform records its platform notes under `## Platform notes` as a table with one row per `AC-{n}` id (and
+  per `FR-{n}` id where the spec numbers its requirements), one column per platform
+  holding a disposition — `port`, `adapt` or `n/a` — and a rationale column that is
+  required for every `adapt` and `n/a`. A requirement a platform does not carry MUST
+  appear as an `n/a` row with its rationale; a requirement missing from the table is
+  silently dropped, which is a `high` finding. `adapt` is admitted only in the
+  categories `UX-13` lists as adapt; the categories it lists as mirror are always
+  `port`.
+- **(f) Every open question has an owner and a date.** Each bullet under
+  `## Open questions` names its owner and the date it was raised. An open question
+  with no owner or no date is a `medium` finding. An answered question leaves the
+  section, and the spec states the answer as behavior.
 
 **UZF-22 — New user-visible behavior is flag-wrapped.** New user-visible behavior
 is reachable only behind a feature flag registered in the platform's flag

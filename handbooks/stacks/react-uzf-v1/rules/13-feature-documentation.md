@@ -15,8 +15,28 @@ cross-nav). Slices, selectors, shifters, producers, services, and mappers
 live once in {{CORE_PACKAGE}} and are shared by both render targets — so,
 per UZF-21's cross-platform clause, a feature shipped to both {{WEB_APP}} and
 {{MOBILE_APP}} still gets **one** spec, not two. Only the render/UI layer
-differs, and that difference is a `## Web notes` / `## Mobile notes`
-subsection inside the single spec, never a second file.
+differs, and that difference is a Web and a Mobile column of the single
+spec's `## Platform notes` disposition table (UZF-21(e)), never a second file.
+
+## Product families: the doc becomes a pointer (UZF-21(a))
+
+When this repository declares a product family, the canon for a feature is the
+family's private spec repository — `specs/<nnn>-<slug>/spec.md`, read at a tag — and
+`{{DOCS_ROOT}}/<FeatureName>.md` is a **generated pointer** in this shape: the folder
+path and the tag, and no behavior.
+
+```markdown
+# <Feature Name>
+
+> Generated pointer, not canon (UZF-21(a)). The canon for this feature is
+> `specs/<nnn>-<slug>/` in the family's spec repository, at tag `<tag>`.
+```
+
+The skeleton, the acceptance and success criteria, the platform notes and the open
+questions below then belong to that spec, not to the pointer. Never write behavior
+into a pointer: revise the spec first, in the spec repository, then regenerate the
+pointer at the new tag. A repository that declares no family keeps its feature docs
+as the canon, exactly as the rest of this file describes.
 
 ## Repo-specific placeholders
 
@@ -124,8 +144,31 @@ For each related feature, state the direction and shape of the interaction
 ## Out of scope
 What this feature does NOT do. Crucial when other docs link in.
 
+## Acceptance
+One row per criterion, each a Given / When / Then; ids are stable for the life of
+the spec and never reused (UZF-21(d)).
+- AC-1 — Given <context>, when <action>, then <observable outcome>.
+
+## Success criteria
+Measurable outcomes, each with a threshold and how it is measured (UZF-21(d)).
+- SC-1 — <outcome>: <threshold>, measured by <method>.
+
+## Platform notes
+Only for a feature shipped on more than one platform (UZF-21(e)): one row per
+AC-{n} id (and FR-{n} id where requirements are numbered), a disposition per
+platform — port · adapt · n/a — and a rationale for every adapt and n/a. A
+requirement a platform does not carry is an n/a row, never a missing row. adapt is
+admitted only in a category UX-13 lists as adapt.
+
+| Id | Web | Mobile | Rationale |
+| --- | --- | --- | --- |
+| AC-1 | port | n/a | The fictional Acme mobile app has no keyboard-shortcut surface. |
+| AC-2 | port | adapt | Back behavior follows the platform (UX-13). |
+
 ## Open questions
-Bulleted list. Each is owned by a person and dated.
+Bulleted list. Each names its owner and the date it was raised; one with no owner
+or no date is a finding (UZF-21(f)).
+- <question> — owner: <name>, raised YYYY-MM-DD.
 ```
 
 The spec is **stateful**: it should always describe the *current* product
@@ -201,11 +244,17 @@ one markdown.
    file name should be `YYYY-MM-DD-<short-label>.png`.
 3. **Cross-link.** Use relative links (`./Search.md`) when referencing
    siblings — they live in the same folder now.
-4. **One source of truth.** If the spec disagrees with the code, the spec is
-   wrong. Fix the spec immediately.
+4. **The spec is the contract (UZF-21(b)).** If the spec and the code disagree,
+   the code does not win: fix the code to the spec, or revise the spec first in
+   its own reviewed change and then change the code. *(This item replaces the
+   retired line "if the spec disagrees with the code, the spec is wrong", which
+   made the code the tie-breaker.)*
 5. **One PR = code + docs.** Behavior changes to a flagged feature **must**
    update its doc in the same PR (UZF-23). See
    [12-session-completion-checklist.md](12-session-completion-checklist.md).
+   In a product-family member the doc is a pointer: the spec revision lands
+   first in the spec repository, and the PR regenerates the pointer at the new
+   tag (UZF-21(a)).
 6. **Keep it short.** A typical feature doc is 1–3 pages of markdown plus one
    diagram. If it grows past five pages, split into sub-features or move
    detail into other docs.
@@ -215,14 +264,20 @@ one markdown.
    `{{DOCS_ROOT}}/<FeatureName>.md` — it is cross-platform canon regardless
    of which render target's code changed. Only a rendering-layer-only
    difference (e.g. a gesture that exists on mobile but not web) belongs
-   under that render target's notes subsection.
+   in that render target's column of the `## Platform notes` table.
+8. **A port reads the spec, never another platform's code (UZF-21(c)).** When a
+   feature is ported to this platform, the input is the spec. Another platform's
+   implementation is never the requirement; where the spec is silent, add an
+   owned, dated open question to the spec instead of reading the gap from code.
 
 ## What NOT to put in feature docs
 
 - Implementation snippets, file paths, type names. Those rot. Use git.
 - Test plans. Tests are co-located `*.test.ts`/`*.test.tsx` files across
   {{CORE_PACKAGE}}, {{WEB_APP}}, and {{MOBILE_APP}}, plus Storybook stories —
-  they are the source of truth, not the spec (RC-60).
+  they are the source of truth for *how* a behavior is tested, not the spec
+  (RC-60); *what* the behavior must be is the spec's (UZF-21(b)). Acceptance
+  rows state outcomes, not test steps.
 - Release / sprint notes. Those belong in the changelog.
 - Design tokens or palette specs. Those live in {{THEME_ROOT}} (Tamagui
   config) (RC-60).
@@ -242,9 +297,11 @@ one markdown.
 
 If a feature crosses render targets (web + mobile, both fed by the same
 {{CORE_PACKAGE}} slice), the same `{{DOCS_ROOT}}/<FeatureName>.md` file is
-the canon (UZF-21). Render-target-specific notes go inline in the spec under
-a `## Web notes` / `## Mobile notes` subsection. We do not duplicate feature
-docs per render target, and we do not duplicate them per platform if the
-same product also has an iOS/Android app on a different stack — that cross-
-stack canon question is a `bankai:handbook-question`, not a second file
+the canon (UZF-21). Render-target-specific notes are the Web and Mobile
+columns of the spec's `## Platform notes` disposition table (UZF-21(e)). We do
+not duplicate feature docs per render target, and we do not duplicate them per
+platform if the same product also has an iOS/Android app on a different stack:
+when that product declares a product family, the cross-stack canon is the
+family's spec repository and this doc is its pointer (UZF-21(a)); otherwise the
+cross-stack canon question is a `bankai:handbook-question`, not a second file
 authored unilaterally here.
