@@ -26,11 +26,13 @@ one stack folder** for the repo under review.
 | [`ux-baseline.md`](ux-baseline.md) | `UX-{n}` (+ `WCAG`/HIG/Material) | the design reviewer *(Phase 2; Edward self-applies at build in Phase 1a)* | general | UI/UX design-quality baseline — accessibility, touch, tokens, typography, motion, layout, forms, nav, data-viz. |
 | [`release-policy.md`](release-policy.md) | `REL-{n}` | Natsu | general | Versioning, release gates, store-submission policy (G3). |
 | [`quality-baseline.md`](quality-baseline.md) | `QA-{n}` (+ `CWE`/`WCAG`) | Rukia *(future CI gate; Ichigo's Hollow nature self-runs it locally today)* | general | Adversarial QA method, E2E tooling by scenario, performance budgets, process-machinery testing, the advisory pre-release gate. |
+| [`spec/authoring.md`](spec/authoring.md) | `SP-{n}` | the spec folder's reviewer (never its author) | general (spec repositories) | Writing and reviewing a family specification — citation-or-marker, confidence tiers, fenced source data, platform-neutral vocabulary, parity handlings, the living spec, bounded clarification, reviewer-owned checklists. |
 | [`stack-matrix.md`](stack-matrix.md) | — | Naruto | general | Scenario registry + how the right stack folder is resolved per repo. |
 | [`stacks/swiftui-tca-uzf-v2/architecture.md`](stacks/swiftui-tca-uzf-v2/architecture.md) | `SW-{n}` | Sasuke | stack | SwiftUI + TCA bindings (iOS/macOS). Refines `UZF-{n}`. |
 | [`stacks/compose-uzf-v2/architecture.md`](stacks/compose-uzf-v2/architecture.md) | `KT-{n}` | Sasuke | stack | Jetpack Compose + Hilt bindings (Android). Refines `UZF-{n}`. |
 | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Sasuke | stack | React 19 + Redux Toolkit bindings (Next.js web + Expo mobile, one shared state tier). Refines `UZF-{n}`. |
 | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Sasuke / Tenma | stack (self-review) | Framework **machinery** review rules — reusable-workflow/permission hygiene, CI trust/fork-safety, lane/authorship. Machinery repos only; **no product code**. Scenario id `bankai-machinery` (renamed at v0.6; `BC-` kept). |
+| [`ports/INDEX.md`](ports/INDEX.md) | `PT-{n}` (one global counter) | `hatsu:bankai-rule` writes; the architecture reviewer reviews | port (pair) | Port rulings: one directed pair file per pair of product stacks — how a `<from>` rule or concept is realised on the `<to>` stack. Read beside the always-load set and the target's stack handbook, never alone. |
 
 ## Citation families
 
@@ -50,11 +52,26 @@ one stack folder** for the repo under review.
   gate yet** — **Ichigo's Hollow nature** self-runs these locally, on demand, before a release,
   and its `Quality-Gate:` verdict is **advisory**: the human owns G3 (`QA-21`, `CON-6`). The CI
   gate (**Rukia**) follows later, exactly as the design reviewer followed the `UX-{n}` baseline.
+- **Spec authoring** cites `SP-{n}` from `spec/authoring.md` when the object under review is a
+  family specification folder; its completeness claims cite `SP-14`.
 - Because a review loads exactly one stack folder, `SW-{n}`, `KT-{n}`, `RC-{n}` and `BC-{n}`
   are never in scope together — no cross-stack collision.
 - A finding that no rule covers → the reviewer opens a scope-routed
   `bankai:handbook-question` (a handbook/stack-rule gap is canon → `bankai:agent/yamamoto`; a
   `CON-{n}` governance gap → `bankai:agent/naruto`; `CON-37`) and does **not** improvise policy.
+
+## Port rulings (`PT-{n}`)
+
+[`ports/`](ports/INDEX.md) records, per **directed** pair of product stacks in
+[`stack-matrix.md`](stack-matrix.md), how a rule or concept of the `<from>` stack is realised on the
+`<to>` stack (`map` · `mirror` in the Equivalence table, `drop with note` · `target-only addition` in
+the Drift table). It is not a stack handbook and changes nothing about which stack folder a review
+loads: a pair file is read **beside** the always-load set and the target's stack handbook, **never
+alone**. Ids are `PT-{n}` from **one counter across every pair file** (zheref/hatsu ROSTER HR-9; the
+counter zheref/hatsu#392 landed, re-confirmed by HR-34) — append-only, never reused, a reversal is a
+new row with `supersedes`. Rows are written by `hatsu:bankai-rule` from the maintainer's answers and
+land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep their
+`Canonical source` marker.
 
 ## Adding a stack
 
@@ -63,6 +80,8 @@ one stack folder** for the repo under review.
    refining `UZF-{n}`) and a `README.md` facet card.
 3. Consumer repos on that stack record `<scenario-id>` as their scenario in the
    consumer registry and regenerate their mirrors. MINOR version bump.
+4. A product stack's port pair files are not added here: `hatsu:bankai-rule` creates each one on
+   first use and registers it in [`ports/INDEX.md`](ports/INDEX.md) then.
 
 ## Versioning
 
@@ -121,7 +140,8 @@ One source, a generated mirror everywhere it is read:
 5. **Check.** `nen canon mirror check` regenerates in memory and diffs against the committed
    mirror: `missing` / `extra` / `stale` / `hand-edited` fail the consumer's CI. A mirror is a
    build artifact, not a second source.
-6. **General handbooks** (`UZF-`, `SEC-`, `UX-`, `REL-`, `QA-`) are resolved **live** from a
+6. **General handbooks** (`UZF-`, `SEC-`, `UX-`, `REL-`, `QA-`, and `SP-` for a spec repository
+   or a product repository whose issue, PR or test quotes a spec id) are resolved **live** from a
    checkout at the pin (step 3) — they are not part of the stack `rules/` mirror today.
    Folding them into the per-surface mirror is a machinery change that this doctrine already
    permits; the rule content is authored here first either way.

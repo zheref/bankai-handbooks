@@ -438,6 +438,19 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
     consumer to a tag that predates the canon leaves its next regen to wipe the mirror from an
     empty source (the RB-PR-#78 incident: pinned to a canon-less tag). **Cut the tag *before*
     repinning a consumer to it.**
+  - **Port rulings (`PT-{n}`).** The port-rulings family — `handbooks/ports/`: its `INDEX.md`
+    and a `<from>--<to>.md` pair file for each directed pair of product stacks that has rulings
+    (created on first use by `hatsu:bankai-rule`) — is canon from the
+    same single source, and is read **beside** the general handbooks and the one
+    `stacks/<scenario>/` handbook, **never alone and never as a second stack**: a pair file is
+    read beside the *target* stack, and the source stack's ids it names are cited, never loaded
+    as a second stack folder, so it does not change which one stack handbook applies.
+    **Interim, bounded by zheref/nen#457:** until the mirror generator carries a consumer's target pair files, no
+    consumer mirror holds a pair file, and a port reads it live from a checkout of
+    `bankai-handbooks` at the consumer's pin — the live-resolve path above, at the same pin, so a
+    live read and a later mirror read still return the same canon. **Exit:** the pair files a consumer's
+    scenario is the target of enter its mirror (zheref/nen#457), and this interim sentence is
+    retired.
 - **CON-14.** **Versioning & pinning.** `<reference-repo>` ships reusable workflows consumed by
   product repos pinned to a **release tag**; upgrading a product = bumping one tag.
   Consuming repos + their pins are tracked in `schemas/repos.json` (the registry).

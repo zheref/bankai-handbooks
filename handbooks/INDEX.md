@@ -16,11 +16,21 @@ product-authored canon, no fallback source. Mechanics:
 
 | File | Scope | Rule-ID prefix | When to load |
 | --- | --- | --- | --- |
-| [`uzf-core.md`](uzf-core.md) | UZF cross-platform architecture (store shape, action flow, effects, forbidden patterns) | `UZF-{n}` | Every build/review — the architecture canon |
-| [`security-baseline.md`](security-baseline.md) | Data security, privacy, compliance, agent tool-use & untrusted content | `SEC-{n}` | Every security review (Tenma); any data/secret-handling work; any agent pairing web fetch/search with write-to-code tools (`SEC-15`) |
-| [`ux-baseline.md`](ux-baseline.md) | UI/UX design-quality: accessibility, touch targets, tokens, typography, motion, layout, forms, navigation, data-viz | `UX-{n}` | Every build/review of user-visible UI — Edward builds against it (Phase 1a); the design reviewer (Phase 2) cites it |
-| [`release-policy.md`](release-policy.md) | Versioning, changelog, store submission | `REL-{n}` | Release work (Natsu); version decisions |
-| [`quality-baseline.md`](quality-baseline.md) | Adversarial QA method, E2E tooling by scenario, performance budgets, process-machinery testing, the pre-release gate | `QA-{n}` | Pre-release quality verification (Ichigo — Hollow: local, on-demand, **advisory**, `QA-20`/`QA-21`); any adversarial/E2E or performance test authoring. The CI gate (Rukia) is future work |
+| [`uzf-core.md`](uzf-core.md) | UZF cross-platform architecture (store shape, action flow, effects, forbidden patterns) and the feature spec: its acceptance, platform-notes and open-question shape, and the product-family spec repository as canon (`UZF-21`) | `UZF-{n}` | Every build/review — the architecture canon |
+| [`security-baseline.md`](security-baseline.md) | Data security, privacy, compliance, agent tool-use & untrusted content | `SEC-{n}` | Every security review; any data/secret-handling work; every lane that reads a body, comment, diff or fetched page it did not author (`SEC-15`) |
+| [`ux-baseline.md`](ux-baseline.md) | UI/UX design-quality: accessibility, touch targets, tokens, typography, motion, layout, forms, navigation, data-viz, cross-platform adaptation (`UX-13`) | `UX-{n}` | Every build/review of user-visible UI — the builder builds against it (Phase 1a); the design reviewer (Phase 2) cites it |
+| [`release-policy.md`](release-policy.md) | Versioning, changelog, store submission | `REL-{n}` | Release work; version decisions |
+| [`quality-baseline.md`](quality-baseline.md) | Adversarial QA method, E2E tooling by scenario, performance budgets, process-machinery testing, the pre-release gate | `QA-{n}` | Pre-release quality verification (a local builder: on-demand, **advisory**, `QA-20`/`QA-21`); any adversarial/E2E or performance test authoring. The CI gate is future work |
+
+## Load when authoring or reviewing a family specification
+
+A product family's private spec repository (`specs/<nnn>-<slug>/`) is written and reviewed against
+this handbook, beside the always-load set. A product repository loads it when one of its issues,
+PRs or tests quotes a spec id (`SP-8`, `SP-10`).
+
+| File | Scope | Rule-ID prefix | When to load |
+| --- | --- | --- | --- |
+| [`spec/authoring.md`](spec/authoring.md) | Spec authoring: citation-or-marker, confidence tiers, fenced source data, platform-neutral vocabulary, parity handlings, the living spec, bounded clarification, reviewer-owned checklists; the capture row kinds | `SP-{n}` | Every capture, amendment, convergence or review of a spec folder; any issue, PR or test that quotes one. Each stack handbook's *Appendix — capture reader* maps that stack's files onto its row kinds |
 
 ## Load exactly ONE stack handbook (per repo's scenario)
 
@@ -33,6 +43,37 @@ load a stack folder other than the repo's own.
 | `compose-uzf-v2` | [`stacks/compose-uzf-v2/architecture.md`](stacks/compose-uzf-v2/architecture.md) | `KT-{n}` | Android · Compose + Hilt |
 | `react-uzf-v1` | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Web + Mobile · Next.js/Expo + RTK |
 | `bankai-machinery` | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Bankai machinery (CI plane, CLI, local plugin) · self-review, no product code. **Renamed at v0.6** (its former id was the reference implementation's own repository name); the `BC-` prefix is kept so every existing citation stays valid. |
+
+## Port rulings (read beside a stack handbook, never alone)
+
+[`ports/`](ports/INDEX.md) holds the **port rulings**: how a rule or concept of one product stack
+is realised on another, one **directed** pair file per pair of scenarios in
+[`stack-matrix.md`](stack-matrix.md) that Hatsu's `bankai-rule` can target — the three product
+stacks, both directions, never `bankai-machinery` and never a stack to itself. Each ruling is a
+row with an id `PT-{n}` from **one global counter across every pair file** (zheref/hatsu ROSTER
+HR-9, the counter landed by zheref/hatsu#392 and re-confirmed by HR-34); ids are append-only, a
+reversal is a new row with `supersedes`. Rows are written only by `hatsu:bankai-rule` from the
+maintainer's answers and land by G4 PR; the architecture reviewer reviews them and never authors them.
+
+**Who reads it:** a port — a builder or reviewer realising work from the `<from>` stack on the
+`<to>` stack — and the reviewer citing a ruling as `<from>--<to> PT-<n>` at the tag it was read at.
+
+**Always-load rule:** a pair file is read **beside** the always-load set above **and** the
+target's stack handbook, **never alone** — it states only the relation between the two stacks,
+nothing either handbook already says. It is not a stack handbook, does not change which one
+stack folder loads. Under the bounded interim of `CON-13` (*Port rulings*), no consumer mirror
+carries it yet: it is read live from a checkout at the pin until the pair files a consumer's
+scenario is the target of enter its mirror (zheref/nen#457).
+
+| From | To | File | Rule-ID prefix |
+| --- | --- | --- | --- |
+| — | — | [`ports/INDEX.md`](ports/INDEX.md) — the pair manifest (one row per pair file, its ruling count and last date) | — |
+| `swiftui-tca-uzf-v2` | `compose-uzf-v2` | [`ports/swiftui-tca-uzf-v2--compose-uzf-v2.md`](ports/swiftui-tca-uzf-v2--compose-uzf-v2.md) | `PT-{n}` (global) |
+| `swiftui-tca-uzf-v2` | `react-uzf-v1` | [`ports/swiftui-tca-uzf-v2--react-uzf-v1.md`](ports/swiftui-tca-uzf-v2--react-uzf-v1.md) | `PT-{n}` (global) |
+| `compose-uzf-v2` | `swiftui-tca-uzf-v2` | [`ports/compose-uzf-v2--swiftui-tca-uzf-v2.md`](ports/compose-uzf-v2--swiftui-tca-uzf-v2.md) | `PT-{n}` (global) |
+| `compose-uzf-v2` | `react-uzf-v1` | [`ports/compose-uzf-v2--react-uzf-v1.md`](ports/compose-uzf-v2--react-uzf-v1.md) | `PT-{n}` (global) |
+| `react-uzf-v1` | `swiftui-tca-uzf-v2` | [`ports/react-uzf-v1--swiftui-tca-uzf-v2.md`](ports/react-uzf-v1--swiftui-tca-uzf-v2.md) | `PT-{n}` (global) |
+| `react-uzf-v1` | `compose-uzf-v2` | [`ports/react-uzf-v1--compose-uzf-v2.md`](ports/react-uzf-v1--compose-uzf-v2.md) | `PT-{n}` (global) |
 
 ## Catalog & meta
 
