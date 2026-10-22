@@ -34,6 +34,36 @@ load a stack folder other than the repo's own.
 | `react-uzf-v1` | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Web + Mobile · Next.js/Expo + RTK |
 | `bankai-machinery` | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Bankai machinery (CI plane, CLI, local plugin) · self-review, no product code. **Renamed at v0.6** (its former id was the reference implementation's own repository name); the `BC-` prefix is kept so every existing citation stays valid. |
 
+## Port rulings (read beside a stack handbook, never alone)
+
+[`ports/`](ports/INDEX.md) holds the **port rulings**: how a rule or concept of one product stack
+is realised on another, one **directed** pair file per pair of scenarios in
+[`stack-matrix.md`](stack-matrix.md) that Hatsu's `bankai-rule` can target — the three product
+stacks, both directions, never `bankai-machinery` and never a stack to itself. Each ruling is a
+row with an id `PT-{n}` from **one global counter across every pair file** (zheref/hatsu ROSTER
+HR-9, the counter landed by zheref/hatsu#392 and re-confirmed by HR-34); ids are append-only, a
+reversal is a new row with `supersedes`. Rows are written only by `hatsu:bankai-rule` from the
+maintainer's answers and land by G4 PR; Chrollo reviews them and never authors them.
+
+**Who reads it:** a port — a builder or reviewer realising work from the `<from>` stack on the
+`<to>` stack — and the reviewer citing a ruling as `<from>--<to> PT-<n>` at the tag it was read at.
+
+**Always-load rule:** a pair file is read **beside** the always-load set above **and** the
+target's stack handbook, **never alone** — it states only the relation between the two stacks,
+nothing either handbook already says. It is not a stack handbook, does not change which one
+stack folder loads, and no consumer mirror carries it yet: it is read live from a checkout at the
+pin.
+
+| From | To | File | Rule-ID prefix |
+| --- | --- | --- | --- |
+| — | — | [`ports/INDEX.md`](ports/INDEX.md) — the pair manifest (one row per pair file, its ruling count and last date) | — |
+| `swiftui-tca-uzf-v2` | `compose-uzf-v2` | [`ports/swiftui-tca-uzf-v2--compose-uzf-v2.md`](ports/swiftui-tca-uzf-v2--compose-uzf-v2.md) | `PT-{n}` (global) |
+| `swiftui-tca-uzf-v2` | `react-uzf-v1` | [`ports/swiftui-tca-uzf-v2--react-uzf-v1.md`](ports/swiftui-tca-uzf-v2--react-uzf-v1.md) | `PT-{n}` (global) |
+| `compose-uzf-v2` | `swiftui-tca-uzf-v2` | [`ports/compose-uzf-v2--swiftui-tca-uzf-v2.md`](ports/compose-uzf-v2--swiftui-tca-uzf-v2.md) | `PT-{n}` (global) |
+| `compose-uzf-v2` | `react-uzf-v1` | [`ports/compose-uzf-v2--react-uzf-v1.md`](ports/compose-uzf-v2--react-uzf-v1.md) | `PT-{n}` (global) |
+| `react-uzf-v1` | `swiftui-tca-uzf-v2` | [`ports/react-uzf-v1--swiftui-tca-uzf-v2.md`](ports/react-uzf-v1--swiftui-tca-uzf-v2.md) | `PT-{n}` (global) |
+| `react-uzf-v1` | `compose-uzf-v2` | [`ports/react-uzf-v1--compose-uzf-v2.md`](ports/react-uzf-v1--compose-uzf-v2.md) | `PT-{n}` (global) |
+
 ## Catalog & meta
 
 | File | Purpose |

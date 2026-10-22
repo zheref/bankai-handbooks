@@ -31,6 +31,7 @@ one stack folder** for the repo under review.
 | [`stacks/compose-uzf-v2/architecture.md`](stacks/compose-uzf-v2/architecture.md) | `KT-{n}` | Sasuke | stack | Jetpack Compose + Hilt bindings (Android). Refines `UZF-{n}`. |
 | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Sasuke | stack | React 19 + Redux Toolkit bindings (Next.js web + Expo mobile, one shared state tier). Refines `UZF-{n}`. |
 | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Sasuke / Tenma | stack (self-review) | Framework **machinery** review rules — reusable-workflow/permission hygiene, CI trust/fork-safety, lane/authorship. Machinery repos only; **no product code**. Scenario id `bankai-machinery` (renamed at v0.6; `BC-` kept). |
+| [`ports/INDEX.md`](ports/INDEX.md) | `PT-{n}` (one global counter) | `hatsu:bankai-rule` writes; Chrollo reviews | port (pair) | Port rulings: one directed pair file per pair of product stacks — how a `<from>` rule or concept is realised on the `<to>` stack. Read beside the always-load set and the target's stack handbook, never alone. |
 
 ## Citation families
 
@@ -55,6 +56,20 @@ one stack folder** for the repo under review.
 - A finding that no rule covers → the reviewer opens a scope-routed
   `bankai:handbook-question` (a handbook/stack-rule gap is canon → `bankai:agent/yamamoto`; a
   `CON-{n}` governance gap → `bankai:agent/naruto`; `CON-37`) and does **not** improvise policy.
+
+## Port rulings (`PT-{n}`)
+
+[`ports/`](ports/INDEX.md) records, per **directed** pair of product stacks in
+[`stack-matrix.md`](stack-matrix.md), how a rule or concept of the `<from>` stack is realised on the
+`<to>` stack (`map` · `mirror` in the Equivalence table, `drop with note` · `target-only addition` in
+the Drift table). It is not a stack handbook and changes nothing about which stack folder a review
+loads: a pair file is read **beside** the always-load set and the target's stack handbook, **never
+alone**. Ids are `PT-{n}` from **one counter across every pair file** (zheref/hatsu ROSTER HR-9; the
+counter zheref/hatsu#392 landed, re-confirmed by HR-34) — append-only, never reused, a reversal is a
+new row with `supersedes`. Rows are written by `hatsu:bankai-rule` from the maintainer's answers and
+land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep their
+`Canonical source` marker. A new product stack adds its two directed pair files per existing product
+stack, and their `ports/INDEX.md` rows, in the PR that adds the stack.
 
 ## Adding a stack
 
