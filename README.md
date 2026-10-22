@@ -11,10 +11,12 @@ Bankai-consuming repository is built and reviewed against (`CON-13`).
 | UX baseline | [`handbooks/ux-baseline.md`](handbooks/ux-baseline.md) | `UX-{n}` |
 | Release policy | [`handbooks/release-policy.md`](handbooks/release-policy.md) | `REL-{n}` |
 | Quality baseline | [`handbooks/quality-baseline.md`](handbooks/quality-baseline.md) | `QA-{n}` |
+| Spec authoring | [`handbooks/spec/authoring.md`](handbooks/spec/authoring.md) | `SP-{n}` |
 | SwiftUI + TCA stack | [`handbooks/stacks/swiftui-tca-uzf-v2/`](handbooks/stacks/swiftui-tca-uzf-v2/) | `SW-{n}` |
 | Jetpack Compose stack | [`handbooks/stacks/compose-uzf-v2/`](handbooks/stacks/compose-uzf-v2/) | `KT-{n}` |
 | React + Redux Toolkit stack | [`handbooks/stacks/react-uzf-v1/`](handbooks/stacks/react-uzf-v1/) | `RC-{n}` |
 | Bankai machinery (self-review) | [`handbooks/stacks/bankai-machinery/`](handbooks/stacks/bankai-machinery/) | `BC-{n}` |
+| Port rulings (stack to stack) | [`handbooks/ports/`](handbooks/ports/INDEX.md) | `PT-{n}` (one global counter) |
 | Shared agent conventions | [`CONVENTIONS.md`](CONVENTIONS.md) | — (no rule ids; the output shape every agent follows) |
 
 Start at [`handbooks/INDEX.md`](handbooks/INDEX.md) — the manifest that says which handbooks load
