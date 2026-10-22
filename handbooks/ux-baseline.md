@@ -140,21 +140,23 @@ to convey meaning (add labels, patterns, or direct annotation). *Anti-pattern:*
 unlabeled charts; **color as the sole encoding** of a category/series. Maps `WCAG 2.2
 SC 1.4.1` (use of color).
 
-## J. Cross-platform adaptation (added at `v0.8`)
+## J. Cross-platform adaptation (added at `v0.9`)
 
 **UX-13 — Adapt the platform idiom, mirror the product.** When one feature ships on more
 than one platform — a port, or a product family's shared spec (`UZF-21`) — exactly these
 categories **adapt** to the target platform's own conventions (its HIG, Material or web
 platform guidance): **navigation pattern, back behaviour, sheets and dialogs, haptics,
-permission prompts, typography scale**. These categories **mirror** the spec unchanged on
-every platform: **business rules, data lifecycle, copy, acceptance outcome**. A category on
-neither list mirrors until a canon change adds it to the adapt list. Every adapted
-requirement is an `adapt` row with its rationale in the spec's platform-notes table
-(`UZF-21(e)`); a platform that differs in a mirror category is a defect against the spec
-unless the spec itself is revised first (`UZF-21(b)`). *Anti-pattern:* carrying another
-platform's navigation stack, dialog style or haptic pattern over verbatim; or calling a
-changed business rule, data-retention behaviour, user-facing wording or acceptance outcome
-"platform idiom". Maps Apple HIG and Material Design platform conventions; refines `UX-11`
+permission prompts, typography scale**. In the UI, these categories **mirror** the spec
+unchanged on every platform: **copy, and the acceptance outcome as the user sees it**.
+Business rules and the data lifecycle also mirror, but they are not UI: their
+divergence is owned by `UZF-21(b)`/`(e)` in the architecture reviewer's lane, never by
+this rule. A category on no list mirrors until a canon change adds it to the adapt
+list. The platform-notes rows that record an adaptation are `UZF-21(e)`'s obligation,
+which this rule cites and does not restate; a platform whose UI differs in copy or in
+the acceptance outcome is a defect against the spec unless the spec itself is revised
+first (`UZF-21(b)`). *Anti-pattern:* carrying another platform's navigation stack, dialog
+style or haptic pattern over verbatim; or calling changed user-facing wording or a
+changed acceptance outcome "platform idiom". Maps Apple HIG and Material Design platform conventions; refines `UX-11`
 for back behaviour across platforms.
 
 ---
@@ -164,8 +166,8 @@ for back behaviour across platforms.
 | Severity | Use when a finding… |
 | --- | --- |
 | `critical` | Makes the UI **unusable for a class of users** — fails contrast/keyboard/labels (`UX-1`/`UX-2`), or targets so small/dense they can't be operated (`UX-3`). **Blocks merge.** |
-| `high` | A clear, concrete defect against a baseline rule with a known fix — placeholder-only labels (`UX-10`), horizontal scroll / clipped content (`UX-7`), raw-default/emoji-icon UI (`UX-6`), no reduced-motion (`UX-9`), missing async feedback (`UX-4`), a platform that differs from the spec in a mirror category (`UX-13`). Blocks merge. |
-| `medium` | A real quality gap that raises friction but doesn't block a user — inconsistent tokens (`UX-5`), off-scale typography (`UX-8`), overloaded navigation (`UX-11`), an adapted category with no `adapt` row or rationale (`UX-13`). |
+| `high` | A clear, concrete defect against a baseline rule with a known fix — placeholder-only labels (`UX-10`), horizontal scroll / clipped content (`UX-7`), raw-default/emoji-icon UI (`UX-6`), no reduced-motion (`UX-9`), missing async feedback (`UX-4`), a platform whose UI differs from the spec in copy or in the acceptance outcome (`UX-13`). Blocks merge. |
+| `medium` | A real quality gap that raises friction but doesn't block a user — inconsistent tokens (`UX-5`), off-scale typography (`UX-8`), overloaded navigation (`UX-11`). |
 | `low` / `nit` | Polish / refinement; never blocks. |
 
 The design reviewer reviews **only** the UI/design-quality surface — architecture findings are Sasuke's

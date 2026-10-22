@@ -62,14 +62,17 @@ For every session that touches a feature, before declaring it done:
 
 ### 3. Feature spec is current (UZF-21)
 
-- `{{DOCS_ROOT}}/<FeatureName>.md` reflects the shipped behavior.
+- In a repository that declares no family, `{{DOCS_ROOT}}/<FeatureName>.md` reflects the shipped
+  behavior.
 - In a product-family member the doc is a generated pointer (UZF-21(a)): check
   that the spec revision landed first in the spec repository and that the pointer
   names its new tag; the rows below then apply to that spec.
 - New behavior has its `AC-{n}` rows (Given / When / Then), a multi-platform
   feature's `## Platform notes` table has a row for every id, and every open
-  question has an owner and a date (UZF-21(d)–(f)).
-- If the doc didn't exist, **create it now** per Rule 13.
+  question is an `OQ-{n}` row with an owner and a date (UZF-21(d)–(f)).
+- In a repository that declares no family, if the doc didn't exist, **create it
+  now** per Rule 13. In a family member, create the spec in the spec repository
+  first and generate the pointer from its tag (UZF-21(a)).
 - Sections to revisit every session:
   - **User flows** — any new tap target, gesture, or empty-state copy goes here.
   - **States** — any new state, including failure / empty / loading variants.

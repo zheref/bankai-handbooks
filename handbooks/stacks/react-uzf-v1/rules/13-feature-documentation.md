@@ -156,19 +156,26 @@ Measurable outcomes, each with a threshold and how it is measured (UZF-21(d)).
 ## Platform notes
 Only for a feature shipped on more than one platform (UZF-21(e)): one row per
 AC-{n} id (and FR-{n} id where requirements are numbered), a disposition per
-platform — port · adapt · n/a — and a rationale for every adapt and n/a. A
-requirement a platform does not carry is an n/a row, never a missing row. adapt is
-admitted only in a category UX-13 lists as adapt.
+platform — port · adapt · n/a — the UX-13 category the row's difference falls
+in, and a rationale for every adapt and n/a. A requirement a platform does not carry
+is an n/a row, never a missing row. adapt is admitted only in a category UX-13 lists
+as adapt; a mirror category is port, or n/a with its rationale, and never adapt. An
+AC row's outcome always mirrors: adapt names only the adapt category through which
+the platform reaches that outcome.
 
-| Id | Web | Mobile | Rationale |
-| --- | --- | --- | --- |
-| AC-1 | port | n/a | The fictional Acme mobile app has no keyboard-shortcut surface. |
-| AC-2 | port | adapt | Back behavior follows the platform (UX-13). |
+| Id | Category (UX-13) | Web | Mobile | Rationale |
+| --- | --- | --- | --- | --- |
+| AC-1 | business rules | port | n/a | The fictional Acme mobile app has no keyboard-shortcut surface. |
+| AC-2 | back behaviour | port | adapt | The AC-2 outcome mirrors; mobile reaches it through its own back behaviour. |
 
 ## Open questions
-Bulleted list. Each names its owner and the date it was raised; one with no owner
-or no date is a finding (UZF-21(f)).
-- <question> — owner: <name>, raised YYYY-MM-DD.
+One OQ-{n} row per question (the HR-4 shape), with its owner and the date it was
+raised; a question in another shape, or with no owner or no date, is a finding
+(UZF-21(f)). An answered question leaves the table and its id is never reused.
+
+| Id | Question | Owner | Raised |
+| --- | --- | --- | --- |
+| OQ-1 | <question> | <name> | YYYY-MM-DD |
 ```
 
 The spec is **stateful**: it should always describe the *current* product
