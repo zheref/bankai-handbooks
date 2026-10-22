@@ -43,7 +43,7 @@ grep -rniE '<the product-family names from your private redaction list>' --exclu
 ```
 
 `scripts/canon_check.sh` holds the four shape-based detectors — any `bankai-<x>` other than this
-repository, the stack ids and the two skill names; any owner slug other than the three public ones;
+repository, the stack ids and the admitted skill and term names (`bankai-quality`, `bankai-rule`, `bankai-mode`); any owner slug other than the three public ones;
 any `github.com` link outside the three public repositories (the one admitted fixture is the fictional
 `acme` widget URL inside the rendered `scripts/release-publish.sh`, that exact URL and nothing wider);
 any **linked** placeholder object id — applied to the match alone and anchored to the whole slug, over

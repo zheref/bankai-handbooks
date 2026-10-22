@@ -42,6 +42,7 @@ Two namespaces meet in this file and are **not** the same:
 | Data security / privacy / compliance | [`security-baseline.md`](security-baseline.md) (`SEC-{n}`) |
 | Versioning & release | [`release-policy.md`](release-policy.md) (`REL-{n}`) |
 | Pre-release quality & performance | [`quality-baseline.md`](quality-baseline.md) (`QA-{n}`) |
+| Porting work between product stacks | [`ports/`](ports/INDEX.md) (`PT-{n}`, one global counter) — a directed `<from>--<to>.md` pair file, read beside the target stack's handbook (`CON-13`, *Port rulings*). |
 | Supabase backend (single-owner shared schema) | Migration discipline `UZF-25` + RLS/authz `SEC-6`/`SEC-7`. A product family's shared schema has exactly **one owning repo** (typically the first client, until a dedicated backend repo takes it over). `supabase/migrations/` is canon **only** in that owner; every other app is a **client** that references the schema and never authors a second copy of the migrations. |
 
 ## How resolution works
@@ -50,7 +51,9 @@ Two namespaces meet in this file and are **not** the same:
    reads it and returns the **top-level** general handbooks **plus** exactly one
    `handbooks/stacks/<id>/` folder — the agent never picks a stack itself.
 2. The agent therefore sees exactly one stack's `architecture.md` — so `SW-{n}`,
-   `KT-{n}`, `RC-{n}` and `BC-{n}` never collide in a single review.
+   `KT-{n}`, `RC-{n}` and `BC-{n}` never collide in a single review. A port pair file
+   ([`ports/`](ports/INDEX.md)) does not change this: it is read beside the **target** stack,
+   and the source stack's ids it names are cited, never loaded as a second stack folder.
 3. A consumer carries a generated, pinned mirror of that stack's `rules/` in each agent
    surface's rules location (`CON-13`; mechanics in
    [`README.md`](README.md#how-canon-reaches-a-consumer-con-13)). A reviewer or builder

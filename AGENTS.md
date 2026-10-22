@@ -19,7 +19,8 @@ Depth lives in [`.claude/rules/`](.claude/rules/); this file is the contract.
 Layout: [`handbooks/INDEX.md`](handbooks/INDEX.md) (the manifest), [`handbooks/README.md`](handbooks/README.md)
 (the set, versioning, how canon reaches a consumer), [`handbooks/stack-matrix.md`](handbooks/stack-matrix.md)
 (scenario registry), `handbooks/<general>.md`, `handbooks/stacks/<scenario>/{README,architecture}.md`
-+ `rules/`, [`CONSTITUTION.md`](CONSTITUTION.md), [`CONVENTIONS.md`](CONVENTIONS.md) (the shared
++ `rules/`, `handbooks/ports/` (port rulings: `INDEX.md` + `<from>--<to>.md` pair files, rendered
+by `hatsu:bankai-rule`), [`CONSTITUTION.md`](CONSTITUTION.md), [`CONVENTIONS.md`](CONVENTIONS.md) (the shared
 agent conventions — output header, stamp, verdict line, object notation, gates, discipline),
 [`MIGRATION.md`](MIGRATION.md), [`LICENSE`](LICENSE) (MIT),
 [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md).
@@ -33,7 +34,9 @@ agent conventions — output header, stamp, verdict line, object notation, gates
    [`handbooks/VERSION`](handbooks/VERSION) in the same PR (pre-1.0 carve-out in `handbooks/README.md`).
 4. **Register what you add.** A new handbook or scenario is a row in `INDEX.md` and
    `stack-matrix.md` and, for a stack, a `stacks/<id>/` folder with `README.md`, `architecture.md`,
-   `rules/` and `rules/placeholders.md`. Note the migration for consumers in the PR.
+   `rules/` and `rules/placeholders.md`. A product stack's port pair files are created on first
+   use by `hatsu:bankai-rule` and registered in `handbooks/ports/INDEX.md` then, not in the stack's
+   PR. Note the migration for consumers in the PR.
 5. **Stack rule files are product-agnostic.** Anything repo-specific is a `{{TOKEN}}` declared in
    that stack's `rules/placeholders.md`. Example values are fictional (`Acme`, `octocat`, `UTC`).
    A token used in a rule file and missing from `placeholders.md` is a bug.
