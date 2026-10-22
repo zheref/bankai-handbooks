@@ -16,7 +16,9 @@ live once in {{CORE_PACKAGE}} and are shared by both render targets — so,
 per UZF-21's cross-platform clause, a feature shipped to both {{WEB_APP}} and
 {{MOBILE_APP}} still gets **one** spec, not two. Only the render/UI layer
 differs, and that difference is a Web and a Mobile column of the single
-spec's `## Platform notes` disposition table (UZF-21(e)), never a second file.
+spec's `## Platform notes` disposition table (UZF-21(e)) in a repository that
+declares no family, or that spec folder's `parity.md` rows (SP-6) in a family
+member — never a second file.
 
 ## Product families: the doc becomes a pointer (UZF-21(a))
 
@@ -32,8 +34,12 @@ path and the tag, and no behavior.
 > `specs/<nnn>-<slug>/` in the family's spec repository, at tag `<tag>`.
 ```
 
-The skeleton, the acceptance and success criteria, the platform notes and the open
-questions below then belong to that spec, not to the pointer. Never write behavior
+The acceptance and success criteria belong to that spec, not to the pointer, in
+UZF-21(d)'s Spec Kit mapping (an `AC-{n}` is a numbered acceptance scenario under a
+`US-n`). In a family spec folder a per-member difference lives in `parity.md` (SP-6),
+not in a `## Platform notes` table, and an open question is an SP-1 marker settled by
+an SP-12 `CL-nnn`, not an `OQ-{n}` row; the skeleton, platform notes and open
+questions below bind a repository that declares no family. Never write behavior
 into a pointer: revise the spec first, in the spec repository, then regenerate the
 pointer at the new tag. A repository that declares no family keeps its feature docs
 as the canon, exactly as the rest of this file describes.
@@ -305,7 +311,8 @@ one markdown.
 If a feature crosses render targets (web + mobile, both fed by the same
 {{CORE_PACKAGE}} slice), the same `{{DOCS_ROOT}}/<FeatureName>.md` file is
 the canon (UZF-21). Render-target-specific notes are the Web and Mobile
-columns of the spec's `## Platform notes` disposition table (UZF-21(e)). We do
+columns of the spec's `## Platform notes` disposition table (UZF-21(e)), or, in a
+family member, the spec folder's `parity.md` rows (SP-6). We do
 not duplicate feature docs per render target, and we do not duplicate them per
 platform if the same product also has an iOS/Android app on a different stack:
 when that product declares a product family, the cross-stack canon is the

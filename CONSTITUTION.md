@@ -445,7 +445,7 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
     `stacks/<scenario>/` handbook, **never alone and never as a second stack**: a pair file is
     read beside the *target* stack, and the source stack's ids it names are cited, never loaded
     as a second stack folder, so it does not change which one stack handbook applies.
-    **Interim, bounded by zheref/nen#457:** until the mirror generator carries the family, no
+    **Interim, bounded by zheref/nen#457:** until the mirror generator carries a consumer's target pair files, no
     consumer mirror holds a pair file, and a port reads it live from a checkout of
     `bankai-handbooks` at the consumer's pin — the live-resolve path above, at the same pin, so a
     live read and a later mirror read still return the same canon. **Exit:** the pair files a consumer's

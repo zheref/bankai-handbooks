@@ -23,8 +23,12 @@ path and the tag, and no behavior.
 > `specs/<nnn>-<slug>/` in the family's spec repository, at tag `<tag>`.
 ```
 
-The skeleton, the acceptance and success criteria, the platform notes and the open
-questions below then belong to that spec, not to the pointer. Never write behavior
+The acceptance and success criteria belong to that spec, not to the pointer, in
+UZF-21(d)'s Spec Kit mapping (an `AC-{n}` is a numbered acceptance scenario under a
+`US-n`). In a family spec folder a per-member difference lives in `parity.md` (SP-6),
+not in a `## Platform notes` table, and an open question is an SP-1 marker settled by
+an SP-12 `CL-nnn`, not an `OQ-{n}` row; the skeleton, platform notes and open
+questions below bind a repository that declares no family. Never write behavior
 into a pointer: revise the spec first, in the spec repository, then regenerate the
 pointer at the new tag. A repository that declares no family keeps its feature docs
 as the canon, exactly as the rest of this file describes.
@@ -276,6 +280,8 @@ markdown.
 
 If a feature crosses platforms (iOS + Android + web), the same
 `{{DOCS_ROOT}}/<FeatureName>.md` file is the canon (UZF-21) — or, in a product
-family, the spec repository's spec it points to (UZF-21(a)). Platform-specific
-notes go in that one spec's `## Platform notes` disposition table (UZF-21(e)), one
-row per acceptance or requirement id. We do not duplicate feature docs per platform.
+family, the spec repository's spec it points to (UZF-21(a)). In a repository that
+declares no family, platform-specific notes go in that one doc's `## Platform notes`
+disposition table (UZF-21(e)), one row per acceptance or requirement id; in a family
+member they are that spec folder's `parity.md` rows (SP-6). We do not duplicate
+feature docs per platform.

@@ -176,10 +176,11 @@ bind every stack's feature-documentation rule file; their severities are in the
   threshold and how it is measured. Ids are stable within the spec and never reused,
   so an issue and a pull request can cite them. A family `spec.md` follows the pinned
   Spec Kit layout: there an `AC-{n}` is a numbered acceptance scenario under a `US-n`
-  in `## User Scenarios & Testing`, and the success criteria sit under its
-  `## Success Criteria`. Until Hatsu's writer carries `## Acceptance` by name, the
-  section names of this clause and of (e) bind `docs/Features` canon in a repository
-  that declares no family, and this mapping binds a family `spec.md`.
+  in `## User Scenarios & Testing`, numbered across the folder so it continues from
+  one `US-n` to the next and never restarts, and the success criteria sit under its
+  `## Success Criteria`. Until Hatsu's writer carries `## Acceptance` by name, this
+  clause's section names bind `docs/Features` canon in a repository that declares no
+  family, and this mapping binds a family `spec.md`.
 - **(e) Platform notes are a disposition table.** This clause binds `docs/Features`
   canon in a repository that declares no family; in a family spec folder a per-member
   difference lives in `parity.md`, which states how these dispositions correspond to

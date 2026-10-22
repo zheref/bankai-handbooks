@@ -127,7 +127,7 @@ one row per `FR-###` × member. In a family spec folder, `parity.md` is the one 
 per-member difference. `UZF-21(e)`'s `## Platform notes` table binds a non-family repository's
 `docs/Features` canon only, and its dispositions correspond to these states: `port` is `present`
 or `mirror`, `adapt` is `map`, and `n/a` is `drop-with-note`, admitted only with a `CL-nnn`
-ruling. Hatsu's `## Platform decisions` section is the record of the maintainer's typed words that
+ruling or, for a technology-level reason, a cited `<from>--<to> PT-<n>`. Hatsu's `## Platform decisions` section is the record of the maintainer's typed words that
 a parity row cites, not a second home of the difference. A row's state is exactly one of the
 following, spelled as the capture skill writes it:
 
@@ -177,9 +177,10 @@ folder, so a later recapture is a reviewable diff. *Why:* a rewritten spec loses
 reviewer needs to see what changed and why; an append-only record keeps it.
 
 **SP-10 — Ids never renumber; a reversal is a supersedes line.** The acceptance, criterion and
-requirement ids are `UZF-21(d)`'s and `(e)`'s (`AC-{n}`, `SC-{n}`, `FR-{n}`); inside a spec folder
-they are written zero-padded to three digits (`AC-###`, `FR-###`, `SC-###`), as the capture
-skill spells them. This family adds `US-n`, `CL-nnn` and `CHK-nnn`. Every one of these ids is stable for life
+requirement ids are `UZF-21(d)`'s (`AC-{n}`, `SC-{n}`) and this family's, after Spec Kit's
+(`FR-{n}`); inside a spec folder they are written zero-padded to three digits (`AC-###`,
+`FR-###`, `SC-###`), `FR-###` and `SC-###` as the capture skill spells them. `AC-###` numbering
+is folder-global: it continues across `US-n` and never restarts at a user story. This family adds `US-n`, `CL-nnn` and `CHK-nnn`. Every one of these ids is stable for life
 once merged: never renumbered, never reused, never re-purposed. Outside the folder (issue titles,
 PR sections, test names) an id is qualified with its folder (`F<nnn>-FR-###`, `F<nnn>-SC-###`) so
 it greps across repositories; an `AC` id is `F<nnn>-AC-###` there. A port ruling `PT-{n}` is
