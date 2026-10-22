@@ -43,7 +43,7 @@ stacks, both directions, never `bankai-machinery` and never a stack to itself. E
 row with an id `PT-{n}` from **one global counter across every pair file** (zheref/hatsu ROSTER
 HR-9, the counter landed by zheref/hatsu#392 and re-confirmed by HR-34); ids are append-only, a
 reversal is a new row with `supersedes`. Rows are written only by `hatsu:bankai-rule` from the
-maintainer's answers and land by G4 PR; Chrollo reviews them and never authors them.
+maintainer's answers and land by G4 PR; the architecture reviewer reviews them and never authors them.
 
 **Who reads it:** a port — a builder or reviewer realising work from the `<from>` stack on the
 `<to>` stack — and the reviewer citing a ruling as `<from>--<to> PT-<n>` at the tag it was read at.
@@ -51,8 +51,9 @@ maintainer's answers and land by G4 PR; Chrollo reviews them and never authors t
 **Always-load rule:** a pair file is read **beside** the always-load set above **and** the
 target's stack handbook, **never alone** — it states only the relation between the two stacks,
 nothing either handbook already says. It is not a stack handbook, does not change which one
-stack folder loads, and no consumer mirror carries it yet: it is read live from a checkout at the
-pin.
+stack folder loads. Under the bounded interim of `CON-13` (*Port rulings*), no consumer mirror
+carries it yet: it is read live from a checkout at the pin until zheref/nen#457 lands, when the
+family enters the mirrors.
 
 | From | To | File | Rule-ID prefix |
 | --- | --- | --- | --- |

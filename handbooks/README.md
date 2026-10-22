@@ -31,7 +31,7 @@ one stack folder** for the repo under review.
 | [`stacks/compose-uzf-v2/architecture.md`](stacks/compose-uzf-v2/architecture.md) | `KT-{n}` | Sasuke | stack | Jetpack Compose + Hilt bindings (Android). Refines `UZF-{n}`. |
 | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Sasuke | stack | React 19 + Redux Toolkit bindings (Next.js web + Expo mobile, one shared state tier). Refines `UZF-{n}`. |
 | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Sasuke / Tenma | stack (self-review) | Framework **machinery** review rules — reusable-workflow/permission hygiene, CI trust/fork-safety, lane/authorship. Machinery repos only; **no product code**. Scenario id `bankai-machinery` (renamed at v0.6; `BC-` kept). |
-| [`ports/INDEX.md`](ports/INDEX.md) | `PT-{n}` (one global counter) | `hatsu:bankai-rule` writes; Chrollo reviews | port (pair) | Port rulings: one directed pair file per pair of product stacks — how a `<from>` rule or concept is realised on the `<to>` stack. Read beside the always-load set and the target's stack handbook, never alone. |
+| [`ports/INDEX.md`](ports/INDEX.md) | `PT-{n}` (one global counter) | `hatsu:bankai-rule` writes; the architecture reviewer reviews | port (pair) | Port rulings: one directed pair file per pair of product stacks — how a `<from>` rule or concept is realised on the `<to>` stack. Read beside the always-load set and the target's stack handbook, never alone. |
 
 ## Citation families
 
@@ -68,8 +68,7 @@ alone**. Ids are `PT-{n}` from **one counter across every pair file** (zheref/ha
 counter zheref/hatsu#392 landed, re-confirmed by HR-34) — append-only, never reused, a reversal is a
 new row with `supersedes`. Rows are written by `hatsu:bankai-rule` from the maintainer's answers and
 land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep their
-`Canonical source` marker. A new product stack adds its two directed pair files per existing product
-stack, and their `ports/INDEX.md` rows, in the PR that adds the stack.
+`Canonical source` marker.
 
 ## Adding a stack
 
@@ -78,6 +77,8 @@ stack, and their `ports/INDEX.md` rows, in the PR that adds the stack.
    refining `UZF-{n}`) and a `README.md` facet card.
 3. Consumer repos on that stack record `<scenario-id>` as their scenario in the
    consumer registry and regenerate their mirrors. MINOR version bump.
+4. A product stack's port pair files are not added here: `hatsu:bankai-rule` creates each one on
+   first use and registers it in [`ports/INDEX.md`](ports/INDEX.md) then.
 
 ## Versioning
 
