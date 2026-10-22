@@ -141,23 +141,26 @@ Repository · `Throwable` in State.
 
 ## Appendix — capture reader
 
-Informative; it adds no `KT-{n}` id. How a capture reader turns this stack's files into the rows a
+Informative; it adds no `KT-{n}` id. Its `KT-{n}` citations follow the canonical registry in
+[`rules/README.md` → *KT-n rule registry (canonical)*](rules/README.md#kt-n-rule-registry-canonical)
+(the file-00 backbone), not the older numbering of this file's own bold rules above; reconciling the
+two is zheref/bankai-handbooks#11. How a capture reader turns this stack's files into the rows a
 spec folder is written from: file suffix → the UZF concept it holds (this handbook's glossary and
 [`rules/10-naming-and-layout.md`](rules/10-naming-and-layout.md)) → the row kind it emits (the
 kinds are [`../../spec/authoring.md` → *Capture row kinds*](../../spec/authoring.md#capture-row-kinds)).
 Enumeration starts from the Gradle source sets the app module builds, never a filename glob
-(`QA-26`).
+(`SP-14`).
 
 | File suffix | UZF concept | Row kind emitted |
 | --- | --- | --- |
 | `…Screen.kt` | Stateful wrapper (`KT-1`, `UZF-4`) | `screen` |
 | `…Page.kt` | Stateless renderer (`KT-1`, `UZF-4`) | `screen` — joins its wrapper's row, never a second count |
-| `…Fragment.kt` | Child composable bound to a Feature (`KT-1`) | `screen` |
+| `…Fragment.kt` | Child composable bound to a Feature (`KT-1`) | none — joins the screen that hosts it |
 | `…Feature.kt` | Interactor: `@HiltViewModel class …Feature` (`KT-3`, `UZF-1`) | none of its own — its `reduce` arms are the evidence on the `event` rows |
 | `…State.kt` | State (`KT-4`, `UZF-8`) | `state` |
-| `…Event.kt` | Event (`KT-5`, `UZF-2`) | `event` (one per case) |
+| `…Event.kt` | Event (`UZF-2`; dispatched through `KT-5`'s `onEvent`) | `event` (one per case) |
 | `…UiEffect.kt` | One-shot UI effect (`KT-9`) | `navigation` (one per case the Screen routes) |
-| `…Shifters.kt` | Shifter (`KT-6`, `UZF-10`) | `shifter` (one per `with…` function) |
+| `…Shifters.kt` | Shifter (`KT-6`, `UZF-10`) | `shifter` (one per `with…` / `as…` function) |
 | `…Selectors.kt` | Selector (`KT-7`, `UZF-11`) | `selector` (one per `select…` function) |
 | `…Producer.kt` | Producer → Effect (`KT-8`, `UZF-15`) | `producer` |
 | `…Service.kt` (with `Live…` / `Stubbed…`), `…Repository.kt`, `…Provider.kt`, `…Api.kt`, `…Database.kt` | Service / Repository / Provider (`KT-10`–`KT-12`, `KT-19`, `UZF-16`) | `service` — the `Stubbed…` double joins its service's row |

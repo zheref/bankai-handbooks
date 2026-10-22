@@ -53,7 +53,7 @@ one stack folder** for the repo under review.
   and its `Quality-Gate:` verdict is **advisory**: the human owns G3 (`QA-21`, `CON-6`). The CI
   gate (**Rukia**) follows later, exactly as the design reviewer followed the `UX-{n}` baseline.
 - **Spec authoring** cites `SP-{n}` from `spec/authoring.md` when the object under review is a
-  family specification folder; its completeness claims cite `QA-26`.
+  family specification folder; its completeness claims cite `SP-14`.
 - Because a review loads exactly one stack folder, `SW-{n}`, `KT-{n}`, `RC-{n}` and `BC-{n}`
   are never in scope together — no cross-stack collision.
 - A finding that no rule covers → the reviewer opens a scope-routed
@@ -140,7 +140,8 @@ One source, a generated mirror everywhere it is read:
 5. **Check.** `nen canon mirror check` regenerates in memory and diffs against the committed
    mirror: `missing` / `extra` / `stale` / `hand-edited` fail the consumer's CI. A mirror is a
    build artifact, not a second source.
-6. **General handbooks** (`UZF-`, `SEC-`, `UX-`, `REL-`, `QA-`) are resolved **live** from a
+6. **General handbooks** (`UZF-`, `SEC-`, `UX-`, `REL-`, `QA-`, and `SP-` for a spec repository
+   only) are resolved **live** from a
    checkout at the pin (step 3) — they are not part of the stack `rules/` mirror today.
    Folding them into the per-surface mirror is a machinery change that this doctrine already
    permits; the rule content is authored here first either way.

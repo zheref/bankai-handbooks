@@ -4,9 +4,17 @@ Numbered, citable rules for **writing and reviewing a product family's specifica
 `specs/<nnn>-<slug>/` folders of a family's private spec repository, in the pinned Spec Kit
 layout (`spec.md`, `plan.md`, `data-model.md`, `research.md`, `tasks.md`, `parity.md`,
 `checklists/`). For a repository that declares a product family, `spec.md` there is the product
-canon and the member's feature docs point at it (zheref/hatsu ROSTER HR-6; `UZF-21`). These rules
-are what makes that canon trustworthy: every statement is traceable to code at a commit, or says
-plainly that it is not.
+canon and the member's feature docs are a generated pointer to it (zheref/hatsu ROSTER HR-6;
+`UZF-21(a)`). These rules are what makes that canon trustworthy: every statement is traceable to
+code at a commit, or says plainly that it is not.
+
+**What `UZF-21` owns and what this family owns.** `UZF-21` owns the spec folder's existence and the
+member's pointer (clause (a)), the revise-first rule (clause (b)), and three sections of `spec.md`:
+`## Acceptance` and `## Success criteria` with their id forms (clause (d)), and `## Platform notes`,
+its `port` · `adapt` · `n/a` disposition table (clause (e)). This family owns the authoring grammar
+of the folder: the citation-or-marker line, the confidence tiers, `parity.md`, the clarification
+bound and the recapture markers. An `SP-{n}` rule never restates or reshapes a `UZF-21` section; it
+cites the clause.
 
 The capture skill that writes these folders is Hatsu's `dowsing-chain` (HR-12); the reviewer of a
 spec folder is never its author (`SP-13`) — at capture intake it is the examiner Hatsu's
@@ -35,20 +43,21 @@ renumbered or re-purposed.
 | Term | Meaning |
 | --- | --- |
 | **Requirement line** | Any line of a spec folder that states something about the product: a user story (`US-n`), an acceptance scenario, a functional requirement (`FR-###`), a success criterion (`SC-###`), a key entity or entity field, a product rule, or a quoted value (a limit, a copy string, a threshold). Headings, the folder's own metadata and `## Clarifications` entries are not requirement lines. |
-| **Citation** | `[src: <CODE>:<path>:<l1>-<l2> @ <sha> · <tier>]` — a member's code, a path in its tree, a line range, the commit the range was read at, and a confidence tier (`SP-2`). |
-| **Marker** | Exactly one of `[NEEDS CLARIFICATION: <question>]` (a fact the maintainer can answer), `[NEEDS RULING]` (a decision the maintainer owns: a priority, an audience, a threshold, an intention), `[UNVERIFIED]` (asserted but not yet traced to evidence), or, at recapture only, `[STALE]` (a citation whose range no longer reads as recorded). |
+| **Citation** | One of two forms. `[src: <CODE>:<path>:<l1>-<l2> @ <sha> · <tier>]` names a member's code, a path in its tree, a line range, the commit the range was read at, and a confidence tier (`SP-2`). `[ruled: CL-nnn]` names the maintainer's typed answer recorded under `SP-12`. It replaces the marker that answer settled, and its tier is `declared`. |
+| **Marker** | Exactly one of `[NEEDS CLARIFICATION: <question>]` (a fact the maintainer can answer), `[NEEDS RULING]` (a decision the maintainer owns: a priority, an audience, a threshold, an intention), `[UNVERIFIED]` (asserted but not yet traced to evidence), or, at recapture only, `[STALE @ <old sha>]` (a citation whose range no longer reads as recorded at `<old sha>`). |
 | **Member** | One repository of the product family, on one platform (one stack scenario of [`../stack-matrix.md`](../stack-matrix.md)). |
 | **Row** | One evidence record a capture reader emits for a member at a commit: id, kind, path, lines, sha, excerpt hash, tier. The kinds are listed under [*Capture row kinds*](#capture-row-kinds); each stack handbook's reader appendix maps its file suffixes onto them. |
 
 ## A. Evidence and confidence
 
 **SP-1 — Every requirement line ends in a citation or a marker.** A requirement line MUST end in
-one or more citations, or in exactly one marker; a line that ends in neither is a finding. A line
+one or more citations (a `[src: …]` or a `[ruled: CL-nnn]`), or in exactly one marker; a line that
+ends in neither is a finding. A line
 carrying a marker may also carry the citations that raised it — a contradiction between two
 sources is one marker followed by **both** citations, never a silent pick of one. A citation MUST
 resolve: the range, opened at the recorded `sha` in the member's tree, reads as the evidence the
 line claims; a citation that no longer resolves is never silently refreshed — it becomes
-`[STALE]` at recapture and is re-cited or re-marked by a reviewed change. Marker counts, per
+`[STALE @ <old sha>]` at recapture and is re-cited or re-marked by a reviewed change. Marker counts, per
 folder and per kind, are printed wherever the folder's state is reported (the PR body, the
 folder index). *Forbids:* the plausible, uncited sentence — the one an author "knows" is true.
 *Why:* a spec that cannot show where each statement came from cannot be told apart from a guess,
@@ -58,14 +67,14 @@ and a guess built on by three platforms becomes three defects.
 
 | Tier | What earns it |
 | --- | --- |
-| `declared` | A test assertion that exercises the behaviour, a typed contract or schema at a boundary, or the maintainer's typed answer recorded under `SP-12`. |
+| `declared` | A test assertion that exercises the behaviour, quoted, or the maintainer's typed answer recorded under `SP-12` (cited as `[ruled: CL-nnn]`). |
 | `observed` | Logic read in the member's code — a reducer arm, a shifter, a selector, a producer, a service operation — with no test asserting it. |
 | `inferred` | Naming, structure or placement only: a file, type or route whose name suggests a behaviour nobody has read or tested. |
 
 A line's tier is the strongest tier among its citations. A reader never raises a tier by
 argument: only new evidence (a test, a typed answer) does. *Why:* tests are the strongest
 evidence a codebase holds; a behaviour no test pins is at most `observed`, and the gap is counted
-(`QA-26`), not hidden.
+(`SP-14`), not hidden.
 
 **SP-3 — An inferred row never becomes a MUST or a success criterion.** A row whose strongest
 tier is `inferred` lives in `research.md` only. It MUST NOT appear in `spec.md` as a functional
@@ -104,35 +113,43 @@ the spec is shared by members on different stacks; a sentence in one stack's idi
 porting instruction in disguise, and a port written from it copies the source platform instead
 of adapting to the target.
 
-**SP-6 — Every requirement has one parity handling per member.** `parity.md` holds one row per
-`FR-###` × member, and each row carries exactly one handling:
+**SP-6 — Every requirement has one parity state per member in `parity.md`.** `parity.md` holds
+one row per `FR-###` × member. This rule governs `parity.md` only; `spec.md`'s `## Platform notes`
+table is `UZF-21(e)`'s, and nothing here reshapes it. A row's state is exactly one of the
+following, spelled as the capture skill writes it:
 
-| Handling | Meaning | What the row must carry |
+| State | Meaning | What the row must carry |
 | --- | --- | --- |
-| **mirror** | The member does the same thing with the same observable outcome. | The member's citation. |
-| **map** | The member reaches the same outcome through its own platform's convention (navigation pattern, gesture, permission prompt, system control). | The member's citation and one line naming the convention. |
-| **drop with note** | The member deliberately does not have it. | The `CL-nnn` ruling (`SP-12`) that decided it; for a technology-level reason, the port ruling `PT-{n}` in `handbooks/ports/` (HR-9). |
-| **target-only addition** | The member has it and the others do not, deliberately. | The member's citation and the ruling that made it intentional. |
+| `present` | The member carries the requirement as the spec states it. | The member's citation. |
+| `mirror` | The member does the same thing with the same observable outcome. | The member's citation. |
+| `map` | The member reaches the same outcome through its own platform's convention (navigation pattern, gesture, permission prompt, system control). | The member's citation and one line naming the convention. |
+| `drop-with-note` | The member deliberately does not have it. | The `CL-nnn` ruling (`SP-12`) that decided it. For a technology-level reason, it carries the port ruling `PT-{n}` in [`handbooks/ports/`](../ports/INDEX.md) instead (HR-9). |
+| `target-only` | The member has it and the others do not, deliberately. | The member's citation and the ruling that made it intentional. |
+| `differs` | The member's evidence contradicts the spec or another member's evidence. | Both citations. |
+| `absent` | The member's evidence holds nothing for the requirement (`SP-7`). | The files the reader searched. |
+| open | No state is recorded yet. | Nothing; this state is the gap. |
 
-A row with no handling is open, and an open row blocks dispatch of that requirement to that
-member. *Why:* the parity table is the one place a difference between members may exist; a
-difference recorded anywhere else is invisible to the next port.
+`present`, `mirror`, `map`, `drop-with-note` and `target-only` are handlings: they settle the row.
+`open`, `absent` and `differs` do not. `absent` and `differs` are recorded sub-states of open, and
+like any open row they block dispatch of that requirement to that member until a `CL-nnn` ruling
+settles the row into a handling. *Why:* the parity table is the one place a difference between
+members may exist; a difference recorded anywhere else is invisible to the next port.
 
 **SP-7 — Absent is never "not needed".** When a member's evidence holds nothing for a
-requirement, the row records `absent` — a fact, not a handling. Only a `CL-nnn` ruling may turn
-`absent` into **drop with note**; an author or reviewer never infers the intention from the
+requirement, the row records `absent`, a fact and not a handling (`SP-6`). Only a `CL-nnn`
+ruling may turn `absent` into `drop-with-note`; an author or reviewer never infers the intention from the
 absence, the platform, or the feature's apparent size. *Forbids:* "not applicable on web" with
 no ruling behind it. *Why:* most "intentional" platform gaps are unbuilt work nobody decided on;
 reading absence as intent closes the gap on paper and leaves it open in the product.
 
 ## C. The living spec
 
-**SP-8 — The spec changes first.** A change to a family member's product behaviour edits the
-spec folder **before** the code: the requirement is amended or added in a reviewed spec PR, and
-the build issue cites the folder at a pinned commit (`specs/<nnn>-<slug>@<sha>`). A spec change
-after an issue is filed is an edit to that issue's citation with a comment saying so, never a
-silent retarget. A port owes a spec revision first (HR-6). *Why:* a spec that follows the code
-is documentation; the family needs one that leads it.
+**SP-8 — A build cites the spec at a pinned commit.** The rule that the spec is revised first
+and decides over the code is `UZF-21(b)`'s; this family adds only how a build points at it. The
+build issue cites the folder at a pinned commit (`specs/<nnn>-<slug>@<sha>`). A spec change after
+an issue is filed is an edit to that issue's citation with a comment saying so, never a silent
+retarget. *Why:* a build that reads the spec's tip instead of a pinned commit can change under its
+reviewer, and a silent retarget hides which spec the code was built against.
 
 **SP-9 — Convergence appends; it never rewrites.** Reconciling a folder against newer code
 appends a dated `## Phase N: Convergence <YYYY-MM-DD>` section to `tasks.md` and adds or marks
@@ -142,10 +159,15 @@ author's edit. Recapturing the same members at the same commits produces a byte-
 folder, so a later recapture is a reviewable diff. *Why:* a rewritten spec loses the history a
 reviewer needs to see what changed and why; an append-only record keeps it.
 
-**SP-10 — Ids never renumber; a reversal is a supersedes line.** `US-n`, `FR-###`, `SC-###`,
-`CL-nnn`, `PT-{n}` and `CHK-nnn` are stable for life once merged: never renumbered, never
-reused, never re-purposed. Outside the folder — issue titles, PR sections, test names — an id is
-qualified with its folder (`F<nnn>-FR-###`, `F<nnn>-SC-###`) so it greps across repositories.
+**SP-10 — Ids never renumber; a reversal is a supersedes line.** The acceptance, criterion and
+requirement ids are `UZF-21(d)`'s and `(e)`'s (`AC-{n}`, `SC-{n}`, `FR-{n}`); inside a spec folder
+they are written zero-padded to three digits (`FR-###`, `SC-###`), as the capture skill spells
+them. This family adds `US-n`, `CL-nnn` and `CHK-nnn`. Every one of these ids is stable for life
+once merged: never renumbered, never reused, never re-purposed. Outside the folder (issue titles,
+PR sections, test names) an id is qualified with its folder (`F<nnn>-FR-###`, `F<nnn>-SC-###`) so
+it greps across repositories. A port ruling `PT-{n}` is cited, never minted, by a spec folder: it
+is owned by [`handbooks/ports/`](../ports/INDEX.md) under one global counter (HR-9, HR-34), so it
+is never folder-qualified.
 A requirement that is reversed or replaced keeps its line and gains a `Superseded by <id>` note;
 the replacement carries `Supersedes: <id>`; a reversed ruling is a new `CL-nnn` with the same
 line. *Forbids:* closing a numbering gap; editing `FR-012` to mean something new. *Why:* issues,
@@ -154,9 +176,9 @@ one of those citations.
 
 ## D. Clarification and the maintainer's words
 
-**SP-11 — Clarification is bounded: five questions a round, three rounds a run.** A capture or
-amendment run asks the maintainer at most **five** questions in one round and at most **three**
-rounds in one run. A question beyond the bound is not asked; its line stays a marker. A question
+**SP-11 — Clarification is bounded.** A capture or amendment run asks the maintainer at most
+**five** questions per round and three rounds per run, unless the spec repository declares
+`spec.clarify.maxQuestions` / `spec.clarify.maxRounds` otherwise. A question beyond the bound is not asked; its line stays a marker. A question
 the maintainer declines or leaves unanswered stays a marker, and that marker blocks dispatch of
 the requirement it sits on — only that requirement, never the folder. *Why:* an unbounded agent
 interrogates; an agent that stops asking without saying so fills the gaps itself. The bound makes
@@ -182,15 +204,28 @@ finding and is reverted, not argued. The checklist covers at least: `SP-1` on ev
 line, citations resolving at their commit, no `inferred` line in normative text (`SP-3`), no
 derived priority, audience or threshold (`SP-12`), no stack idiom in `spec.md` or
 `data-model.md` (`SP-5`), every parity row handled or open (`SP-6`), and coverage stated with its
-denominators (`QA-26`). *Why:* a checklist its author ticks is a statement of confidence, not a
+denominators (`SP-14`). *Why:* a checklist its author ticks is a statement of confidence, not a
 review.
+
+**SP-14 — Completeness is a number with its denominator.** Any claim of completeness or coverage
+for a spec folder or a capture MUST be stated as `covered/total` **per kind**, with what one unit
+of each kind is and where the total was read from: one line per row kind of
+[*Capture row kinds*](#capture-row-kinds), per member, with totals taken from the member's
+build-system file set, never a filename glob. The words **"complete"**, **"fully specified"**,
+**"full coverage"** or **"100%"** MUST NOT appear without those numbers beside them, and a kind
+whose total is unknown is reported as unknown, never omitted. The counts come from a command or a
+recorded inventory, quoted with the commit they were read at. This rule's scope is spec folders
+and captures only; test-layer coverage stays `UZF-19`'s. *Forbids:* "the spec is complete" over a
+folder that covers 12 of 48 screens. *Why:* a percentage or an adjective with no denominator
+cannot be checked, and a glob-derived denominator counts files the product does not ship; the
+number and its base are what let a reviewer see what is missing.
 
 ---
 
 ## Capture row kinds
 
 Informative; it adds no rule id. A capture reader emits rows of these kinds and no other, and a
-spec folder's denominators (`QA-26`) are counted per kind. Each stack handbook's **reader
+spec folder's denominators (`SP-14`) are counted per kind. Each stack handbook's **reader
 appendix** maps that stack's file suffixes onto them:
 [`swiftui-tca-uzf-v2`](../stacks/swiftui-tca-uzf-v2/architecture.md#appendix--capture-reader),
 [`compose-uzf-v2`](../stacks/compose-uzf-v2/architecture.md#appendix--capture-reader),
@@ -224,8 +259,11 @@ they carry no product behaviour of their own.
 | A merged id renumbered, reused or re-purposed (`SP-10`) | critical |
 | A requirement line with neither citation nor marker (`SP-1`); an `inferred` line in normative text (`SP-3`); a checklist ticked by its author (`SP-13`) | high |
 | A citation that does not resolve at its commit (`SP-1`); `absent` read as intent (`SP-7`); a derived or paraphrased maintainer decision (`SP-12`) | high |
-| A merged line rewritten in place (`SP-9`); a parity row with no handling and no open state (`SP-6`) | medium |
+| A build issue citing a folder with no pinned commit, or a spec change retargeted onto a filed issue with no comment (`SP-8`) | high |
+| A merged line rewritten in place (`SP-9`); a requirement × member pair with no `parity.md` row, or an `absent` or `differs` row settled without a `CL-nnn` ruling (`SP-6`, `SP-7`) | medium |
 | Stack idiom in `spec.md` or `data-model.md` (`SP-5`); a clarification bound exceeded (`SP-11`) | medium |
+| A citation with no tier, or a tier raised by argument rather than evidence (`SP-2`); a completeness claim with no denominator (`SP-14`) | medium |
+| Any other `SP-{n}` breach | medium, and the reviewer states why |
 
 ## Growing this handbook
 

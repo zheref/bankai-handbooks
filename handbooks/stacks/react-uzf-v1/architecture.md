@@ -331,15 +331,15 @@ spec folder is written from: file suffix → the UZF concept it holds (this hand
 [`rules/10-naming-and-layout.md`](rules/10-naming-and-layout.md)) → the row kind it emits (the
 kinds are [`../../spec/authoring.md` → *Capture row kinds*](../../spec/authoring.md#capture-row-kinds)).
 Enumeration starts from the files the workspace's TypeScript and build configuration include, for
-the shared core and each render target, never a filename glob (`QA-26`).
+the shared core and each render target, never a filename glob (`SP-14`).
 
 | File suffix | UZF concept | Row kind emitted |
 | --- | --- | --- |
 | `…Page.tsx` | Platform render entry (`RC-37`, `UZF-4`) | `screen` |
-| `…Fragment.tsx` | Child render, selector-only (`RC-15`, `UZF-4`) | `screen` |
+| `…Fragment.tsx` | Child render, selector-only (`RC-15`, `UZF-4`) | none — joins the screen that hosts it |
 | a route file (Next.js route, Expo Router file; [`rules/05-page-and-screen.md`](rules/05-page-and-screen.md)) | Route → Page | `navigation` (one edge to the Page it mounts) |
 | `…Feature.ts` | Interactor: the feature slice (`RC-1`, `UZF-1`) | `state` (one per slice) + `event` (one per reducer key and thunk) |
-| `…Shifters.ts` | Shifter (`RC-4`, `UZF-10`) | `shifter` (one per `with…` function) |
+| `…Shifters.ts` | Shifter (`RC-4`, `UZF-10`) | `shifter` (one per `with…` / `as…` function) |
 | `…Selectors.ts` | Selector (`RC-5`, `UZF-11`) | `selector` (one per `createSelector`) |
 | `…Producer.ts` | Producer → Effect (`RC-58`, `UZF-15`) | `producer` (one per thunk factory) |
 | `…Service.ts` (with `live…` / `stubbed…`), a Repository, a Provider | Service / Repository / Provider (`RC-59`, `UZF-16`) | `service` — the `stubbed…` double joins its service's row |

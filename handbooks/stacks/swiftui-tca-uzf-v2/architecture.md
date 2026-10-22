@@ -154,13 +154,13 @@ spec folder is written from: file suffix → the UZF concept it holds (this hand
 [`rules/02-naming.md`](rules/02-naming.md)) → the row kind it emits (the kinds are
 [`../../spec/authoring.md` → *Capture row kinds*](../../spec/authoring.md#capture-row-kinds)).
 Enumeration starts from the files the app targets own in the Xcode project, never a filename
-glob (`QA-26`).
+glob (`SP-14`).
 
 | File suffix | UZF concept | Row kind emitted |
 | --- | --- | --- |
 | `…Screen.swift` | Stateful wrapper (`SW-1`, `UZF-4`) | `screen` |
 | `…View.swift` | Pure renderer (`SW-2`, `UZF-4`) | `screen` — joins its wrapper's row, never a second count |
-| `…Fragment.swift` | Stateful child wrapper (`UZF-4`) | `screen` |
+| `…Fragment.swift` | Stateful child wrapper (`UZF-4`) | none — joins the screen that hosts it |
 | `…Feature.swift` | Interactor: `@Reducer struct …Feature`, its nested `State` and `Action` | `state` (one per feature) + `event` (one per `Action` case); `destination` cases also emit `navigation` |
 | `…Shifters.swift` | Shifter (`SW-8`, `UZF-10`) | `shifter` (one per `apply…` / `as…` function) |
 | `…Selectors.swift` | Selector (`SW-9`, `UZF-11`) | `selector` (one per `…Selector` property) |
