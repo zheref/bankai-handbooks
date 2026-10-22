@@ -2,8 +2,9 @@
 
 You are working in **`zheref/bankai-handbooks`**, the **single canonical source** of the Bankai
 handbooks: the governance constitution (`CON-{n}`), the always-load handbooks (`UZF-`, `SEC-`,
-`UX-`, `REL-`, `QA-`) and the four stack handbooks (`SW-`, `KT-`, `RC-`, `BC-`). Nothing here is
-product code. Everything here is **canon** that other repositories mirror (`CON-13`).
+`UX-`, `REL-`, `QA-`), the spec authoring handbook (`SP-`) and the four stack handbooks (`SW-`,
+`KT-`, `RC-`, `BC-`). Nothing here is product code. Everything here is **canon** that other
+repositories mirror (`CON-13`).
 
 Depth lives in [`.claude/rules/`](.claude/rules/); this file is the contract.
 

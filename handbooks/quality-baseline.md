@@ -82,6 +82,10 @@ finding, search the target repo's open issues by subject and comment on a match 
 another agent's, even within the same run (`CON-11`, the shared agent conventions ([`CONVENTIONS.md`](../CONVENTIONS.md)) *Idempotency*).
 This lane generates issues in bursts and would otherwise flood the human's queue.
 
+**QA-26 — Reserved.** Withdrawn before it merged: the completeness rule first drafted here is
+`SP-14` in [`spec/authoring.md`](spec/authoring.md), scoped to spec folders and captures, which this
+handbook's scope statement above does not cover. The number stays reserved and is never reused.
+
 ---
 
 ## B. Test tooling — per scenario
