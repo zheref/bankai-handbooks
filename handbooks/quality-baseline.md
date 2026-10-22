@@ -229,7 +229,7 @@ any `critical`/`high` finding, or any budget breach. **INCONCLUSIVE** = one or m
 `not-testable-here` (`QA-3`), each enumerated.
 
 > **The marker is `Quality-Gate:`, never `Verdict:`.** `Verdict:` is a machine-parsed
-> marker reserved for the review gates (Sasuke, Tenma, Bisky) in the shared agent conventions ([`CONVENTIONS.md`](../CONVENTIONS.md)),
+> marker reserved for the review gates (Sasuke, Tenma, the design reviewer) in the shared agent conventions ([`CONVENTIONS.md`](../CONVENTIONS.md)),
 > and a malformed one fails a check closed. A quality report pasted onto a PR must not be
 > able to collide with it. `Quality-Gate:` is collision-free today and already parseable for
 > Rukia tomorrow.

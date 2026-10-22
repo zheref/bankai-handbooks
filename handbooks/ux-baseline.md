@@ -6,11 +6,11 @@ enforceable** part of the Bankai process — the design counterpart to how
 `security-baseline.md` (`SEC-{n}`) governs security and `uzf-core.md` (`UZF-{n}`)
 governs architecture.
 
-The design reviewer (**Bisky**, reviewer tier — Phase 2) cites these as `UX-{n}`, or a
+The design reviewer (reviewer tier — Phase 2) cites these as `UX-{n}`, or a
 more precise public reference (`WCAG 2.2 SC {x.y.z}`, platform HIG / Material guidance)
 where one maps better. **In Phase 1a there is no CI design gate yet**: the builder
-(**Edward**) *self-applies* these rules at build time and the human reviews at G2. Bisky
-(the gate) is provisioned in Phase 2.
+(**Edward**) *self-applies* these rules at build time and the human reviews at G2. The design
+reviewer (the gate) is provisioned in Phase 2.
 
 > **Adding or changing a rule?** Do not hand-edit this file in place — see
 > **[Growing this handbook — how to add a `UX-n` rule](#growing-this-handbook--how-to-add-a-ux-n-rule)**
@@ -141,7 +141,7 @@ SC 1.4.1` (use of color).
 
 ---
 
-## Severity guidance (for the design reviewer's verdict — Phase 2, Bisky)
+## Severity guidance (for the design reviewer's verdict — Phase 2)
 
 | Severity | Use when a finding… |
 | --- | --- |
@@ -150,7 +150,7 @@ SC 1.4.1` (use of color).
 | `medium` | A real quality gap that raises friction but doesn't block a user — inconsistent tokens (`UX-5`), off-scale typography (`UX-8`), overloaded navigation (`UX-11`). |
 | `low` / `nit` | Polish / refinement; never blocks. |
 
-Bisky reviews **only** the UI/design-quality surface — architecture findings are Sasuke's
+The design reviewer reviews **only** the UI/design-quality surface — architecture findings are Sasuke's
 lane (`UZF-{n}` / `SW-{n}` / `KT-{n}`), security is Tenma's (`SEC-{n}`). A concern with no
 matching `UX-{n}` / `WCAG` / HIG-Material reference is a `bankai:handbook-question` scope-routed
 to the canon lane (`bankai:agent/yamamoto`, `CON-37`), not an improvised policy.
@@ -165,8 +165,8 @@ to the canon lane (`bankai:agent/yamamoto`, `CON-37`), not an improvised policy.
   handbook-questions first and comment on a match instead of opening a duplicate (`CON-11`).
 - **Human preferences become rules, not one-off notes.** When the human states a
   design preference/practice-in-context on a PR (e.g. "prefer X over Y here"), that is
-  surfaced as a `bankai-handbooks` issue to codify it into a `UX-{n}` rule (Bisky's
-  *learn-from-the-human* duty, Phase 2) — so the same call is enforced deterministically
+  surfaced as a `bankai-handbooks` issue to codify it into a `UX-{n}` rule (the design
+  reviewer's *learn-from-the-human* duty, Phase 2) — so the same call is enforced deterministically
   from then on, rather than restated per PR.
 
 ---
@@ -184,7 +184,7 @@ Use this whenever you want a new design standard enforced (or an existing one sh
 ### 1. Propose the rule
 - **Summon Ichigo** (`/ichigo`) in a local session and describe the standard you want
   enforced, **or** file an issue on `bankai-handbooks` describing the gap. If the
-  proposal came from a design reviewer (Bisky, Phase 2) or a builder (Edward) hitting a
+  proposal came from the design reviewer (Phase 2) or a builder (Edward) hitting a
   gap, it arrives as a **`bankai:handbook-question`** labeled **`bankai:agent/yamamoto`** — a
   `UX-{n}` rule is canon, so it scope-routes to the canon lane (`CON-37` refines `CON-11`), and it
   lands in Ichigo's session warm-up inbox either way.

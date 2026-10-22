@@ -93,7 +93,7 @@ follow-up comments — carries the identical `session=` value. A reader, human o
 grep one token across an issue and its PR and see the whole session's footprint, and a peer
 session reads it as `CON-50(a)`'s claim-holder before authoring anything of its own.
 
-### Reviewer verdict (Sasuke, Tenma, Bisky)
+### Reviewer verdict (Sasuke, Tenma, the design reviewer)
 
 A **review** MUST end with a final, standalone line stating the verdict on one
 line — this exact line is what the workflow reads and casts as a formal GitHub
@@ -283,7 +283,7 @@ own sections specify — never wrapped in a table cell, never emoji-decorated, n
 | Marker | Where |
 |---|---|
 | the machine stamp — exact format per **Machine stamp** above, CI **or** local shape: `<!-- bankai agent={name} run={run_id} handbook={version} trigger={event} -->` (CI) or `<!-- bankai agent={name} session={session_id} handbook={version} trigger=local -->` (local, `CON-50(f)`) | bottom of every body |
-| the `Verdict: <value>` line — value immediately after `Verdict:` (a status emoji may trail it, never precede it — see **Reviewer verdict**) | reviewer artifacts (Sasuke / Tenma / Bisky) |
+| the `Verdict: <value>` line — value immediately after `Verdict:` (a status emoji may trail it, never precede it — see **Reviewer verdict**) | reviewer artifacts (Sasuke / Tenma / the design reviewer) |
 | `Closes #<issue>` / `bankai:*` labels / stage transitions | as specified above |
 | commit trailers (`Bankai-Agent:` / `Bankai-Run:` in the reference implementation; `Hatsu-Agent:` / `Akatsuki-Agent:` on the successor planes, `CON-51(c)`) | commit messages |
 
@@ -630,7 +630,7 @@ layout; this file does not restate it.
    (machinery resolving a spec question — RR-PR-#744
    was closed unmerged for exactly that).
 7. **Close every inline review thread you act on — reply *and* resolve (`CON-16`).** When you
-   address a reviewer's inline comment (Copilot, Bugbot, Sasuke, Tenma, Bisky), reply on its thread with
+   address a reviewer's inline comment (Copilot, Bugbot, Sasuke, Tenma, the design reviewer), reply on its thread with
    the disposition — the fix-commit SHA, or a cited reason you're pushing back — **and mark the
    thread resolved**. A fix commit alone only makes it *outdated*, not *resolved*: an unanswered,
    still-open thread reads as ignored.
@@ -666,7 +666,7 @@ layout; this file does not restate it.
    wiring that is Kisuke's lane — never a reason for the thread to sit open.
 8. **Drive your own PR fully green before calling it ready (`CON-32`).** Your PR is *ready* — for
    the human's review or Roy's merge — only when **every required check passes, every configured
-   automated reviewer (Sasuke, Tenma, Bisky, Copilot, Bugbot where enabled) has posted a round against the
+   automated reviewer (Sasuke, Tenma, the design reviewer, Copilot, Bugbot where enabled) has posted a round against the
    _current head SHA_, every round is addressed (reply + resolve), and no thread is unresolved**.
    Green required checks alone is **not** ready. Verify each reviewer reviewed the *head*, not a
    superseded commit — a zero-unresolved count on a stale round is a false green. CI builders reach
