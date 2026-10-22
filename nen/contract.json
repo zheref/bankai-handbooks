@@ -157,7 +157,7 @@
             "--repo",
             "."
           ],
-          "$comment": "The real release row a process repository owes (hatsu:tenkai section 6a): publish ONE GitHub Release for a tag that already resolves on the remote, notes and title taken from CHANGELOG.md's section for that tag, no asset (archive is unsupported above, so none is handed in). The script is RENDERED by hatsu:tenkai from its templates/release-publish.sh and re-rendered on every re-adoption; hand-edits read as drift. Run only by hatsu:mugetsu on the maintainer's typed go (G3, CON-6), after hatsu:getsuga has cut the tag. KNOWN LIMIT at adoption (zheref/hatsu#362): the rendered publisher matches a tag's notes only at `## <tag>` while this CHANGELOG.md anchors on `### Unreleased` and nen changelog collate writes `### vX.Y.Z` sections, so `--dry-run` refuses `no '## v0.6.0' section` for every tag this repository can produce until the template reads the changelog's own heading level and this copy is re-rendered; the row stays real rather than seated so mugetsu's first G3 run meets a named refusal, never silence -- at the publishing call, since `nen shu release --dry-run` (the plan step) prints only the argv and never runs the script's own --dry-run."
+          "$comment": "The real release row a process repository owes (hatsu:tenkai section 6a): publish ONE GitHub Release for a tag that already resolves on the remote, notes and title taken from CHANGELOG.md's section for that tag, no asset (archive is unsupported above, so none is handed in). The script is RENDERED by hatsu:tenkai from its templates/release-publish.sh and re-rendered on every re-adoption; hand-edits read as drift. Run only by hatsu:mugetsu on the maintainer's typed go (G3, CON-6), after hatsu:getsuga has cut the tag. Hatsu #362 re-rendered this script and its adjacent TypeScript helper: a `### Unreleased` anchor selects the collated `### vX.Y.Z` sections, and the existing `v0.6.0` tag now yields its own dry-run plan. Node 22.18+ is declared in the toolchain. The live G3 call remains mugetsu's only; the lane plan is not publication: `nen shu release --dry-run` prints only the argv and never runs the script's own --dry-run."
         },
         "dev": {
           "unsupported": "Nothing here runs as a process. Reading the canon is opening a file; exercising it is a consumer's build against its mirror."
@@ -211,7 +211,15 @@
         }
       ]
     },
-    "toolchain": {},
+    "toolchain": {
+      "node": {
+        "version": ">=22.18.0",
+        "probe": ["node", "--version"],
+        "versionFrom": "first-semver-on-stdout",
+        "installer": "verify-only",
+        "why": "The Tenkai-rendered release_changelog.mts helper strips TypeScript types at runtime; the publisher refuses at exit 2 when Node is absent."
+      }
+    },
     "targets": {}
   }
 }
