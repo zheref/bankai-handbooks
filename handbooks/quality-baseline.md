@@ -82,6 +82,20 @@ finding, search the target repo's open issues by subject and comment on a match 
 another agent's, even within the same run (`CON-11`, the shared agent conventions ([`CONVENTIONS.md`](../CONVENTIONS.md)) *Idempotency*).
 This lane generates issues in bursts and would otherwise flood the human's queue.
 
+**QA-26 — Completeness is a number with its denominator.** Any claim of completeness or
+coverage — for a spec folder, a capture, a test layer, a port, a checklist — MUST be stated as
+`covered/total` **per kind**, with what one unit of each kind is and where the total was read
+from (for a spec folder: one line per row kind of
+[`spec/authoring.md`](spec/authoring.md#capture-row-kinds), per member, totals taken from the
+member's build-system file set, never a filename glob). The words **"complete"**, **"fully
+specified"**, **"full coverage"** or **"100%"** MUST NOT appear without those numbers beside
+them, and a kind whose total is unknown is reported as unknown, never omitted. *Measurement:* the
+counts come from a command or a recorded inventory, quoted with the commit they were read at
+(`QA-15`'s discipline, applied to counts). *Forbids:* "the spec is complete" over a folder that
+covers 12 of 48 screens. *Why:* a percentage or an adjective with no denominator cannot be
+checked, and a glob-derived denominator counts files the product does not ship; the number and
+its base are what let a reviewer see what is missing.
+
 ---
 
 ## B. Test tooling — per scenario

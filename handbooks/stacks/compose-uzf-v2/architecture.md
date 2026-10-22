@@ -138,3 +138,36 @@ Repository · `Throwable` in State.
 | Wrapper / renderer | `…Screen` (stateful) / `…Page` (stateless) |
 | Service | `interface …Service` + `Live…`/`Stubbed…`, Hilt-bound |
 | Result / Exception | `kotlin.Result<T>` / `sealed class …Exception(message, recoverable)` |
+
+## Appendix — capture reader
+
+Informative; it adds no `KT-{n}` id. How a capture reader turns this stack's files into the rows a
+spec folder is written from: file suffix → the UZF concept it holds (this handbook's glossary and
+[`rules/10-naming-and-layout.md`](rules/10-naming-and-layout.md)) → the row kind it emits (the
+kinds are [`../../spec/authoring.md` → *Capture row kinds*](../../spec/authoring.md#capture-row-kinds)).
+Enumeration starts from the Gradle source sets the app module builds, never a filename glob
+(`QA-26`).
+
+| File suffix | UZF concept | Row kind emitted |
+| --- | --- | --- |
+| `…Screen.kt` | Stateful wrapper (`KT-1`, `UZF-4`) | `screen` |
+| `…Page.kt` | Stateless renderer (`KT-1`, `UZF-4`) | `screen` — joins its wrapper's row, never a second count |
+| `…Fragment.kt` | Child composable bound to a Feature (`KT-1`) | `screen` |
+| `…Feature.kt` | Interactor: `@HiltViewModel class …Feature` (`KT-3`, `UZF-1`) | none of its own — its `reduce` arms are the evidence on the `event` rows |
+| `…State.kt` | State (`KT-4`, `UZF-8`) | `state` |
+| `…Event.kt` | Event (`KT-5`, `UZF-2`) | `event` (one per case) |
+| `…UiEffect.kt` | One-shot UI effect (`KT-9`) | `navigation` (one per case the Screen routes) |
+| `…Shifters.kt` | Shifter (`KT-6`, `UZF-10`) | `shifter` (one per `with…` function) |
+| `…Selectors.kt` | Selector (`KT-7`, `UZF-11`) | `selector` (one per `select…` function) |
+| `…Producer.kt` | Producer → Effect (`KT-8`, `UZF-15`) | `producer` |
+| `…Service.kt` (with `Live…` / `Stubbed…`), `…Repository.kt`, `…Provider.kt`, `…Api.kt`, `…Database.kt` | Service / Repository / Provider (`KT-10`–`KT-12`, `KT-19`, `UZF-16`) | `service` — the `Stubbed…` double joins its service's row |
+| `…Mapper.kt`, `…Response.kt`, `…Entity.kt`, `…Endpoint.kt`, `…Exception.kt`, domain models | Mapper, wire and storage types, exception (`KT-19`, `KT-20`, `UZF-17`) | `model` |
+| the `{{FLAG_ENUM}}` registry | Feature flag (`UZF-22`) | `flag` (one per flag) |
+| `…FeatureTest.kt`, `…ShiftersTest.kt`, `…SelectorsTest.kt`, `…ProducerTest.kt`, `…MapperTest.kt` | Declared tests (`UZF-18`) | `test` (one per test case) |
+| `…PageSnapshotTest.kt` and its `src/test/snapshots/images/` | Visual evidence (`KT-22`, `UZF-26`) | `snapshot` (one per recorded state) |
+| `…Adapter.kt` | List-cell composable | none — joins the `screen` that renders it |
+| `…Mocks.kt`, `…Module.kt` | Canned state, Hilt wiring (`KT-17`, `KT-18`) | none |
+
+String tables (`res/values*/strings.xml`) and analytics call sites carry no feature suffix; a
+reader emits `strings` and `analytics` rows from the resources and call sites it reads, and says
+which files it read.

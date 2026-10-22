@@ -323,3 +323,34 @@ Render-target-specific glossary entries (Next.js's Server Page / Client Page
 Wrapper / Route handler; Expo's route file / `_layout.tsx`) belong to this
 stack's Next.js and Expo render-target rules, not to this family-level file —
 this file fixes only the shared-core vocabulary above, per §H.
+
+## Appendix — capture reader
+
+Informative; it adds no `RC-{n}` id. How a capture reader turns this stack's files into the rows a
+spec folder is written from: file suffix → the UZF concept it holds (this handbook's glossary and
+[`rules/10-naming-and-layout.md`](rules/10-naming-and-layout.md)) → the row kind it emits (the
+kinds are [`../../spec/authoring.md` → *Capture row kinds*](../../spec/authoring.md#capture-row-kinds)).
+Enumeration starts from the files the workspace's TypeScript and build configuration include, for
+the shared core and each render target, never a filename glob (`QA-26`).
+
+| File suffix | UZF concept | Row kind emitted |
+| --- | --- | --- |
+| `…Page.tsx` | Platform render entry (`RC-37`, `UZF-4`) | `screen` |
+| `…Fragment.tsx` | Child render, selector-only (`RC-15`, `UZF-4`) | `screen` |
+| a route file (Next.js route, Expo Router file; [`rules/05-page-and-screen.md`](rules/05-page-and-screen.md)) | Route → Page | `navigation` (one edge to the Page it mounts) |
+| `…Feature.ts` | Interactor: the feature slice (`RC-1`, `UZF-1`) | `state` (one per slice) + `event` (one per reducer key and thunk) |
+| `…Shifters.ts` | Shifter (`RC-4`, `UZF-10`) | `shifter` (one per `with…` function) |
+| `…Selectors.ts` | Selector (`RC-5`, `UZF-11`) | `selector` (one per `createSelector`) |
+| `…Producer.ts` | Producer → Effect (`RC-58`, `UZF-15`) | `producer` (one per thunk factory) |
+| `…Service.ts` (with `live…` / `stubbed…`), a Repository, a Provider | Service / Repository / Provider (`RC-59`, `UZF-16`) | `service` — the `stubbed…` double joins its service's row |
+| `…Mapper.ts`, `…Response.ts`, `…Exception.ts`, plain model files | Mapper, wire type, exception, domain model (`RC-30`, `UZF-17`) | `model` |
+| the `{{FLAG_ENUM}}` registry | Feature flag (`UZF-22`) | `flag` (one per flag) |
+| `.test.ts` / `.test.tsx` | Declared tests (`UZF-18`, `UZF-20`) | `test` (one per test case) |
+| `.stories.tsx` | Visual states (`RC-11`, `UZF-26`) | `snapshot` (one per story) |
+| `…Adapter.tsx` / `…Adapters.tsx` | Memoized list cell (`RC-18`) | none — joins the `screen` that renders it |
+| `<x>.fixtures.json`, `__mocks__/…`, `store.ts`, `hooks.ts` | Fixtures, mocks, store wiring | none |
+
+String tables and analytics call sites carry no suffix in this stack; a reader emits `strings`
+and `analytics` rows from the message catalogues and call sites it reads, and says which files it
+read. The shared core is read once for both render targets (§ H); a Page under each target is its
+own `screen` row.

@@ -11,6 +11,7 @@ Bankai-consuming repository is built and reviewed against (`CON-13`).
 | UX baseline | [`handbooks/ux-baseline.md`](handbooks/ux-baseline.md) | `UX-{n}` |
 | Release policy | [`handbooks/release-policy.md`](handbooks/release-policy.md) | `REL-{n}` |
 | Quality baseline | [`handbooks/quality-baseline.md`](handbooks/quality-baseline.md) | `QA-{n}` |
+| Spec authoring | [`handbooks/spec/authoring.md`](handbooks/spec/authoring.md) | `SP-{n}` |
 | SwiftUI + TCA stack | [`handbooks/stacks/swiftui-tca-uzf-v2/`](handbooks/stacks/swiftui-tca-uzf-v2/) | `SW-{n}` |
 | Jetpack Compose stack | [`handbooks/stacks/compose-uzf-v2/`](handbooks/stacks/compose-uzf-v2/) | `KT-{n}` |
 | React + Redux Toolkit stack | [`handbooks/stacks/react-uzf-v1/`](handbooks/stacks/react-uzf-v1/) | `RC-{n}` |

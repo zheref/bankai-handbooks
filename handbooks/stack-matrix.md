@@ -42,6 +42,7 @@ Two namespaces meet in this file and are **not** the same:
 | Data security / privacy / compliance | [`security-baseline.md`](security-baseline.md) (`SEC-{n}`) |
 | Versioning & release | [`release-policy.md`](release-policy.md) (`REL-{n}`) |
 | Pre-release quality & performance | [`quality-baseline.md`](quality-baseline.md) (`QA-{n}`) |
+| Family specification (a spec repository's folders) | [`spec/authoring.md`](spec/authoring.md) (`SP-{n}`); each client stack's *Appendix — capture reader* maps its files onto the capture row kinds |
 | Supabase backend (single-owner shared schema) | Migration discipline `UZF-25` + RLS/authz `SEC-6`/`SEC-7`. A product family's shared schema has exactly **one owning repo** (typically the first client, until a dedicated backend repo takes it over). `supabase/migrations/` is canon **only** in that owner; every other app is a **client** that references the schema and never authors a second copy of the migrations. |
 
 ## How resolution works

@@ -9,7 +9,7 @@ merges, pushes `main`, or edits a rule "in passing" from another repository.
 ## Adding or changing a rule
 
 1. **Find the family.** `CON-` (constitution), `UZF-` (`handbooks/uzf-core.md`), `SEC-`, `UX-`,
-   `REL-`, `QA-` (the general handbooks), or one stack's `SW-` / `KT-` / `RC-` / `BC-`
+   `REL-`, `QA-` (the general handbooks), `SP-` (`handbooks/spec/authoring.md`), or one stack's `SW-` / `KT-` / `RC-` / `BC-`
    (`handbooks/stacks/<id>/architecture.md`, expanded operationally in `rules/`).
 2. **Take the next number.** Numbers are append-only and stable. Never renumber or re-purpose;
    mark a superseded rule `RETIRED` in place. A stack rule names the `UZF-{n}` parent it refines

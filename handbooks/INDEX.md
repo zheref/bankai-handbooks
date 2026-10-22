@@ -22,6 +22,16 @@ product-authored canon, no fallback source. Mechanics:
 | [`release-policy.md`](release-policy.md) | Versioning, changelog, store submission | `REL-{n}` | Release work (Natsu); version decisions |
 | [`quality-baseline.md`](quality-baseline.md) | Adversarial QA method, E2E tooling by scenario, performance budgets, process-machinery testing, the pre-release gate | `QA-{n}` | Pre-release quality verification (Ichigo — Hollow: local, on-demand, **advisory**, `QA-20`/`QA-21`); any adversarial/E2E or performance test authoring. The CI gate (Rukia) is future work |
 
+## Load when authoring or reviewing a family specification
+
+A product family's private spec repository (`specs/<nnn>-<slug>/`) is written and reviewed against
+this handbook, beside the always-load set. A product repository's own build or review does not load
+it; the spec it cites does.
+
+| File | Scope | Rule-ID prefix | When to load |
+| --- | --- | --- | --- |
+| [`spec/authoring.md`](spec/authoring.md) | Spec authoring: citation-or-marker, confidence tiers, fenced source data, platform-neutral vocabulary, parity handlings, the living spec, bounded clarification, reviewer-owned checklists; the capture row kinds | `SP-{n}` | Every capture, amendment, convergence or review of a spec folder; any issue, PR or test that quotes one. Each stack handbook's *Appendix — capture reader* maps that stack's files onto its row kinds |
+
 ## Load exactly ONE stack handbook (per repo's scenario)
 
 Selected by the repo's `bankai_scenario` (see [`stack-matrix.md`](stack-matrix.md)). Never
