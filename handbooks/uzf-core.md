@@ -144,8 +144,56 @@ module files) are noted in the PR.
 or a top-level entry point has a spec at `docs/Features/<Name>.md` describing
 behavior only — no file paths, type names, or framework terms — with diagrams as
 fenced mermaid code blocks inside the spec. Behavior changes update the spec (and
-its diagram) in the same change. One flag = one spec; the spec body is
-cross-platform canon, platform notes go under a `## <Platform> notes` subsection.
+its diagram) in the same change — for a member of a product family, the spec
+repository's revision lands first and the change regenerates the pointer at the new
+tag (clause (a)). One flag = one spec; the spec body is cross-platform canon.
+Clauses (a)–(f) were added at `v0.9` (zheref/hatsu ROSTER HR-6, HR-4, HR-11) and
+bind every stack's feature-documentation rule file; their severities are in the
+*Severity guidance* table below:
+
+- **(a) A product family's spec repository is the canon.** A repository declares a
+  product family through `families[]` in its `nen/repos.json`; the planes (Hatsu and
+  Nen) own that declaration and read it, and this canon only branches on it
+  (zheref/hatsu ROSTER HR-16). For a repository that declares a product family, the
+  product canon for a feature is the family's private spec repository:
+  `specs/<nnn>-<slug>/spec.md`, read at a tag. The member's `docs/Features/<Name>.md`
+  becomes a **generated pointer**: it carries that folder path and the tag it was
+  generated from, and states no behavior of its own. It is never a second canon, and
+  behavior written into a pointer is a finding. A behavior change revises the spec first, in the spec repository, and the member's
+  change regenerates the pointer at the new tag. A repository that declares no
+  family keeps `docs/Features/<Name>.md` as its canon, under the rest of this rule.
+- **(b) The spec decides; code never breaks the tie.** When the spec and the code
+  disagree, the code does not win. Either the code is fixed to the spec, or the spec
+  is revised first in its own reviewed change and the code then follows it. Any line
+  in consumer canon that makes the code the tie-breaker over the spec is retired.
+- **(c) The input to a port is the spec.** A port of a feature to another platform
+  reads the spec, never another platform's implementation. Where the spec is silent,
+  the gap is an open question on the spec (clause (f)), not a reading of the other
+  platform's code.
+- **(d) Acceptance and success criteria.** The spec carries `## Acceptance`, with one
+  `AC-{n}` row per criterion, each written as Given / When / Then, and
+  `## Success criteria`, with one `SC-{n}` row per criterion, each measurable: a
+  threshold and how it is measured. Ids are stable within the spec and never reused,
+  so an issue and a pull request can cite them.
+- **(e) Platform notes are a disposition table.** A feature shipped on more than one
+  platform records its platform notes under `## Platform notes` as a table with one row per `AC-{n}` id (and
+  per `FR-{n}` id where the spec numbers its requirements), one column per platform
+  holding a disposition — `port`, `adapt` or `n/a` — a **Category** column naming
+  the `UX-13` category the row's difference falls in, and a rationale column that is
+  required for every `adapt` and `n/a`. This clause owns the row obligation: every
+  id has a row, and a requirement a platform does not carry MUST appear as an `n/a`
+  row with its rationale; a requirement missing from the table is silently dropped,
+  which is a finding. `adapt` is admitted only in the categories `UX-13` lists as
+  adapt; every other category is a mirror category, where a disposition is `port`,
+  or `n/a` with its rationale, and never `adapt`. An `AC-{n}` row's outcome always
+  mirrors: on an `AC-{n}` row, `adapt` names only the `UX-13` adapt category through
+  which the platform reaches that same outcome.
+- **(f) Every open question is an `OQ-{n}` row with an owner and a date.** Open
+  questions take the one shape HR-4 rules for an unresolved question in an issue: a
+  table under `## Open questions` with one `OQ-{n}` row per question and the owner and
+  the date raised as columns. A question in any other shape, or with no owner or no
+  date, is a finding. An answered question leaves the table, its id is never reused,
+  and the spec states the answer as behavior.
 
 **UZF-22 — New user-visible behavior is flag-wrapped.** New user-visible behavior
 is reachable only behind a feature flag registered in the platform's flag
@@ -155,7 +203,9 @@ refactors and bug fixes need no flag.
 **UZF-23 — Session-completion gate.** A change is not "done" until: touched-file
 coverage ≥80% with the UZF-18 minimums met, the feature spec + mermaid diagram are
 current, and new user-visible behavior is flag-wrapped. Refuse to declare done
-with any item open unless the author waives it in writing with a reason. The
+with any item open unless the author waives it in writing with a reason. In a
+product-family member the spec conjunct is met by the spec repository's revision
+landing first and the pointer regenerated at its tag (`UZF-21(a)`). The
 UZF-26 visual evidence is **not** a freely-waivable coverage item — its only two
 sanctioned incompletenesses are the UZF-26 *bankai-mode timed deferral* (no
 snapshot-capable runner yet — a tracked IOU with a mandatory true-up) and a
@@ -387,8 +437,8 @@ mechanism above instead.
 | Severity | Use when a finding… |
 | --- | --- |
 | `critical` | Breaks the architecture's guarantees: an inline effect, a service call in a reducer, a wire type in State, a thrown effect, or the renderer importing the store framework. Blocks merge. |
-| `high` | Violates a rule in a way that causes bugs or untestability (missing completion-event Result, no Producer for an effect, no stateful/pure split). Blocks merge. |
-| `medium` | Real deviation with a clear fix and limited blast radius (missing Selector purity, a Shifter that should be inlined or vice-versa). |
+| `high` | Violates a rule in a way that causes bugs or untestability (missing completion-event Result, no Producer for an effect, no stateful/pure split); behavior written into a family pointer (`UZF-21(a)`); a requirement missing from the platform-notes table, or a platform that differs from the spec in a business rule or the data lifecycle (`UZF-21(b)`/`(e)`). Blocks merge. |
+| `medium` | Real deviation with a clear fix and limited blast radius (missing Selector purity, a Shifter that should be inlined or vice-versa); a platform-notes row with no category, an `adapt` or `n/a` with no rationale, or an `adapt` outside a `UX-13` adapt category (`UZF-21(e)`); an open question not an `OQ-{n}` row, or with no owner or date (`UZF-21(f)`). |
 | `low` / `nit` | Style-adjacent within the rules; never blocks. |
 
 A finding that no `UZF-{n}` (or the applicable stack rule) covers is a

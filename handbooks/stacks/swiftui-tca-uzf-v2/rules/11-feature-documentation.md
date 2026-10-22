@@ -8,6 +8,26 @@ the operational "where and how" for this repo family. Every feature gets a livin
 designer, PM, or engineer from any platform (iOS, macOS, Android, web) — *what* the
 feature does and *how* its parts relate — without ever opening Swift code.
 
+## Product families: the doc becomes a pointer (UZF-21(a))
+
+When this repository declares a product family, the canon for a feature is the
+family's private spec repository — `specs/<nnn>-<slug>/spec.md`, read at a tag — and
+`docs/Features/<FeatureName>.md` is a **generated pointer** in this shape: the folder
+path and the tag, and no behavior.
+
+```markdown
+# <Feature Name>
+
+> Generated pointer, not canon (UZF-21(a)). The canon for this feature is
+> `specs/<nnn>-<slug>/` in the family's spec repository, at tag `<tag>`.
+```
+
+The skeleton, the acceptance and success criteria, the platform notes and the open
+questions below then belong to that spec, not to the pointer. Never write behavior
+into a pointer: revise the spec first, in the spec repository, then regenerate the
+pointer at the new tag. A repository that declares no family keeps its feature docs
+as the canon, exactly as the rest of this file describes.
+
 ## Repo-specific placeholders
 
 | Token | Illustrative example |
@@ -98,8 +118,38 @@ event, shared model, navigation).
 ## Out of scope
 What this feature does NOT do. Crucial when other docs link in.
 
+## Acceptance
+One row per criterion, each a Given / When / Then; ids are stable for the life of
+the spec and never reused (UZF-21(d)).
+- AC-1 — Given <context>, when <action>, then <observable outcome>.
+
+## Success criteria
+Measurable outcomes, each with a threshold and how it is measured (UZF-21(d)).
+- SC-1 — <outcome>: <threshold>, measured by <method>.
+
+## Platform notes
+Only for a feature shipped on more than one platform (UZF-21(e)): one row per
+AC-{n} id (and FR-{n} id where requirements are numbered), a disposition per
+platform — port · adapt · n/a — the UX-13 category the row's difference falls
+in, and a rationale for every adapt and n/a. A requirement a platform does not carry
+is an n/a row, never a missing row. adapt is admitted only in a category UX-13 lists
+as adapt; a mirror category is port, or n/a with its rationale, and never adapt. An
+AC row's outcome always mirrors: adapt names only the adapt category through which
+the platform reaches that outcome.
+
+| Id | Category (UX-13) | iOS | macOS | Android | Rationale |
+| --- | --- | --- | --- | --- | --- |
+| AC-1 | business rules | port | port | n/a | The fictional Acme Android app has no widget surface. |
+| AC-2 | back behaviour | port | adapt | port | The AC-2 outcome mirrors; macOS reaches it through its own back behaviour. |
+
 ## Open questions
-Bulleted list. Each is owned by a person and dated.
+One OQ-{n} row per question (the HR-4 shape), with its owner and the date it was
+raised; a question in another shape, or with no owner or no date, is a finding
+(UZF-21(f)). An answered question leaves the table and its id is never reused.
+
+| Id | Question | Owner | Raised |
+| --- | --- | --- | --- |
+| OQ-1 | <question> | <name> | YYYY-MM-DD |
 ```
 
 The spec is **stateful**: it should always describe the *current* product behavior,
@@ -167,18 +217,30 @@ markdown.
    should be `YYYY-MM-DD-<short-label>.png`.
 3. **Cross-link.** Use relative links (`./Search.md`) when referencing siblings —
    they live in the same folder.
-4. **One source of truth.** If the spec disagrees with the code, the spec is wrong.
-   Fix the spec immediately.
+4. **The spec is the contract (UZF-21(b)).** If the spec and the code disagree,
+   the code does not win: fix the code to the spec, or revise the spec first in
+   its own reviewed change and then change the code. *(This item replaces the
+   retired line "if the spec disagrees with the code, the spec is wrong", which
+   made the code the tie-breaker.)*
 5. **One PR = code + docs.** Behavior changes to a flagged feature **must** update
    its doc in the same PR (UZF-23). See [12-session-completion-checklist.md](12-session-completion-checklist.md).
+   In a product-family member the doc is a pointer: the spec revision lands
+   first in the spec repository, and the PR regenerates the pointer at the new
+   tag (UZF-21(a)).
 6. **Keep it short.** A typical feature doc is 1–3 pages of markdown plus one
    diagram. If it grows past five pages, split into sub-features or move detail into
    other docs.
+7. **A port reads the spec, never another platform's code (UZF-21(c)).** When a
+   feature is ported to this platform, the input is the spec. Another platform's
+   implementation is never the requirement; where the spec is silent, add an
+   owned, dated open question to the spec instead of reading the gap from code.
 
 ## What NOT to put in feature docs
 
 - Implementation snippets, file paths, type names. Those rot. Use git.
-- Test plans. Tests are in the test target and are the source of truth.
+- Test plans. Tests are in the test target and are the source of truth for *how*
+  a behavior is tested; *what* the behavior must be is the spec's (UZF-21(b)).
+  Acceptance rows state outcomes, not test steps.
 - Release / sprint notes. Those belong in the changelog.
 - Design tokens or palette specs. Those live in the design system.
 - Stale or aspirational behavior. If it's not shipped, mark it explicitly as
@@ -194,6 +256,7 @@ markdown.
 - **Feature documentation** describes *what the product does*.
 
 If a feature crosses platforms (iOS + Android + web), the same
-`docs/Features/<FeatureName>.md` file is the canon (UZF-21). Platform-specific notes
-go inline in the spec under an `## iOS notes` / `## Android notes` subsection. We do
-not duplicate feature docs per platform.
+`docs/Features/<FeatureName>.md` file is the canon (UZF-21) — or, in a product
+family, the spec repository's spec it points to (UZF-21(a)). Platform-specific
+notes go in that one spec's `## Platform notes` disposition table (UZF-21(e)), one
+row per acceptance or requirement id. We do not duplicate feature docs per platform.
