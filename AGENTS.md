@@ -21,7 +21,7 @@ Layout: [`handbooks/INDEX.md`](handbooks/INDEX.md) (the manifest), [`handbooks/R
 (the set, versioning, how canon reaches a consumer), [`handbooks/stack-matrix.md`](handbooks/stack-matrix.md)
 (scenario registry), `handbooks/<general>.md`, `handbooks/stacks/<scenario>/{README,architecture}.md`
 + `rules/`, `handbooks/ports/` (port rulings: `INDEX.md` + `<from>--<to>.md` pair files, rendered
-by `hatsu:bankai-rule`), [`CONSTITUTION.md`](CONSTITUTION.md), [`CONVENTIONS.md`](CONVENTIONS.md) (the shared
+from Hatsu's `templates/ports/`), [`CONSTITUTION.md`](CONSTITUTION.md), [`CONVENTIONS.md`](CONVENTIONS.md) (the shared
 agent conventions — output header, stamp, verdict line, object notation, gates, discipline),
 [`MIGRATION.md`](MIGRATION.md), [`LICENSE`](LICENSE) (MIT),
 [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md).
@@ -36,8 +36,9 @@ agent conventions — output header, stamp, verdict line, object notation, gates
 4. **Register what you add.** A new handbook or scenario is a row in `INDEX.md` and
    `stack-matrix.md` and, for a stack, a `stacks/<id>/` folder with `README.md`, `architecture.md`,
    `rules/` and `rules/placeholders.md`. A product stack's PR also adds its directed port pair files,
-   empty, and their `handbooks/ports/INDEX.md` rows at a ruling count of `0` (`CON-13`, *Port
-   rulings*); `hatsu:bankai-rule` appends rows on the first ruling. Note the migration for
+   empty, their `handbooks/ports/INDEX.md` rows at a ruling count of `0` and their rows in
+   `handbooks/INDEX.md`'s *Port rulings* table; pair files exist at every tag from `v0.11.0`
+   (`CON-13`, *Port rulings*), and `hatsu:bankai-rule` appends rows on the first ruling. Note the migration for
    consumers in the PR.
 5. **Stack rule files are product-agnostic.** Anything repo-specific is a `{{TOKEN}}` declared in
    that stack's `rules/placeholders.md`. Example values are fictional (`Acme`, `octocat`, `UTC`).

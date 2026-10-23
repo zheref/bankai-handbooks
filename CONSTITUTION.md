@@ -440,7 +440,7 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
     repinning a consumer to it.**
   - **Port rulings (`PT-{n}`).** The port-rulings family — `handbooks/ports/`: its `INDEX.md`
     and a `<from>--<to>.md` pair file for every directed pair of product stacks, present at
-    every tag from handbook set v0.11 and empty until its first ruling: `hatsu:bankai-rule`
+    every tag from `v0.11.0` and empty until its first ruling: `hatsu:bankai-rule`
     appends the rows on that ruling and never creates the file, so a present file with no
     ruling row means *no rulings yet* — is canon from the
     same single source, and is read **beside** the general handbooks and the one

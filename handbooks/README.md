@@ -82,8 +82,10 @@ land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep t
    consumer registry and regenerate their mirrors. MINOR version bump.
 4. A product stack adds its directed port pair files in the same PR, one per direction to and
    from every other product stack, each empty (no ruling rows), with its row in
-   [`ports/INDEX.md`](ports/INDEX.md) at a ruling count of `0`; `hatsu:bankai-rule` appends
-   rows on the first ruling and never creates a file.
+   [`ports/INDEX.md`](ports/INDEX.md) at a ruling count of `0` and its row in
+   [`INDEX.md`](INDEX.md)'s *Port rulings* table; `hatsu:bankai-rule` appends rows on the first
+   ruling and never creates a file. Pair files exist at every tag from `v0.11.0` (`CON-13`,
+   *Port rulings*).
 
 ## Versioning
 

@@ -21,8 +21,9 @@ merges, pushes `main`, or edits a rule "in passing" from another repository.
    `handbooks/stack-matrix.md`; a new stack → `stacks/<id>/README.md`, `architecture.md`,
    `rules/`, `rules/placeholders.md`. `handbooks/README.md`'s family table when the enforcer or
    scope statement changes. A product stack also adds its directed port pair files, empty,
-   with their `handbooks/ports/INDEX.md` rows at a ruling count of `0`; `hatsu:bankai-rule`
-   appends rows on the first ruling (`CON-13`, *Port rulings*).
+   with their `handbooks/ports/INDEX.md` rows at a ruling count of `0` and their rows in
+   `handbooks/INDEX.md`'s *Port rulings* table; pair files exist at every tag from `v0.11.0`,
+   and `hatsu:bankai-rule` appends rows on the first ruling (`CON-13`, *Port rulings*).
 5. **Bump `handbooks/VERSION`.** New rule / clarified wording → **MINOR**. Changed meaning,
    removal, prefix restructure → **MAJOR** (pre-1.0 carve-out: a breaking restructure may ride a
    MINOR while the taxonomy stabilises — say so in the PR).
