@@ -41,7 +41,7 @@ load a stack folder other than the repo's own.
 | --- | --- | --- | --- |
 | `swiftui-tca-uzf-v2` | [`stacks/swiftui-tca-uzf-v2/architecture.md`](stacks/swiftui-tca-uzf-v2/architecture.md) | `SW-{n}` | iOS/macOS · SwiftUI + TCA |
 | `compose-uzf-v2` | [`stacks/compose-uzf-v2/architecture.md`](stacks/compose-uzf-v2/architecture.md) | `KT-{n}` | Android · Compose + Hilt |
-| `react-uzf-v1` | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Web + Mobile · Next.js/Expo + RTK |
+| `react-uzf-v1` | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Web + Mobile · Next.js/Expo + RTK; on scaffold scenario 2A also Desktop · Electron (the desktop shell is a render target of this stack, `RC-64`–`RC-69` in [`stacks/react-uzf-v1/rules/14-electron-desktop-shell.md`](stacks/react-uzf-v1/rules/14-electron-desktop-shell.md), not a scenario of its own) |
 | `bankai-machinery` | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Bankai machinery (CI plane, CLI, local plugin) · self-review, no product code. **Renamed at v0.6** (its former id was the reference implementation's own repository name); the `BC-` prefix is kept so every existing citation stays valid. |
 
 ## Port rulings (read beside a stack handbook, never alone)

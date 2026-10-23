@@ -30,7 +30,7 @@ one stack folder** for the repo under review.
 | [`stack-matrix.md`](stack-matrix.md) | — | Naruto | general | Scenario registry + how the right stack folder is resolved per repo. |
 | [`stacks/swiftui-tca-uzf-v2/architecture.md`](stacks/swiftui-tca-uzf-v2/architecture.md) | `SW-{n}` | Sasuke | stack | SwiftUI + TCA bindings (iOS/macOS). Refines `UZF-{n}`. |
 | [`stacks/compose-uzf-v2/architecture.md`](stacks/compose-uzf-v2/architecture.md) | `KT-{n}` | Sasuke | stack | Jetpack Compose + Hilt bindings (Android). Refines `UZF-{n}`. |
-| [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Sasuke | stack | React 19 + Redux Toolkit bindings (Next.js web + Expo mobile, one shared state tier). Refines `UZF-{n}`. |
+| [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Sasuke | stack | React 19 + Redux Toolkit bindings (Next.js web + Expo mobile, one shared state tier; on scaffold scenario 2A also the Electron desktop shell, `RC-64`–`RC-69`). Refines `UZF-{n}`. |
 | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Sasuke / Tenma | stack (self-review) | Framework **machinery** review rules — reusable-workflow/permission hygiene, CI trust/fork-safety, lane/authorship. Machinery repos only; **no product code**. Scenario id `bankai-machinery` (renamed at v0.6; `BC-` kept). |
 | [`ports/INDEX.md`](ports/INDEX.md) | `PT-{n}` (one global counter) | `hatsu:bankai-rule` writes; the architecture reviewer reviews | port (pair) | Port rulings: one directed pair file per pair of product stacks — how a `<from>` rule or concept is realised on the `<to>` stack. Read beside the always-load set and the target's stack handbook, never alone. |
 

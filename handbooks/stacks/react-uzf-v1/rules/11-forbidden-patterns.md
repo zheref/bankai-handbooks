@@ -14,16 +14,17 @@ Recall the key model: React web ({{WEB_APP}}, Next.js App Router) and React
 Native/Expo ({{MOBILE_APP}}) **share** the RTK state-logic tier — slices,
 reducers, selectors, shifters, producers, services, mappers — in
 `{{CORE_PACKAGE}}`. Only the UI render layer differs, so most entries below apply
-identically to both render targets; where one is render-target-specific it says so.
+identically to every render target present; where one is render-target-specific it says so.
 
 ## Repo-specific placeholders
 
 | Token | Illustrative value | What it is |
 | --- | --- | --- |
 | `{{PROJECT_NAME}}` | `Acme` | Product/brand name; also the prefix of product-specific type names. |
-| `{{CORE_PACKAGE}}` | `packages/core` | Shared package holding the RTK state-logic tier (slices, selectors, shifters, producers, services, mappers) consumed by both `{{WEB_APP}}` and `{{MOBILE_APP}}`. Must stay render-target-free — no JSX, no `next/*`, no `expo-*` imports. |
+| `{{CORE_PACKAGE}}` | `packages/core` | Shared package holding the RTK state-logic tier (slices, selectors, shifters, producers, services, mappers) consumed by every render target present — `{{WEB_APP}}`, `{{MOBILE_APP}}` and, on 2A, `{{DESKTOP_APP}}`. Must stay render-target-free — no JSX, no `next/*`, no `expo-*` imports. |
 | `{{WEB_APP}}` | `apps/web` | Next.js App Router application — the web render target. |
 | `{{MOBILE_APP}}` | `apps/mobile` | Expo Router application — the React Native (New Arch + Hermes) render target. |
+| `{{DESKTOP_APP}}` | `apps/desktop` | Electron application — the desktop render target, on scaffold scenario 2A only (`14-electron-desktop-shell.md`). |
 
 > A token that appears in a rule file MUST be listed here. Adding or renaming a
 > token is a Naruto G4 change (keep the generator's substitution map in lockstep).
@@ -49,6 +50,54 @@ identically to both render targets; where one is render-target-specific it says 
 - A "god" Page/Feature file mixing more than one slice's worth of reducer logic.
   Almost always means a missing child feature or a missing Producer split.
   (UZF-6, RC-32)
+
+## Electron desktop shell (`{{DESKTOP_APP}}`, scenario 2A only)
+
+- A slice, Selector, reducer or store in the Electron main process, or
+  `{{CORE_PACKAGE}}` importing `electron`, `electron-updater`, `better-sqlite3`
+  or a Node built-in. The UZF loop runs in the renderer; the main process hosts
+  Services, never state. (UZF-6, UZF-16, RC-50, RC-64)
+- A `BrowserWindow` created with `nodeIntegration: true`,
+  `contextIsolation: false`, `sandbox: false`, `webSecurity: false`,
+  `allowRunningInsecureContent: true`, a remote-module shim, or without
+  a preload — on any window, dev-only included. (SEC-9, RC-65)
+- `ipcRenderer`, `require` or any Node module exposed through `contextBridge`;
+  a bridge function that forwards a caller-supplied channel name; a channel
+  name typed as a string literal instead of read from the closed
+  `DesktopChannels` map in `src/shared/channels.ts`, or that map declared in
+  a `.d.ts`. (UZF-16, RC-65)
+- A Page or Fragment calling `window.desktop.*`, registering an IPC
+  subscription, importing a router directly, or calling `NavigationService`
+  itself — the bridge is reached only from a Producer through a
+  `live…Service.desktop.ts`, and desktop navigation only by a Producer through
+  `NavigationService`. (UZF-16, RC-3, RC-15, RC-17, RC-64, RC-65)
+- An `ipcMain.handle` handler or a migration without its ≥3 scenario tests.
+  (UZF-18, RC-64)
+- A store or slice in a second `BrowserWindow` — a further window is a passive
+  view or re-reads a main-process Repository. (UZF-6, RC-64)
+- A desktop Page importing `{{APP_PACKAGE}}`, Tamagui, Solito or
+  `react-native-web`; a `react-native-web` alias or a `.web.ts` extension in
+  the renderer's `electron.vite.config.ts`; Chakra UI imported into
+  `{{APP_PACKAGE}}`, `{{CORE_PACKAGE}}` or `{{MOBILE_APP}}`. The desktop
+  render layer is desktop-owned and Chakra UI is React DOM only. (UZF-4,
+  RC-50, RC-64)
+- A desktop Page or Fragment without its ≥3 Storybook stories, a desktop
+  Component with store access, or a desktop surface that is not
+  keyboard-operable with a visible focus state. (UZF-18, RC-11, RC-14, UX-1,
+  UX-2)
+- A `Database` opened in the renderer or the preload, a second handle beside
+  `main/storage/LocalStoreRepository.ts`, a string-built SQL statement, or a credential
+  stored in SQLite / `localStorage` instead of `safeStorage`. (SEC-2, SEC-7,
+  RC-68)
+- An unsigned or unnotarized artifact uploaded as a release or served by the
+  update feed; a signing credential outside CI secrets; a second packager or
+  updater beside electron-builder / electron-updater; an update feed over
+  plain HTTP or computed from user input; `quitAndInstall()` without a user
+  intent event or a quit. (SEC-1, SEC-4, SEC-14, RC-66, RC-67)
+- A second `BrowserWindow` opened by a feature outside its feature spec; a
+  renderer `Worker` holding feature state; a performance number from a dev
+  build or with DevTools attached presented as a budget check. (QA-12, QA-15,
+  RC-69)
 
 ## React & hooks
 

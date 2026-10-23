@@ -18,9 +18,11 @@ indexed in full in [`README.md`](README.md) (Phase C-1b harmonization pass of
   display name in devtools).
 - `{{CORE_PACKAGE}}` — the shared RTK state-logic package (`packages/core`
   or similar) vending slices, selectors, shifters, producers, services,
-  mappers, and models to **both** render targets.
+  mappers, and models to **every** render target present.
 - `{{WEB_APP}}` — the Next.js 15 App Router app directory.
 - `{{MOBILE_APP}}` — the Expo Router app directory (RN 0.84, New Arch + Hermes).
+- `{{DESKTOP_APP}}` — the Electron app directory, present on scaffold scenario 2A
+  only (`14-electron-desktop-shell.md`).
 - `{{APP_PACKAGE}}` — the shared cross-render-target render-layer **folder**
   (workspace member) holding Page/Fragment/Adapter/Component bodies built from
   Tamagui + Solito (canonical per `08-monorepo-and-sharing.md`'s `RC-51`; see
@@ -40,7 +42,8 @@ illustrative, not repo config. `Redux Toolkit`, `RTK Query`, `Tamagui`,
 
 **RC-49 — The RTK state-logic quartet is shared; only the render layer splits by
 platform.** (This is the same workspace-topology rule `08-monorepo-and-sharing.md`
-states as "exactly four workspace members"; see also `RC-50` for
+states as a per-scenario member set — four on scenario 1, with `{{DESKTOP_APP}}`
+the member scenario 2A adds; see also `RC-50` for
 `{{CORE_PACKAGE}}`'s own ownership contract.) Unlike a single-render-target stack (Compose/SwiftUI), a React
 feature's Feature/Selectors/Shifters/Producer live **once**, in
 `{{CORE_PACKAGE}}`, consumed identically by Next.js and Expo. `UZF-6`
@@ -73,7 +76,8 @@ one app never reaches into another feature's folder in `{{CORE_PACKAGE}}`.
 > `Page`/`Fragment`/`Adapter`/`Component` bodies themselves in `{{APP_PACKAGE}}`
 > (`packages/app/features/<feature>/`, per `08-monorepo-and-sharing.md`'s
 > `RC-51`), leaving each app's route file a one-line Solito re-export. This is
-> already one of the stack's exactly-four workspace members (`RC-49`) — it is
+> already one of the stack's scenario-1 workspace members (`RC-49`; on scenario 2A
+> `{{DESKTOP_APP}}` joins the set) — it is
 > **not** a fifth, optional package; the only thing left genuinely optional is
 > *how much* of the render layer a given feature chooses to share this way vs.
 > writing a thin platform-specific entry per target.

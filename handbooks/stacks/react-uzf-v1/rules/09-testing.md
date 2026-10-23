@@ -18,10 +18,11 @@ so example values below are illustrative, not fixed.
 
 | Token | Illustrative value | What it is |
 | --- | --- | --- |
-| `{{CORE_PACKAGE}}` | `packages/core` | Shared RTK state-logic tier — slices, selectors, shifters, producers, services, mappers, models — **and their unit tests**. Written and tested once for both render targets (KEY MODEL). |
+| `{{CORE_PACKAGE}}` | `packages/core` | Shared RTK state-logic tier — slices, selectors, shifters, producers, services, mappers, models — **and their unit tests**. Written and tested once for every render target present (KEY MODEL). |
 | `{{WEB_APP}}` | `apps/web` | Next.js App Router app. Hosts the web render layer (Server Page + Client Wrapper + the UZF `…Page`/`…Fragment`) and its Storybook stories / render tests, run under jsdom via Vitest. |
 | `{{MOBILE_APP}}` | `apps/mobile` | Expo app. Hosts the native render layer and its Storybook-for-RN stories / render tests, run under Jest (`jest-expo` preset) + React Native Testing Library. |
-| `{{CI_TEST_WORKFLOW}}` | `.github/workflows/test.yml` | CI workflow running the Vitest suite (`{{CORE_PACKAGE}}` + `{{WEB_APP}}`), the Jest suite (`{{MOBILE_APP}}`), and the Storybook test-runner. |
+| `{{DESKTOP_APP}}` | `apps/desktop` | Electron app, scaffold scenario 2A only (`14-electron-desktop-shell.md`). Hosts the desktop renderer shell and the main process; both tested under Vitest, the E2E path under Playwright's Electron driver. |
+| `{{CI_TEST_WORKFLOW}}` | `.github/workflows/test.yml` | CI workflow running the Vitest suite (`{{CORE_PACKAGE}}` + `{{WEB_APP}}`), the Jest suite (`{{MOBILE_APP}}`), the Storybook test-runner, and on scenario 2A the `{{DESKTOP_APP}}` renderer and main-process Vitest suites plus the Playwright Electron E2E (`RC-64`, `QA-7`). |
 
 ---
 
@@ -49,7 +50,15 @@ code, mock/DI files) in the PR.
   `@testing-library/jest-dom`.
 - **`{{MOBILE_APP}}`**: Jest with the `jest-expo` preset,
   `@testing-library/react-native`.
-- **Both**: Storybook 8 (`@storybook/react` for `{{WEB_APP}}`,
+- **`{{DESKTOP_APP}}`** (scenario 2A only): Vitest + `@testing-library/react`
+  under jsdom for the desktop-owned Chakra UI Pages and Fragments (as
+  `{{WEB_APP}}`, with `window.desktop` stubbed and the Chakra provider in the
+  test wrapper), `@storybook/react` with the Vite builder for their ≥3 stories
+  (`RC-11`), and Vitest for the main process (the
+  `ipcMain.handle` handlers under a stubbed `ipcMain`, migrations against a
+  throwaway database — ≥3 per handler and migration, `RC-64`); the E2E path is
+  Playwright's Electron driver (`quality-baseline.md`, `QA-7`).
+- **Every render target present**: Storybook 8 (`@storybook/react` for `{{WEB_APP}}`,
   `@storybook/react-native` — or the platform's on-device story loader — for
   `{{MOBILE_APP}}`), plus the Storybook test-runner (or Chromatic) to execute
   and capture every story in CI.

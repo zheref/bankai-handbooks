@@ -6,7 +6,7 @@
 > handbook.** `RC-1` through `RC-20` below are canonical and stable — every
 > other file in this `rules/` folder, plus the stack's condensed
 > `../architecture.md`, cites these same numbers rather than minting its own.
-> The full registry (`RC-1`…`RC-63`, including every rule contributed by other
+> The full registry (`RC-1`…`RC-69`, including every rule contributed by other
 > files) lives in [`README.md`](README.md).
 
 **Applies to:** every React 19 + Redux Toolkit feature in {{PROJECT_NAME}}, across
@@ -47,7 +47,7 @@ Expo Router, Next.js 15 App Router, Solito v5, Tamagui, `reselect`, Immer, and
 RTK Query are canonical stack primitives — they are part of the architecture,
 not per-product choices.
 
-> **One stack family, two render targets.** {{WEB_APP}} and {{MOBILE_APP}} share
+> **One stack family, every render target present (two on scenario 1; 2A adds the Electron desktop shell, `RC-64`).** {{WEB_APP}} and {{MOBILE_APP}} share
 > the **entire** RTK state-logic tier in {{CORE_PACKAGE}} — slices, reducers,
 > selectors, shifters, producers/thunks, services, mappers. Only the UI render
 > layer differs: {{WEB_APP}} renders DOM via Next.js, {{MOBILE_APP}} renders
