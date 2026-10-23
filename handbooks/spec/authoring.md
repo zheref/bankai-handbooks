@@ -196,10 +196,12 @@ one of those citations.
 
 ## D. Clarification and the maintainer's words
 
-**SP-11 — Clarification is bounded.** A capture or amendment run asks the maintainer one round
-of at most **five** questions, and at most **three** successive runs ask, unless the spec
-repository declares `spec.clarify.maxQuestions` (questions in a run's one round) /
-`spec.clarify.maxRounds` (successive runs) otherwise. A question beyond the bound is not asked; its line stays a marker. A question
+**SP-11 — Clarification is bounded.** A capture or amendment run asks the maintainer in
+rounds: one run asks at most **three** rounds, each a batch of at most **five** questions, and
+then stops, unless the spec repository declares `spec.clarify.maxQuestions` (questions in one
+round) / `spec.clarify.maxRounds` (rounds in one run) otherwise. `maxRounds` bounds the rounds
+inside a run, never the number of successive runs (amended at `v0.13`; the reading of one round
+per run is reversed). A question beyond the bound is not asked; its line stays a marker. A question
 the maintainer declines or leaves unanswered stays a marker, and that marker blocks dispatch of
 the requirement it sits on — only that requirement, never the folder. *Why:* an unbounded agent
 interrogates; an agent that stops asking without saying so fills the gaps itself. The bound makes
