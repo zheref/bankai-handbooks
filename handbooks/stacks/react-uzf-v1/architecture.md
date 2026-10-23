@@ -1,7 +1,7 @@
 # Stack: `react-uzf-v1` — React + Redux Toolkit UZF Architecture Handbook
 
 Concrete UZF bindings for **React 19, Redux Toolkit 2.x, TypeScript 5.5+**, spanning
-**two render targets that share one state-logic tier**: **Next.js 15 (App Router)**
+**the render targets that share one state-logic tier** (two on scaffold scenario 1; 2A adds an Electron desktop shell, § H): **Next.js 15 (App Router)**
 for web and **Expo SDK 55 (RN 0.84, New Architecture + Hermes) with Expo Router**
 for mobile. Sasuke cites these as `RC-{n}`. They **implement** the cross-platform
 rules in [`../../uzf-core.md`](../../uzf-core.md) (`UZF-{n}`) with React/RTK
@@ -16,7 +16,7 @@ append-only.
 > [`rules/00-architecture-overview.md`](rules/00-architecture-overview.md) — `RC-1`
 > through `RC-20` there are authoritative and never renumbered. Every other rule
 > file in `rules/`, and this condensed file, cite that same registry; the full
-> `RC-1…RC-63` table (with each rule's source file and any folded-in duplicates)
+> `RC-1…RC-69` table (with each rule's source file and any folded-in duplicates)
 > lives in [`rules/README.md`](rules/README.md). This file is a condensed,
 > cross-cutting **overview** of the registry — it does not mint its own numbers.
 
@@ -169,13 +169,14 @@ added without a matching test in the same PR (`RC-12`) · an action name missing
 `userDid…`/`on…`/`childXDelegated…` prefix (`RC-2`) · a Fragment dispatching an
 async thunk (`RC-15`) · an RTK Query hook called from a Page or Fragment (`RC-16`).
 
-## H. The family model: shared core, two render targets (implements UZF-6, UZF-4, UZF-16)
+## H. The family model: shared core, every render target present (implements UZF-6, UZF-4, UZF-16)
 
-`react-uzf-v1` is **one architecture family realized on two render targets that
-share a single state-logic tier**. A feature's slice, selectors, shifters,
+`react-uzf-v1` is **one architecture family realized on several render targets that
+share a single state-logic tier** — two on scaffold scenario 1, three on scenario 2A.
+A feature's slice, selectors, shifters,
 Producer, services, and mappers are authored **once**, in `{{CORE_PACKAGE}}`
 (e.g. `packages/core`, published as `@{{PROJECT_NAME}}/core` and consumed as a
-workspace dependency), and imported unmodified by both:
+workspace dependency), and imported unmodified by every target present:
 
 - **`{{WEB_APP}}`** — a Next.js 15 App Router web app (its own render-target
   rules cover the Server/Client Component split, `NavigationService` over
@@ -184,6 +185,16 @@ workspace dependency), and imported unmodified by both:
   on Expo Router (its own render-target rules cover the route-file boundary,
   `NavigationService` over Expo Router's imperative `router`, and
   `EXPO_PUBLIC_*` environment scoping).
+- **`{{DESKTOP_APP}}`** — on scaffold scenario 2A only, an Electron shell whose
+  renderer renders a **desktop-owned Chakra UI Page layer** over the same
+  `{{CORE_PACKAGE}}` — never the Tamagui `{{APP_PACKAGE}}` Page (the
+  maintainer's ruling of 2026-10-22; its own
+  render-target rules, `RC-64`–`RC-69` in
+  [`rules/14-electron-desktop-shell.md`](rules/14-electron-desktop-shell.md),
+  cover the main/preload/renderer process boundary, IPC as a Service behind a
+  context-isolated bridge, packaging and signing, auto-update, main-process
+  storage and the Chromium-shell performance budget). A third render target, not
+  a third scenario — the decision is recorded in `rules/README.md`.
 
 Only the **render layer** differs. `RC-61`'s Page/Fragment/Component tier is
 written once per target — JSX host primitives, navigation, and platform theming
@@ -201,10 +212,11 @@ needs from the platform (navigation, environment, secure storage, system APIs) i
 a Service/Provider interface declared in `{{CORE_PACKAGE}}`; each render target
 supplies its own `live…Service` binding, registered into `configureStore`'s
 `extraArgument` at that target's composition root (`app/providers.tsx` on
-Next.js, `app/_layout.tsx` on Expo). This is the same rule
+Next.js, `app/_layout.tsx` on Expo, `renderer/main.tsx` on the 2A Electron
+shell). This is the same rule
 `08-monorepo-and-sharing.md` states as its package-ownership contract.
 
-**RC-62 — Render-target entry files are thin shells.** Both render targets front
+**RC-62 — Render-target entry files are thin shells.** Every render target present fronts
 the shared UZF Page with a framework-native entry file that does **only**
 param/prop resolution and rendering — never slice logic, never a direct Service
 call. On Next.js this is the passive Server `page.tsx` plus its
