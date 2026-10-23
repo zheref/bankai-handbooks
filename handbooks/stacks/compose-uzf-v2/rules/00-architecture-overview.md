@@ -121,7 +121,7 @@ The canonical UZF base (`Feature<…>`, `Outcome`, `Sink`, `Effect`) and cross-f
 10. **Never** let a Page take more than `(state, onEvent, modifier)` or import `androidx.navigation`; never call `hiltViewModel()` in something called a "Page." (KT-1, KT-2.)
 11. **Never** ship a `@Composable` Page with fewer than 3 `@Preview`s, or hard-code colors/sizes/typography in a Page. (KT-13, KT-14.)
 12. **Never** inject a `…Store` / `…Resolver` / `…Holder` into a Feature without an `interface …Service` or `interface …Provider`; never leave an empty `…Repository`. (KT-10, KT-11.)
-13. **Never** use `LiveData`, `runBlocking` (outside tests), or `GlobalScope.launch` in new code. (KT-4.)
+13. **Never** use `LiveData`, `runBlocking` (outside tests), or `GlobalScope.launch` in new code. (KT-26.)
 14. **Never** change architecture rules (suffixes, layering, artifact responsibilities) locally, and **never hand-edit the generated `.claude/rules/` mirror.** This handbook in `bankai-handbooks` is the canonical source (CON-13); propose changes as a PR there (G4 — the human merges) and let the mirror generator regenerate every surface's mirror.
 
 ## Glossary at a glance (UZF ↔ Jetpack Compose)
