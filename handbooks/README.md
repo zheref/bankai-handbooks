@@ -80,8 +80,10 @@ land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep t
    refining `UZF-{n}`) and a `README.md` facet card.
 3. Consumer repos on that stack record `<scenario-id>` as their scenario in the
    consumer registry and regenerate their mirrors. MINOR version bump.
-4. A product stack's port pair files are not added here: `hatsu:bankai-rule` creates each one on
-   first use and registers it in [`ports/INDEX.md`](ports/INDEX.md) then.
+4. A product stack adds its directed port pair files in the same PR, one per direction to and
+   from every other product stack, each empty (no ruling rows), with its row in
+   [`ports/INDEX.md`](ports/INDEX.md) at a ruling count of `0`; `hatsu:bankai-rule` appends
+   rows on the first ruling and never creates a file.
 
 ## Versioning
 

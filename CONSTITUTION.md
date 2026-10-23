@@ -439,8 +439,10 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
     empty source (the RB-PR-#78 incident: pinned to a canon-less tag). **Cut the tag *before*
     repinning a consumer to it.**
   - **Port rulings (`PT-{n}`).** The port-rulings family — `handbooks/ports/`: its `INDEX.md`
-    and a `<from>--<to>.md` pair file for each directed pair of product stacks that has rulings
-    (created on first use by `hatsu:bankai-rule`) — is canon from the
+    and a `<from>--<to>.md` pair file for every directed pair of product stacks, present at
+    every tag from handbook set v0.11 and empty until its first ruling: `hatsu:bankai-rule`
+    appends the rows on that ruling and never creates the file, so a present file with no
+    ruling row means *no rulings yet* — is canon from the
     same single source, and is read **beside** the general handbooks and the one
     `stacks/<scenario>/` handbook, **never alone and never as a second stack**: a pair file is
     read beside the *target* stack, and the source stack's ids it names are cited, never loaded
