@@ -146,7 +146,8 @@ SC 1.4.1` (use of color).
 than one platform — a port, or a product family's shared spec (`UZF-21`) — exactly these
 categories **adapt** to the target platform's own conventions (its HIG, Material or web
 platform guidance): **navigation pattern, back behaviour, sheets and dialogs, haptics,
-permission prompts, typography scale**. In the UI, these categories **mirror** the spec
+permission prompts, typography scale, gestures, theming, system controls** (the last three
+added at `v0.13`). In the UI, these categories **mirror** the spec
 unchanged on every platform: **copy, and the acceptance outcome as the user sees it**.
 Business rules and the data lifecycle also mirror, but they are not UI: their
 divergence is owned by `UZF-21(b)`/`(e)` in the architecture reviewer's lane, never by

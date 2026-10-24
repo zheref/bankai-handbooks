@@ -5,8 +5,8 @@ The **single source** for the Jetpack Compose + Hilt UZF stack's operational rul
 Compose twin of `swiftui-tca-uzf-v2`. A consumer repo on this stack carries a **generated, pinned
 mirror** of these files in each agent surface's rules location (`.claude/rules/` for Claude Code, and
 the Codex / Cursor / Antigravity equivalents), never hand-authored, so every agent loads them
-natively (history: `<reference-repo>#34`, Phase B). The condensed, ID'd form lives in
-[`../architecture.md`](../architecture.md) (`KT-{n}`) and the cross-platform concepts in
+natively (history: `<reference-repo>#34`, Phase B). The condensed, ID'd form and the one `KT-{n}` registry live in
+[`../architecture.md`](../architecture.md) and the cross-platform concepts in
 [`../../../uzf-core.md`](../../../uzf-core.md) (`UZF-{n}`); these rule files are the operational
 expansion. Repo-specific values are [`{{TOKEN}}` placeholders](placeholders.md).
 
@@ -62,49 +62,21 @@ Producers→`KT-8`, Services→`KT-10`, Repositories→`KT-11`, Providers→`KT-
 Theme→`KT-14`, Hilt module→`KT-17`, Mocks→`KT-18`, …). Genuinely new topic-specific rules that `00` does
 **not** cover were appended sequentially as **`KT-19…KT-29`** (boundary/Mapper/Model, the testing stack,
 Hilt bootstrap/binding/injection, structured concurrency, `LaunchedEffect` keys, runtime portability, and
-the feature-doc rules). No rule was dropped, and no number maps to two rules. Downstream `architecture.md`
-must adopt **this** sequence as its append-only registry.
+the feature-doc rules). No rule was dropped, and no number maps to two rules. `architecture.md`
+adopted **this** sequence as its append-only registry at `v0.13` and now holds it.
 
-## KT-n rule registry (canonical)
+## KT-n rule registry
 
-Compose-stack rules. Each *tightens but never contradicts* its `UZF-{n}` parent (shown in parens);
-`KT`-only rules encode Compose/coroutine/Hilt mechanics with no cross-platform parent.
-
-| Code | Rule | Parent |
-|---|---|---|
-| `KT-1` | Page/Screen split: a stateless `Page` (passive renderer) plus a stateful `Screen` — the Screen is the sole wrapper that hoists the Feature, collects `State`/`uiEffects`, routes effects, and carries no layout | UZF-4/UZF-7 |
-| `KT-2` | Pages are navigation- and DI-free: signature is exactly `(state, onEvent, modifier)`; no `hiltViewModel()`, no `androidx.navigation`/`androidx.hilt` imports | UZF-4 |
-| `KT-3` | One `@HiltViewModel <Name>Feature` per screen, extends the shared `Feature<State,Event,UiEffect>` base, injected via `hiltViewModel()`, never `remember{}`/`viewModel()`-instantiated | UZF-1 |
-| `KT-4` | `State` is an immutable `val`-only data class exposed as `StateFlow`, read only via `collectAsStateWithLifecycle()` (never `collectAsState()`); holds domain types only (no `Throwable`/wire types) | UZF-8/UZF-9 |
-| `KT-5` | Single mutating entry point `final onEvent` (+ `send` alias) and a 100%-pure `reduce(state,event): Outcome<…>` with four cases (`Idle`/`UpdatedState`/`NewEffect`/`Both`) via the `idle`/`updatedState`/`newEffect`/`outcome` factories; no public mutators, no I/O/throw/signal in `reduce` | UZF-2/UZF-12/UZF-13 |
-| `KT-6` | Shifters: every `copy` goes through a named `with…`/`as…` Shifter; inline `copy(...)`/`updateState{}` in `reduce` forbidden | UZF-10 |
-| `KT-7` | Selectors: derived read-only projections named `select…`, read via `derivedStateOf` | UZF-11 |
-| `KT-8` | Producers & effects: `@Inject`-constructed effect factories returning `FlowEffect`/`ThunkEffect` (plain-verb names, no I/O outside a Producer); effects run in `viewModelScope`, re-enter through `onEvent` as a single `Result` event and never set state; failures become `…Exception` via a Mapper, never thrown | UZF-3/UZF-14/UZF-15 |
-| `KT-9` | `UiEffect` is a separate sealed type on `SharedFlow(replay = 0, extraBufferCapacity ≥ 1, DROP_OLDEST)`, never a `Channel`, never `replay ≥ 1`; emitted only via `sink.signal` from a `ThunkEffect` | UZF-4 |
-| `KT-10` | Services: `interface` + `suspend fun(): Result<…>` + `Live` (`@Inject`) + `Stubbed` (sealed `Scenario`), `@Binds`-bound, stateless; promote helper objects/Stores/Resolvers/Holders to a Service | UZF-16 |
-| `KT-11` | Repositories coordinate ≥2 Services and hold the only service-tier mutable state; empty (single-Service pass-through) Repositories forbidden | UZF-16 |
-| `KT-12` | Providers are synchronous-only (`fun current()`); a reducer may call a Provider, never a Service | UZF-16 |
-| `KT-13` | ≥3 `@Preview` per Page sourced from a `<Feature>Mocks.kt` canned-State file (never inline State), mirrored 1:1 by Paparazzi snapshots | UZF-18/UZF-26 |
-| `KT-14` | `MaterialTheme`/`AppTheme` applied once at the root; colors/spacing/type come from the theme, never hardcoded in a Page/Fragment | UZF-4 |
-| `KT-15` | Navigation is routed via a `NavigationService`/Screen callback (`UiEffect`→callback); a reducer never touches `NavController` | UZF-4 |
-| `KT-16` | No global event/toast/snackbar buses for feature concerns; view-tier signals (including `Toast`/`Snackbar`) travel on the feature's `UiEffect` and are routed by the Screen (narrow carve-out: orphan singletons / cross-cutting telemetry) | — |
-| `KT-17` | One Hilt module per feature folder (`<Feature>Module.kt`); cross-feature/infra wiring (Retrofit/OkHttp/Room DB) lives in `library/di/` | — |
-| `KT-18` | A `<Feature>Mocks.kt` per feature vends canned `State` variants, and every domain Model ships ≥7 `mock*` fixtures in a `// region Mocks` (Detekt-strippable) band; State is built from Mocks, never inline | UZF-18 |
-| `KT-19` | Boundary: wire & persistence types (Retrofit `Api`/`…Response`, Room `Database`/`Entity`/DAO, `Endpoint`, `@Query`/`@Upsert`) live behind a Service; feature code never imports `retrofit2.*`/`androidx.room.*`/`SharedPreferences` | UZF-17 |
-| `KT-20` | Mapper: a DI-registered pure class with `toDomain`/`fromDomain`/`toException`; raw `…Error : Throwable()` translates to domain `…Exception(message, recoverable)` at the boundary — reducers never throw | UZF-17 |
-| `KT-21` | Domain Models hold domain types only and carry no framework annotations (`@Serializable`/`@Entity`/`@SerialName` belong on `Response`/`Entity`); one model per file | UZF-8 |
-| `KT-22` | Testing: JUnit5 + Turbine + Paparazzi; ≥3 cases per Shifter/Selector/Producer/Mapper-fn and per Feature `Event`; `runTest` not `runBlocking`; Paparazzi+JUnit not Robolectric; no long-lived `@Ignore`; no `BuildConfig.DEBUG` test-outcome branching | UZF-18/UZF-19/UZF-20 |
-| `KT-23` | Hilt bootstrap: a `@HiltAndroidApp {{PROJECT_NAME}}Application` and a single `@AndroidEntryPoint` Activity hosting the Compose tree | UZF-16 |
-| `KT-24` | Binding conventions: `@InstallIn`-scoped modules, `@Binds` over `@Provides`, `@Singleton` only where required; `Stubbed` swapped via `@TestInstallIn`; no empty modules | UZF-16 |
-| `KT-25` | Constructor injection only: no field injection, no Service Locator | — |
-| `KT-26` | Structured concurrency only: no `LiveData`, no `runBlocking` outside tests, no `GlobalScope.launch`, no `viewModelScope.launch { service.x() }` inside a Feature | — |
-| `KT-27` | Key one-shot effects on a real `LaunchedEffect` key, never `LaunchedEffect(true)`/`(Unit)` | — |
-| `KT-28` | Runtime portability: the UZF runtime (`Feature`, `Outcome`, `Effect` `OfFlow`/`OfThunk`, `Sink`, `FlowEffect`/`ThunkEffect`/`Dispatch` aliases) lives under `{{UZF_RUNTIME_ROOT}}/uzf` and stays product-agnostic | UZF-6 |
-| `KT-29` | Feature docs never name Compose/Kotlin framework identifiers (`@HiltViewModel`, `@Composable`, `StateFlow`, `Feature`, `Outcome`, `Producer`, `ThunkEffect`, …); tests live under `{{TEST_TARGET}}`/`{{ANDROID_TEST_ROOT}}` and design tokens under `{{THEME_ROOT}}`, not in docs | UZF-21/UZF-23 |
+The registry is [`../architecture.md` → *KT-n rule registry (canonical)*](../architecture.md#kt-n-rule-registry-canonical):
+the stack's one append-only `KT-{n}` list, `KT-1`…`KT-29`, with each rule's text and its
+`UZF-{n}` parent in its section heading. These rule files cite it and mint no id. Until `v0.12`
+the list was a table in this file and `architecture.md`'s own bold rules used an older numbering;
+at `v0.13` the list moved there unchanged, and its numbering note maps the old ids
+(zheref/bankai-handbooks#11).
 
 ## Shared-UZF ↔ Compose mapping
 
-Every `KT-n` above tightens a cross-platform `UZF-n` (from [`uzf-core.md`](../../../uzf-core.md))
+Every `KT-n` in the registry tightens a cross-platform `UZF-n` (from [`uzf-core.md`](../../../uzf-core.md))
 except the `KT`-only rules, which encode stack mechanics with no cross-platform parent.
 
 | Cross-platform (`UZF-n`) | Compose tightening (`KT-n`) |
@@ -132,9 +104,8 @@ except the `KT`-only rules, which encode stack mechanics with no cross-platform 
 
 ## Open items / follow-ups (Naruto G4)
 
-1. **`architecture.md` (KT registry) + `uzf-core.md`** for `compose-uzf-v2` must adopt the `KT-1…29`
-   sequence above as append-only, superseding the three conflicting local numberings the source files
-   carried.
+1. **Resolved at `v0.13`.** `architecture.md` holds the `KT-1…29` sequence as the one append-only
+   registry, superseding the conflicting local numberings (zheref/bankai-handbooks#11).
 2. **UZF re-tagging.** Files 00/01 deliberately did **not** fabricate `UZF-n` numbers for
    single-entry-point / pure-reduce / standalone Shifters/Selectors where they couldn't verify a
    canonical number against `uzf-core.md`; those got `KT` codes. A pass with `uzf-core.md` in hand may

@@ -1,4 +1,4 @@
-<!-- Canonical source: zheref/bankai-handbooks · handbooks/ports/react-uzf-v1--compose-uzf-v2.md · rendered by hatsu:bankai-rule from templates/ports/pair.md -->
+<!-- Canonical source: zheref/bankai-handbooks · handbooks/ports/react-uzf-v1--compose-uzf-v2.md · rendered from Hatsu's templates/ports/pair.md -->
 <!-- pair: react-uzf-v1 -> compose-uzf-v2 · prefix: PT · numbering: global (one counter across every pair file of the rulings directory; zheref/hatsu docs/ROSTER.md § Rulings of 2026-10-21 — the port rule prefix (HA#355)) -->
 
 # Port rulings — `react-uzf-v1` → `compose-uzf-v2`
