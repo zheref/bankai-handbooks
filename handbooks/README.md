@@ -81,11 +81,11 @@ land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep t
 3. Consumer repos on that stack record `<scenario-id>` as their scenario in the
    consumer registry and regenerate their mirrors. MINOR version bump.
 4. A product stack adds its directed port pair files in the same PR, one per direction to and
-   from every other product stack, each empty (no ruling rows), with its row in
-   [`ports/INDEX.md`](ports/INDEX.md) at a ruling count of `0` and its row in
-   [`INDEX.md`](INDEX.md)'s *Port rulings* table; `hatsu:bankai-rule` appends rows on the first
-   ruling and never creates a file. Pair files exist at every tag from `v0.11.0` (`CON-13`,
-   *Port rulings*).
+   from every other product stack. Each is rendered empty (no ruling rows) from Hatsu's
+   `templates/ports/pair.md` as a scaffold, and its marker names that template. The PR also adds
+   each file's row in [`ports/INDEX.md`](ports/INDEX.md) at a ruling count of `0` and its row in
+   [`INDEX.md`](INDEX.md)'s *Port rulings* table. `hatsu:bankai-rule` appends rows on the first
+   ruling and never creates a file (`CON-13`, *Port rulings*).
 
 ## Versioning
 

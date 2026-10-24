@@ -200,8 +200,8 @@ one of those citations.
 rounds: one run asks at most **three** rounds, each a batch of at most **five** questions, and
 then stops, unless the spec repository declares `spec.clarify.maxQuestions` (questions in one
 round) / `spec.clarify.maxRounds` (rounds in one run) otherwise. `maxRounds` bounds the rounds
-inside a run, never the number of successive runs (amended at `v0.13`; the reading of one round
-per run is reversed). A question beyond the bound is not asked; its line stays a marker. A question
+inside a run, never the number of successive runs (amended at `v0.13`, BH#20 Q4; the reading of one
+round per run is reversed). A question beyond the bound is not asked; its line stays a marker. A question
 the maintainer declines or leaves unanswered stays a marker, and that marker blocks dispatch of
 the requirement it sits on — only that requirement, never the folder. *Why:* an unbounded agent
 interrogates; an agent that stops asking without saying so fills the gaps itself. The bound makes

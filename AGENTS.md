@@ -36,10 +36,10 @@ agent conventions — output header, stamp, verdict line, object notation, gates
 4. **Register what you add.** A new handbook or scenario is a row in `INDEX.md` and
    `stack-matrix.md` and, for a stack, a `stacks/<id>/` folder with `README.md`, `architecture.md`,
    `rules/` and `rules/placeholders.md`. A product stack's PR also adds its directed port pair files,
-   empty, their `handbooks/ports/INDEX.md` rows at a ruling count of `0` and their rows in
-   `handbooks/INDEX.md`'s *Port rulings* table; pair files exist at every tag from `v0.11.0`
-   (`CON-13`, *Port rulings*), and `hatsu:bankai-rule` appends rows on the first ruling. Note the migration for
-   consumers in the PR.
+   rendered empty from Hatsu's `templates/ports/pair.md` (a scaffold, not a ruling write), their
+   `handbooks/ports/INDEX.md` rows at a ruling count of `0` and their rows in `handbooks/INDEX.md`'s
+   *Port rulings* table; `hatsu:bankai-rule` appends rows on the first ruling (`CON-13`, *Port
+   rulings*). Note the migration for consumers in the PR.
 5. **Stack rule files are product-agnostic.** Anything repo-specific is a `{{TOKEN}}` declared in
    that stack's `rules/placeholders.md`. Example values are fictional (`Acme`, `octocat`, `UTC`).
    A token used in a rule file and missing from `placeholders.md` is a bug.

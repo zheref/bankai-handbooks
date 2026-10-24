@@ -5,7 +5,7 @@
 Every project on this stack provides **one** shared, **project-agnostic** base class plus a
 small algebraic-types module under `library/uzf/`. Every per-screen subclass inherits that base
 class; every reducer returns the same `Outcome` shape. **The reducer is 100 % pure** — it has no
-escape hatches (`KT-3`, `KT-5`, `KT-5`; implements `UZF-1`, `UZF-2`, `UZF-12`).
+escape hatches (`KT-3`, `KT-5`; implements `UZF-1`, `UZF-2`, `UZF-12`).
 
 > The base class is called `Feature` (no product prefix). The concrete view-model class per
 > screen is `<Name>Feature` (e.g. `HomeFeature`, `SettingsFeature`) and is obtained in Composables
@@ -243,7 +243,7 @@ abstract class Feature<State : Any, Event : Any, UiEffect : Any>(
 The base wires the whole loop: it holds the single `MutableStateFlow`, exposes state as a
 read-only `StateFlow`, runs `reduce` at the one integration point, and executes both `FlowEffect`
 and `ThunkEffect` forms transparently in `viewModelScope` — dispatching every result back through
-`onEvent` (`KT-5`, `KT-5`, `KT-8`; implements `UZF-2`, `UZF-12`, `UZF-14`). The `UiEffect`
+`onEvent` (`KT-5`, `KT-8`; implements `UZF-2`, `UZF-12`, `UZF-14`). The `UiEffect`
 `SharedFlow` is configured `replay = 0`, `extraBufferCapacity ≥ 1`, `onBufferOverflow =
 DROP_OLDEST` — never a `Channel`, never `replay ≥ 1` (`KT-9`; implements `UZF-15`).
 

@@ -34,10 +34,10 @@ before `v0.13` maps as follows:
 | `KT-5` Shifters | `KT-6` |
 | `KT-6` Selectors | `KT-7` |
 | `KT-7` Producers, `KT-8` effects | `KT-8` |
-| `KT-9` `UiEffect` | `KT-9` (unchanged) |
+| `KT-9` `UiEffect`, with the `NavController` and `Toast` bans | `KT-9`, `KT-15`, `KT-16` |
 | `KT-10` Page/Screen split | `KT-1`, `KT-2` |
 | `KT-11` previews and hard-coded design values | `KT-13`, `KT-14` |
-| `KT-12` Services, Repositories, Providers | `KT-10`, `KT-11`, `KT-12`, `KT-19` |
+| `KT-12` Services, Repositories, Providers and their Hilt binding | `KT-10`, `KT-11`, `KT-12`, `KT-19`, `KT-24` |
 | `KT-13` Mapper and the wire/storage boundary | `KT-19`, `KT-20`, `KT-21` |
 | `KT-14` testing | `KT-22`, `KT-18` |
 
@@ -122,7 +122,7 @@ Repositories are forbidden.
 **KT-12 — Providers are synchronous-only.** A `Provider` (`fun current(): X`) is the only
 service-tier type `reduce` may read; a reducer never calls a Service.
 
-## F. Previews, theme, navigation and signals (implements UZF-4, UZF-18, UZF-26)
+## F. Previews, theme, navigation and signals (implements UZF-4, UZF-18, UZF-26; `KT-16` is Compose-only)
 
 **KT-13 — ≥3 `@Preview` per Page, from `<Name>Mocks`.** Loading / loaded / errored
 variations minimum, built from `<Name>Mocks.kt` (never inline `State` in a
@@ -136,14 +136,14 @@ Page or Fragment.
 `NavigationService` or a Screen callback (`UiEffect` → callback); `reduce` never touches a
 `NavController`.
 
-**KT-16 — No global event buses for feature concerns.** View-tier signals (including
+**KT-16 — No global event buses for feature concerns** (Compose-only, no `UZF` parent). View-tier signals (including
 `Toast`/`Snackbar`) travel on the feature's `UiEffect` and are routed by the Screen;
 Composables never call `Toast.makeText(...)`. Narrow carve-out: orphan app-wide singletons
 with no UI parent, and cross-cutting telemetry.
 
-## G. DI layering and mocks (implements UZF-18)
+## G. DI layering and mocks (`KT-18` implements UZF-18; `KT-17` is Compose-only)
 
-**KT-17 — One Hilt module per feature folder.** `<Feature>Module.kt`; cross-feature and infra
+**KT-17 — One Hilt module per feature folder** (Compose-only, no `UZF` parent). `<Feature>Module.kt`; cross-feature and infra
 wiring (Retrofit/OkHttp/Room DB) lives in `library/di/`.
 
 **KT-18 — A `<Feature>Mocks.kt` per feature, and ≥7 `mock*` fixtures per domain Model.**
@@ -174,7 +174,7 @@ count. Forbidden: Robolectric, `runBlocking` (use `runTest`), inline-`State` tes
 hitting Retrofit/Room without a `Stubbed` boundary, a long-lived `@Ignore`, and
 `BuildConfig.DEBUG` test-outcome branching.
 
-## J. Hilt and coroutines (implements UZF-16)
+## J. Hilt and coroutines (`KT-23`, `KT-24` implement UZF-16; `KT-25`–`KT-27` are Compose-only)
 
 **KT-23 — Hilt bootstrap.** A `@HiltAndroidApp {{PROJECT_NAME}}Application` and a single
 `@AndroidEntryPoint` Activity hosting the Compose tree.
@@ -183,12 +183,12 @@ hitting Retrofit/Room without a `Stubbed` boundary, a long-lived `@Ignore`, and
 `@Singleton` only where required; a `Stubbed` impl is swapped in via `@TestInstallIn`; no
 empty modules.
 
-**KT-25 — Constructor injection only.** No field injection, no Service Locator.
+**KT-25 — Constructor injection only.** (Compose-only, no `UZF` parent.) No field injection, no Service Locator.
 
-**KT-26 — Structured concurrency only.** No `LiveData`, no `runBlocking` outside tests, no
+**KT-26 — Structured concurrency only.** (Compose-only, no `UZF` parent.) No `LiveData`, no `runBlocking` outside tests, no
 `GlobalScope.launch`, no `viewModelScope.launch { service.x() }` inside a Feature.
 
-**KT-27 — Key one-shot effects on a real `LaunchedEffect` key.** Never `LaunchedEffect(true)`
+**KT-27 — Key one-shot effects on a real `LaunchedEffect` key.** (Compose-only, no `UZF` parent.) Never `LaunchedEffect(true)`
 or `LaunchedEffect(Unit)`.
 
 ## K. Runtime and feature docs (implements UZF-6, UZF-21, UZF-23)
