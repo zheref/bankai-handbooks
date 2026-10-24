@@ -20,8 +20,10 @@ merges, pushes `main`, or edits a rule "in passing" from another repository.
 4. **Wire the manifests.** A new handbook or scenario → a row in `handbooks/INDEX.md` and
    `handbooks/stack-matrix.md`; a new stack → `stacks/<id>/README.md`, `architecture.md`,
    `rules/`, `rules/placeholders.md`. `handbooks/README.md`'s family table when the enforcer or
-   scope statement changes. A product stack's port pair files are created on first use by
-   `hatsu:bankai-rule` and registered in `handbooks/ports/INDEX.md` then.
+   scope statement changes. A product stack also adds its directed port pair files, rendered
+   empty from Hatsu's `templates/ports/pair.md`, with their `handbooks/ports/INDEX.md` rows at a
+   ruling count of `0` and their rows in `handbooks/INDEX.md`'s *Port rulings* table;
+   `hatsu:bankai-rule` appends rows on the first ruling (`CON-13`, *Port rulings*).
 5. **Bump `handbooks/VERSION`.** New rule / clarified wording → **MINOR**. Changed meaning,
    removal, prefix restructure → **MAJOR** (pre-1.0 carve-out: a breaking restructure may ride a
    MINOR while the taxonomy stabilises — say so in the PR).

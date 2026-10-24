@@ -2,7 +2,7 @@
 
 Concrete UZF bindings for **Android Jetpack Compose, Kotlin 2.1+, Hilt,
 Coroutines/Flow, Supabase/Ktor + Room**, under **UZF v2**. Sasuke cites these as
-`KT-{n}`. They **implement** the cross-platform rules in
+`KT-{n}`, from the one registry below. They **implement** the cross-platform rules in
 [`../../uzf-core.md`](../../uzf-core.md) (`UZF-{n}`) with Compose/Kotlin specifics —
 a `KT-{n}` rule may tighten but never contradict its `UZF-{n}` parent.
 
@@ -13,104 +13,196 @@ append-only.
 
 ---
 
-## A. The Feature (Interactor) & event loop (implements UZF-1, UZF-2, UZF-12)
+## KT-n rule registry (canonical)
 
-**KT-1 — One `Feature` subclass per screen.** `<Name>Feature`, `@HiltViewModel`,
+This file is the stack's **one append-only `KT-{n}` list**. The bold rules below are the registry:
+one id, one meaning, never renumbered, never reused. The rule files under [`rules/`](rules/) expand
+these ids and cite them; they mint none. A new Compose rule takes the next free number here
+(`KT-30` onward).
+
+*Numbering note (re-pointed at `v0.13`, zheref/bankai-handbooks#11).* Up to `v0.12` this file's bold
+rules carried an older numbering, `KT-1`…`KT-14`, while `rules/README.md` held the canonical
+`KT-1`…`KT-29` registry. Under the same id the two gave different meanings. The registry's numbering
+was kept and moved here, so no rule file's citation changed. A citation read against this file
+before `v0.13` maps as follows:
+
+| Old id (this file, ≤ `v0.12`) | Registry id now |
+|---|---|
+| `KT-1` Feature subclass | `KT-3` |
+| `KT-2` single `onEvent` entry point, `KT-3` pure `reduce` | `KT-5` |
+| `KT-4` State | `KT-4` (unchanged) |
+| `KT-5` Shifters | `KT-6` |
+| `KT-6` Selectors | `KT-7` |
+| `KT-7` Producers, `KT-8` effects | `KT-8` |
+| `KT-9` `UiEffect`, with the `NavController` and `Toast` bans | `KT-9`, `KT-15`, `KT-16` |
+| `KT-10` Page/Screen split | `KT-1`, `KT-2` |
+| `KT-11` previews and hard-coded design values | `KT-13`, `KT-14` |
+| `KT-12` Services, Repositories, Providers and their Hilt binding | `KT-10`, `KT-11`, `KT-12`, `KT-19`, `KT-24` |
+| `KT-13` Mapper and the wire/storage boundary | `KT-19`, `KT-20`, `KT-21` |
+| `KT-14` testing | `KT-22`, `KT-18` |
+
+The history of how the three earlier local numberings were reconciled into this sequence stays in
+[`rules/README.md` → *KT-n numbering collision*](rules/README.md#kt-n-numbering-collision--how-it-was-resolved).
+
+## A. Renderer and Feature (implements UZF-1, UZF-4, UZF-7)
+
+**KT-1 — Pages are stateless; Screens are the stateful wrapper.** A feature with UI is a
+stateless `@Composable fun <Name>Page(state, onEvent, modifier)` (a passive renderer, preview-
+and Paparazzi-testable) plus a stateful `@Composable fun <Name>Screen(...)`. The Screen is the
+only Hilt/lifecycle/nav touchpoint: it `hiltViewModel()`s the Feature (named `store`),
+`collectAsStateWithLifecycle()`s the state, routes `uiEffects` to callbacks, passes
+`store::send`, and carries no layout. Unlike SwiftUI `SW-1`, `…Page.kt` is kept.
+
+**KT-2 — Pages are navigation- and DI-free.** A Page's parameters are **exactly**
+`(state, onEvent, modifier)`, and it imports no `androidx.navigation.*`/`androidx.hilt.*`/
+`androidx.lifecycle.*`/`dagger.*`/`Context`. A `@Composable` that calls `hiltViewModel()` or
+navigates is a Screen, not a Page.
+
+**KT-3 — One `Feature` subclass per screen.** `<Name>Feature`, `@HiltViewModel`,
 inheriting the project-agnostic `Feature<State, Event, UiEffect>` base from
 `library/uzf/`; obtained in Composables via `hiltViewModel()`. Never
-`remember { …Feature() }`.
+`remember { …Feature() }` or `viewModel()`.
 
-**KT-2 — Single `onEvent(event)` entry point.** `onEvent` (and its view-layer alias
-`send`) are `final` on the base; subclasses implement only
-`protected fun reduce(state, event)`. There is exactly one entry point — no
-`setX(...)`/`markY(...)`/`clearZ(...)` and no second `onEvent`-style method.
-
-**KT-3 — `reduce` is 100% pure and returns an `Outcome`.** `reduce` returns
-`Outcome<State, Event, UiEffect>` (`Idle` / `UpdatedState` / `NewEffect` / `Both`,
-built via the `idle`/`updatedState`/`newEffect`/`outcome` factories — never
-hand-constructed). No `viewModelScope`, no `signal`, no I/O, no `_state.value =`
-inside `reduce`.
-
-## B. State, Shifters, Selectors (implements UZF-8, UZF-9, UZF-10, UZF-11)
+## B. State and the event loop (implements UZF-2, UZF-8, UZF-9, UZF-12, UZF-13)
 
 **KT-4 — State is an immutable `data class` exposed as `StateFlow`.** `val`-only,
 domain types only (never `Throwable`, `Response<…>`, `Job`, or mutable
 collections). Read in Compose with `collectAsStateWithLifecycle()`, never plain
 `collectAsState()`.
 
-**KT-5 — Shifters are `State.with…()` copy functions.** In `<Name>Shifters.kt`:
-`fun State.with…(): State = copy(...)`, one concern each, `with…`/`as…` prefixes.
-No inline `copy(...)` in `reduce`. Shifters read no clock/random/env/service.
+**KT-5 — A single `onEvent(event)` entry point, and a 100% pure `reduce` that returns an
+`Outcome`.** `onEvent` (and its view-layer alias `send`) are `final` on the base; subclasses
+implement only `protected fun reduce(state, event)`. There is exactly one entry point — no
+`setX(...)`/`markY(...)`/`clearZ(...)` and no second `onEvent`-style method. `reduce` returns
+`Outcome<State, Event, UiEffect>` (`Idle` / `UpdatedState` / `NewEffect` / `Both`, built via
+the `idle`/`updatedState`/`newEffect`/`outcome` factories — never hand-constructed). No
+`viewModelScope`, no `signal`, no I/O, no `_state.value =` inside `reduce`.
 
-**KT-6 — Selectors are top-level `select…(state)` functions.** In
+## C. Shifters and Selectors (implements UZF-10, UZF-11)
+
+**KT-6 — Shifters are `State.with…()` copy functions.** In `<Name>Shifters.kt`:
+`fun State.with…(): State = copy(...)`, one concern each, `with…`/`as…` prefixes.
+No inline `copy(...)` or `updateState {}` in `reduce`. Shifters read no clock/random/env/service.
+
+**KT-7 — Selectors are top-level `select…(state)` functions.** In
 `<Name>Selectors.kt`, consumed in Compose via
 `remember(state) { derivedStateOf { select…(state) } }` to scope recomposition.
 
-## C. Effects, Producers & UiEffect (implements UZF-3, UZF-13, UZF-14, UZF-15)
+## D. Effects, Producers and UiEffect (implements UZF-3, UZF-4, UZF-14, UZF-15)
 
-**KT-7 — Producers are injected effect factories.** `<Name>Producer.kt`,
-`@Inject`, plain-verb methods returning `FlowEffect<E>` (`Effect.OfFlow`) or
-`ThunkEffect<E,U>` (`Effect.OfThunk`, a `suspend (Sink<E,U>) -> Unit`). No I/O at
-construction; never touch Retrofit/Room/SharedPreferences/`Context` outside a
-Producer.
-
-**KT-8 — Effects run in `viewModelScope` and dispatch back through `onEvent`.** An
-effect never sets `_state.value` directly; it calls `sink.dispatch(On…Completed(result))`.
-Producers never throw — failures are `Result.failure` dispatched as a single
-`On…Completed(Result)` event (success/failure encoded in the `Result`, per UZF-3),
-translated to `<Name>Exception` via a Mapper inside `reduce`.
+**KT-8 — Producers are injected effect factories; effects run in `viewModelScope` and dispatch
+back through `onEvent`.** `<Name>Producer.kt`, `@Inject`, plain-verb methods returning
+`FlowEffect<E>` (`Effect.OfFlow`) or `ThunkEffect<E,U>` (`Effect.OfThunk`, a
+`suspend (Sink<E,U>) -> Unit`). No I/O at construction; never touch
+Retrofit/Room/SharedPreferences/`Context` outside a Producer. An effect never sets
+`_state.value` directly; it calls `sink.dispatch(On…Completed(result))`. Producers never
+throw — failures are `Result.failure` dispatched as a single `On…Completed(Result)` event
+(success/failure encoded in the `Result`, per UZF-3), translated to `<Name>Exception` via a
+Mapper inside `reduce`.
 
 **KT-9 — `UiEffect` is a separate sealed type on a `MutableSharedFlow(replay = 0,
-extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)`.**
+extraBufferCapacity ≥ 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)`.**
 Navigation, snackbars, and toasts are `UiEffect`s, **never** State, never a
 `Channel`, never `replay >= 1`. Emitted only via `sink.signal(...)`
 inside a `ThunkEffect`; a `FlowEffect` cannot signal (its `U = Nothing`). The
-Screen consumes `uiEffects` via `LaunchedEffect` and routes them to callbacks;
-`reduce` never calls a `NavController` and Composables never call
-`Toast.makeText(...)`.
+Screen consumes `uiEffects` via `LaunchedEffect` and routes them to callbacks.
 
-## D. Page/Screen split (implements UZF-4, UZF-5)
+## E. Services, Repositories and Providers (implements UZF-16)
 
-**KT-10 — Pages are stateless; Screens are the stateful wrapper.** `@Composable fun
-<Name>Page(state, onEvent, modifier)` — **exactly** those params — is pure,
-preview- and Paparazzi-testable, and imports no `androidx.navigation.*`/
-`androidx.hilt.*`/`androidx.lifecycle.*`/`dagger.*`/`Context`. `@Composable fun
-<Name>Screen(...)` is the only Hilt/lifecycle/nav touchpoint: it `hiltViewModel()`s
-the Feature (named `store`), `collectAsStateWithLifecycle()`s the state, routes
-`uiEffects` to callbacks, and passes `store::send`.
-
-**KT-11 — ≥3 `@Preview` per Page, from `<Name>Mocks`.** Loading / loaded / errored
-variations minimum, built from `<Name>Mocks.kt` (never inline `State` in a
-preview/test). Hard-coded colors/sizes/typography in any Page/Fragment are
-forbidden — read tokens from `object AppTheme` via `MaterialTheme`.
-
-## E. Services, data & DI (implements UZF-16, UZF-17)
-
-**KT-12 — Services are interfaces with ≥2 impls, Hilt-bound.** `interface
+**KT-10 — Services are interfaces with ≥2 impls, Hilt-bound.** `interface
 <X>Service { suspend fun …: Result<…> }` + `Live<X>Service @Inject` + a
-`Stubbed<X>Service` (with a `sealed class Scenario`), bound via `@Binds` in an
-`@InstallIn(SingletonComponent::class)` module. Services are **stateless**; state
-lives only in a `Repository` (empty Repositories forbidden). A synchronous
-`Provider` (`fun current(): X`) is the only service-tier type `reduce` may read.
-Feature code never imports `retrofit2.*`/`androidx.room.*`/`SharedPreferences`.
+`Stubbed<X>Service` (with a `sealed class Scenario`), bound via `@Binds`. Services are
+**stateless**. Helper `…Store`/`…Resolver`/`…Holder` objects that suspend or hit I/O are
+promoted to a Service.
 
-**KT-13 — Wire ↔ domain via Mapper; Room/Retrofit at the boundary.** Network →
-Ktor/Retrofit `Api` returning `@Serializable data class …Response`; storage → Room
-`@Dao` with `…Query` (`@Query`) and `…Mutation` (`@Upsert/@Insert/@Delete`)
-operations over `@Entity`. A Mapper (`toDomain`/`fromDomain`/`toException`)
-converts. Domain models carry no `@Serializable`/`@Entity`/`@SerialName`.
+**KT-11 — Repositories coordinate ≥2 Services.** A Repository holds the only service-tier
+mutable state, and only when strictly required. Empty (single-Service pass-through)
+Repositories are forbidden.
 
-## F. Testing (implements UZF-18, UZF-19, UZF-20)
+**KT-12 — Providers are synchronous-only.** A `Provider` (`fun current(): X`) is the only
+service-tier type `reduce` may read; a reducer never calls a Service.
 
-**KT-14 — JUnit5 + Turbine + Paparazzi.** ≥3 tests per Shifter/Selector/
-Producer-method/Mapper-fn/reducer-arm; the Feature is tested through Turbine on
-state + `uiEffects`; each Page has Paparazzi snapshots matching its `@Preview`
-count; ≥7 mocks per domain model (happy/empty/long/non-ASCII/missing-optional/
-stale/fresh) in a `companion object`. Forbidden: Robolectric, `runBlocking` (use
-`runTest`), inline-`State` tests, and tests hitting Retrofit/Room without a
-`Stubbed` boundary.
+## F. Previews, theme, navigation and signals (implements UZF-4, UZF-18, UZF-26; `KT-16` is Compose-only)
 
-## G. Anti-patterns (auto-reject)
+**KT-13 — ≥3 `@Preview` per Page, from `<Name>Mocks`.** Loading / loaded / errored
+variations minimum, built from `<Name>Mocks.kt` (never inline `State` in a
+preview/test), mirrored 1:1 by Paparazzi snapshots.
+
+**KT-14 — Theme is applied once at the root.** `MaterialTheme`/`AppTheme` is set up once;
+colors, sizes and typography come from the theme (`object AppTheme`), never hard-coded in a
+Page or Fragment.
+
+**KT-15 — Navigation is routed, never called from logic.** Navigation goes through a
+`NavigationService` or a Screen callback (`UiEffect` → callback); `reduce` never touches a
+`NavController`.
+
+**KT-16 — No global event buses for feature concerns** (Compose-only, no `UZF` parent). View-tier signals (including
+`Toast`/`Snackbar`) travel on the feature's `UiEffect` and are routed by the Screen;
+Composables never call `Toast.makeText(...)`. Narrow carve-out: orphan app-wide singletons
+with no UI parent, and cross-cutting telemetry.
+
+## G. DI layering and mocks (`KT-18` implements UZF-18; `KT-17` is Compose-only)
+
+**KT-17 — One Hilt module per feature folder** (Compose-only, no `UZF` parent). `<Feature>Module.kt`; cross-feature and infra
+wiring (Retrofit/OkHttp/Room DB) lives in `library/di/`.
+
+**KT-18 — A `<Feature>Mocks.kt` per feature, and ≥7 `mock*` fixtures per domain Model.**
+The Mocks file vends canned `State` variants; every domain Model ships ≥7 fixtures
+(happy/empty/long/non-ASCII/missing-optional/stale/fresh) in a `// region Mocks`
+(Detekt-strippable) band. State is built from Mocks, never inline.
+
+## H. The wire and storage boundary (implements UZF-8, UZF-17)
+
+**KT-19 — Wire and persistence types live behind a Service.** Network → Ktor/Retrofit `Api`
+returning `@Serializable data class …Response`; storage → Room `@Dao` with `…Query`
+(`@Query`) and `…Mutation` (`@Upsert/@Insert/@Delete`) operations over `@Entity`; an
+`Endpoint`. Feature code never imports `retrofit2.*`/`androidx.room.*`/`SharedPreferences`.
+
+**KT-20 — Wire ↔ domain via a Mapper.** A DI-registered pure class with
+`toDomain`/`fromDomain`/`toException`; a raw `…Error : Throwable()` translates to a domain
+`…Exception(message, recoverable)` at the boundary — reducers never throw.
+
+**KT-21 — Domain Models hold domain types only.** No `@Serializable`/`@Entity`/`@SerialName`
+on a domain Model (they belong on `Response`/`Entity`); one model per file.
+
+## I. Testing (implements UZF-18, UZF-19, UZF-20)
+
+**KT-22 — JUnit5 + Turbine + Paparazzi.** ≥3 tests per Shifter/Selector/
+Producer-method/Mapper-fn/reducer-arm and per Feature `Event`; the Feature is tested through
+Turbine on state + `uiEffects`; each Page has Paparazzi snapshots matching its `@Preview`
+count. Forbidden: Robolectric, `runBlocking` (use `runTest`), inline-`State` tests, tests
+hitting Retrofit/Room without a `Stubbed` boundary, a long-lived `@Ignore`, and
+`BuildConfig.DEBUG` test-outcome branching.
+
+## J. Hilt and coroutines (`KT-23`, `KT-24` implement UZF-16; `KT-25`–`KT-27` are Compose-only)
+
+**KT-23 — Hilt bootstrap.** A `@HiltAndroidApp {{PROJECT_NAME}}Application` and a single
+`@AndroidEntryPoint` Activity hosting the Compose tree.
+
+**KT-24 — Binding conventions.** `@InstallIn`-scoped modules, `@Binds` over `@Provides`,
+`@Singleton` only where required; a `Stubbed` impl is swapped in via `@TestInstallIn`; no
+empty modules.
+
+**KT-25 — Constructor injection only.** (Compose-only, no `UZF` parent.) No field injection, no Service Locator.
+
+**KT-26 — Structured concurrency only.** (Compose-only, no `UZF` parent.) No `LiveData`, no `runBlocking` outside tests, no
+`GlobalScope.launch`, no `viewModelScope.launch { service.x() }` inside a Feature.
+
+**KT-27 — Key one-shot effects on a real `LaunchedEffect` key.** (Compose-only, no `UZF` parent.) Never `LaunchedEffect(true)`
+or `LaunchedEffect(Unit)`.
+
+## K. Runtime and feature docs (implements UZF-6, UZF-21, UZF-23)
+
+**KT-28 — The UZF runtime stays portable.** `Feature`, `Outcome`, `Effect`
+(`OfFlow`/`OfThunk`), `Sink` and the `FlowEffect`/`ThunkEffect`/`Dispatch` aliases live under
+`{{UZF_RUNTIME_ROOT}}/uzf` and stay product-agnostic.
+
+**KT-29 — Feature docs name no Compose/Kotlin framework identifier.** No `@HiltViewModel`,
+`@Composable`, `StateFlow`, `Feature`, `Outcome`, `Producer`, `ThunkEffect`, … in a feature
+doc; tests live under `{{TEST_TARGET}}`/`{{ANDROID_TEST_ROOT}}` and design tokens under
+`{{THEME_ROOT}}`, not in docs.
+
+## L. Anti-patterns (auto-reject)
 
 `_state.value =` from a subclass · overriding/shadowing `onEvent`/`send` · side
 effects in `reduce` · extra public mutating methods on a Feature ·
@@ -129,7 +221,7 @@ Repository · `Throwable` in State.
 | Interactor / store | `@HiltViewModel class …Feature : Feature<State,Event,UiEffect>()` |
 | State | `data class …State` exposed as `StateFlow` |
 | Event | `sealed interface …Event` |
-| UiEffect | `sealed interface …UiEffect` on `MutableSharedFlow(replay=0, extraBufferCapacity=1, onBufferOverflow=DROP_OLDEST)` |
+| UiEffect | `sealed interface …UiEffect` on `MutableSharedFlow(replay=0, extraBufferCapacity≥1, onBufferOverflow=DROP_OLDEST)` |
 | Reducer | `protected fun reduce(state, event): Outcome<…>` |
 | Shifter | `fun State.with…(): State = copy(...)` |
 | Selector | top-level `fun select…(state): X` |
@@ -141,10 +233,8 @@ Repository · `Throwable` in State.
 
 ## Appendix — capture reader
 
-Informative; it adds no `KT-{n}` id. Its `KT-{n}` citations follow the canonical registry in
-[`rules/README.md` → *KT-n rule registry (canonical)*](rules/README.md#kt-n-rule-registry-canonical)
-(the file-00 backbone), not the older numbering of this file's own bold rules above; reconciling the
-two is zheref/bankai-handbooks#11. How a capture reader turns this stack's files into the rows a
+Informative; it adds no `KT-{n}` id. Its `KT-{n}` citations are this file's
+[registry](#kt-n-rule-registry-canonical) above. How a capture reader turns this stack's files into the rows a
 spec folder is written from: file suffix → the UZF concept it holds (this handbook's glossary and
 [`rules/10-naming-and-layout.md`](rules/10-naming-and-layout.md)) → the row kind it emits (the
 kinds are [`../../spec/authoring.md` → *Capture row kinds*](../../spec/authoring.md#capture-row-kinds)).
