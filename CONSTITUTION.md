@@ -449,7 +449,8 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
     stack's empty pair files from Hatsu's `templates/ports/pair.md` (a scaffold, not a ruling
     write), and each file's marker names that template. `hatsu:bankai-rule` appends rows on a
     ruling and never creates a file, so a present file with no ruling row means *no rulings
-    yet*. An absent pair file is a canon error at any tag from `v0.11.0`, and at a tag before
+    yet*. An absent pair file for two product stacks at that tag is a canon error at any tag
+    from `v0.11.0`, and at a tag before
     `v0.11.0`, where the family did not exist, it means no port rulings.
     **Interim, bounded by zheref/nen#457:** until the mirror generator carries a consumer's target pair files, no
     consumer mirror holds a pair file, and a port reads it live from a checkout of
