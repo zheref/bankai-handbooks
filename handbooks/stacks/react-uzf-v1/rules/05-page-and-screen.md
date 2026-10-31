@@ -16,7 +16,7 @@
 - `{{WEB_APP}}` — the Next.js App Router app directory. It contains **only** `app/**/page.tsx`
   (Server, passive) and `…PageClient.tsx` (thin Client wrapper) — the actual Page lives in
   `{{APP_PACKAGE}}`.
-- `{{MOBILE_APP}}` — the Expo Router app directory. It contains **only** thin `app/**/*.tsx`
+- `{{MOBILE_APP}}` — the Expo Router app directory. It contains **only** thin `app/**/*.tsx` (or `src/app/**/*.tsx`, exactly one)
   route files — the actual Page lives in `{{APP_PACKAGE}}`.
 
 ---
@@ -412,9 +412,11 @@ at all — that gap is itself the proof the split holds.
   anywhere other than `app/providers.tsx` (`RC-41`).
 - A Server Action or route handler that returns a bare value instead of a `Result`, or that is
   called and trusted directly by a Page without going through a completion event (`RC-43`).
-- Page logic written directly inside an Expo Router route file (`app/profile/[id].tsx`) instead of
+- Page logic written directly inside an Expo Router route file (`app/profile/[id].tsx`, or `src/app/profile/[id].tsx`) instead of
   being delegated to a Page under `{{APP_PACKAGE}}` (`RC-44`).
 - Importing `expo-router`'s `router`, `useRouter`, or `useNavigation` from any file other than
-  `app/_layout.tsx` (`RC-45`).
+  the route directory's `_layout.tsx` (`app/_layout.tsx`, or `src/app/_layout.tsx`) (`RC-45`).
+- Both `app/` and `src/app/` present in `{{MOBILE_APP}}`: Expo Router reads only `src/app/`, so the
+  `app/` tree is dead binding code (`RC-44`, `RC-45`).
 - A Page, Fragment, Adapter, or Component with no Storybook story, or a story with no matching
   snapshot/interaction test (`RC-11`).

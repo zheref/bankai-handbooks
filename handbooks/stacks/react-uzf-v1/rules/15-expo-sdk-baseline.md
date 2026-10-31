@@ -33,9 +33,10 @@ not its own.
 | Platforms and toolchain | Android 7+, iOS 15.1+, Xcode 26.2+ | SDK 55 reference (2026-09-17) |
 | Architecture | New Architecture only; the Legacy Architecture is removed | SDK 55 changelog (2026-02-25) |
 | JavaScript engine | Hermes. Hermes v1 is opt-in, not the default | SDK 55 changelog (2026-02-25) |
-| Expo package versions | every Expo SDK package shares the SDK's major (`expo-router ~55.0.18`, `expo-constants ~55.0.17`) | SDK 55 changelog; `expo@55.0.32` `bundledNativeModules.json` |
-| Unit-test preset | `jest-expo` 55 (`55.0.22`), on Jest 29 (`jest ^29`, `@types/jest ^29`) | npm registry, `jest-expo@sdk-55` dependencies (read 2026-10-31) |
-| Render-test library | `@testing-library/react-native` 13 (`node >=18`, peer `react-test-renderer` = `react`, 19.2.0). Release 14 needs Node `^22.13.0 \|\| >=24` | npm registry, `@testing-library/react-native` and `react-test-renderer` metadata (read 2026-10-31) |
+| Expo module versions | the SDK's `expo-*` modules share its major (`expo-router ~55.0.18`, `expo-constants ~55.0.17`). A few packages keep their own lines (`@expo/vector-icons ^15`, `@expo/fingerprint ~0.16`) | SDK 55 changelog; `expo@55.0.32` `bundledNativeModules.json` |
+| Unit-test preset | `jest-expo` 55 (`55.0.22`), on Jest 29: it depends on `babel-jest`, `@jest/globals` and `jest-environment-jsdom` at `^29.2.1` | npm registry, `jest-expo@sdk-55` dependencies (read 2026-10-31) |
+| Render-test library | `@testing-library/react-native` 13 (`node >=18`, peer `react-test-renderer >=18.2.0`). Release 14 needs Node `^22.13.0 \|\| >=24` | npm registry, `@testing-library/react-native` metadata (read 2026-10-31) |
+| Test renderer | `react-test-renderer` 19.2.0: `jest-expo` 55.0.22 depends on exactly that version, and each `react-test-renderer` release peers `react ^<its own version>` | npm registry, `jest-expo@55.0.22` and `react-test-renderer` metadata (read 2026-10-31) |
 
 ## App configuration SDK 55 no longer accepts
 
@@ -59,18 +60,23 @@ not its own.
   `npx expo start --clear`. pnpm's isolated installs are supported from SDK 54, and the fallback for
   a dependency that breaks under them is `nodeLinker: hoisted` in `pnpm-workspace.yaml`
   ([monorepos](https://docs.expo.dev/guides/monorepos/), 2026-10-16). Under `hoisted`, packages
-  `{{CORE_PACKAGE}}` does not declare become resolvable. `RC-50`'s zero-platform-imports boundary is
-  then held by lint, not by the install layout.
+  `{{CORE_PACKAGE}}` does not declare become resolvable, so the install layout no longer stops an
+  `RC-50` violation.
 
 ## Commands, as documented for SDK 55
 
 `npx expo install` resolves each package to the version the installed `expo` pins. `pnpm add` and
 `npm install` do not. A package outside Expo's pinned set carries its version, or its `@latest`,
-explicitly below. That set includes `jest`, `@types/jest`, `react-test-renderer`,
+explicitly below. Outside that set are `jest`, `@types/jest`, `react-test-renderer`,
 `@testing-library/react-native` and the EAS CLI. Unpinned, `jest` and `@types/jest` resolve to 30,
 which Expo's unit-testing page requires only from SDK 58, while `jest-expo` 55 is built on Jest 29.
-`react-test-renderer` is React Native Testing Library 13's required peer, and it must equal SDK 55's
-`react` (19.2.0) exactly. Its `latest` peers on a newer React and fails to install.
+`react-test-renderer` is React Native Testing Library 13's required peer. Pin it at 19.2.0, the
+version `jest-expo` 55.0.22 depends on, so one copy installs. Its `latest` peers on a newer React:
+npm refuses it with `ERESOLVE`, and pnpm installs a second, mismatched renderer with only a
+warning. The pinned set resolves with no peer conflict: a lockfile-only resolution of the SDK 55
+template plus the test line below exits 0 under npm 11 and under pnpm 11 with strict peers
+(2026-10-31). `npx expo-doctor@latest` declares Node `^22.13.0 || ^24.3.0 || ^26.0.0 || >=27.0.0`,
+so on SDK 55's Node 20 and 25 lines it runs with an engine warning at best.
 
 ```sh
 # New app. Pin the template: a bare `create-expo-app@latest` does not scaffold SDK 55.
@@ -91,13 +97,21 @@ npx expo start
 npx expo install jest-expo --dev
 npx expo install jest@^29 @types/jest@^29 react-test-renderer@19.2.0 @testing-library/react-native@^13 --dev
 
+# EAS setup, once per project. The CLI is `npm install --global eas-cli`, or `npx eas-cli@latest`.
+eas login
+eas build:configure         # writes eas.json, including the development profile used below
+
 # Development build: EAS in the cloud (add --local to build on this machine), or no EAS at all.
 npx expo install expo-dev-client
 eas build --platform ios --profile development
 npx expo run:ios            # or: npx expo run:android
 
-# Store builds and over-the-air updates. The CLI is `npm install --global eas-cli`, or `npx eas-cli@latest`.
+# Store builds.
 eas build --platform all
+
+# Over-the-air updates: configure once, then publish.
+npx expo install expo-updates
+eas update:configure
 eas update --channel <channel> --message "<message>" --environment <environment>   # --environment is required from SDK 55
 ```
 

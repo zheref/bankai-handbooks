@@ -220,7 +220,7 @@ shell). This is the same rule
 the shared UZF Page with a framework-native entry file that does **only**
 param/prop resolution and rendering — never slice logic, never a direct Service
 call. On Next.js this is the passive Server `page.tsx` plus its
-`…PageClient.tsx` wrapper (`RC-38`, `RC-39`); on Expo this is the `app/**/*.tsx`
+`…PageClient.tsx` wrapper (`RC-38`, `RC-39`); on Expo this is the `app/**/*.tsx` (or `src/app/**/*.tsx`)
 route file (`RC-44`). Each render target's own rules fix that file's line
 ceiling and forbidden imports; this rule only fixes the shape — entry file →
 shared UZF Page, one direction, no logic in between.
