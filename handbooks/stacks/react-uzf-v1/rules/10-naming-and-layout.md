@@ -20,7 +20,7 @@ indexed in full in [`README.md`](README.md) (Phase C-1b harmonization pass of
   or similar) vending slices, selectors, shifters, producers, services,
   mappers, and models to **every** render target present.
 - `{{WEB_APP}}` — the Next.js 15 App Router app directory.
-- `{{MOBILE_APP}}` — the Expo Router app directory (RN 0.84, New Arch + Hermes).
+- `{{MOBILE_APP}}` — the Expo Router app directory (Expo SDK 55, RN 0.83, New Arch + Hermes).
 - `{{DESKTOP_APP}}` — the Electron app directory, present on scaffold scenario 2A
   only (`14-electron-desktop-shell.md`).
 - `{{APP_PACKAGE}}` — the shared cross-render-target render-layer **folder**

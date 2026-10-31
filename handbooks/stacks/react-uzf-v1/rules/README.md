@@ -3,7 +3,7 @@
 
 The **single source** for the React 19 + Redux Toolkit UZF stack's operational rules (`CON-13`) —
 one stack family covering **both** render targets, {{WEB_APP}} (Next.js 15 App Router) and
-{{MOBILE_APP}} (Expo SDK 55 / RN 0.84, New Arch + Hermes), which share the entire RTK state-logic
+{{MOBILE_APP}} (Expo SDK 55 / RN 0.83, New Arch + Hermes; verified against SDK 55 in [`00`](00-architecture-overview.md#expo-sdk-baseline--verified-against-expo-sdk-55)), which share the entire RTK state-logic
 tier in {{CORE_PACKAGE}} — and, on scaffold scenario 2A only, a **third** render target, the
 {{DESKTOP_APP}} Electron shell (`14-electron-desktop-shell`, `RC-64`–`RC-69`; the decision is
 recorded under *Reconciliation decisions* below). A consumer repo on this stack carries a **generated, pinned mirror** of

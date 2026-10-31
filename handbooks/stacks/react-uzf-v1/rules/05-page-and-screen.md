@@ -323,7 +323,9 @@ services/producers rule files).
 ## Expo Router / React Native — Route file → Page
 
 Expo Router inserts a thinner layer than Next.js — there is no Server/Client split, only a
-route-file boundary (`RC-44`–`RC-46`; implements `SYNTHESIS_EXPO.md` §1, `SYNTHESIS_REACT_NATIVE.md` §1).
+route-file boundary (`RC-44`–`RC-46`; implements `SYNTHESIS_EXPO.md` §1, `SYNTHESIS_REACT_NATIVE.md` §1). Verified
+against Expo SDK 55: the route directory is `app/` or the SDK 55 template's `src/app/`, never both, and
+the versions and commands are in [`00` § Expo SDK baseline](00-architecture-overview.md#expo-sdk-baseline--verified-against-expo-sdk-55).
 
 **RC-44 — `app/**/*.tsx` route files are route bindings only, never Pages.** A route file's entire
 job is: read route params via `useLocalSearchParams()`, forward them as plain props to the Page
