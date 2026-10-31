@@ -50,7 +50,7 @@ code, mock/DI files) in the PR.
   `@testing-library/jest-dom`.
 - **`{{MOBILE_APP}}`**: Jest with the `jest-expo` preset (`jest-expo` 55 on Jest 29, verified against Expo
   SDK 55; the install command is in [`15-expo-sdk-baseline.md`](15-expo-sdk-baseline.md)),
-  `@testing-library/react-native` 13 (release 14 needs Node 22.13+; `15-expo-sdk-baseline.md`).
+  `@testing-library/react-native` 13 (release 14 needs Node `^22.13.0 || >=24`; `15-expo-sdk-baseline.md`).
 - **`{{DESKTOP_APP}}`** (scenario 2A only): Vitest + `@testing-library/react`
   under jsdom for the desktop-owned Chakra UI Pages and Fragments (as
   `{{WEB_APP}}`, with `window.desktop` stubbed and the Chakra provider in the

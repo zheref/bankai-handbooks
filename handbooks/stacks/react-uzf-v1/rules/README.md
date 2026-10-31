@@ -38,8 +38,8 @@ section restating only the tokens it uses.
 | `14-electron-desktop-shell` | Scenario 2A's Electron render target: the main/preload/renderer process boundary and where Feature, Store and Service live across it, IPC as a Service behind a context-isolated bridge, electron-builder packaging and signing, electron-updater auto-update, better-sqlite3 in the main process, the Chromium-shell performance budget |
 | `15-expo-sdk-baseline` | The Expo SDK this handbook was verified against (SDK 55): its versions with dated sources, the app configuration it no longer accepts, and the commands that create, test and build `{{MOBILE_APP}}` on it |
 
-There are no numbering gaps left — every topic file `01`–`14` exists and is reconciled into the
-`RC-{n}` registry below.
+There are no numbering gaps left — every topic file `01`–`15` exists. `01`–`14` are reconciled into the
+`RC-{n}` registry below, and `15` is a verification baseline that mints no `RC-{n}`.
 
 ## Reconciliation decisions (`<reference-repo>#34` Phase C-1b, then the whole-handbook pass: harmonizing every
 independently-authored rule file, plus the condensed `../architecture.md`)

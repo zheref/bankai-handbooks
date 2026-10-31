@@ -212,7 +212,7 @@ needs from the platform (navigation, environment, secure storage, system APIs) i
 a Service/Provider interface declared in `{{CORE_PACKAGE}}`; each render target
 supplies its own `live…Service` binding, registered into `configureStore`'s
 `extraArgument` at that target's composition root (`app/providers.tsx` on
-Next.js, `app/_layout.tsx` on Expo, `renderer/main.tsx` on the 2A Electron
+Next.js, `app/_layout.tsx` (or `src/app/_layout.tsx`, `RC-45`) on Expo, `renderer/main.tsx` on the 2A Electron
 shell). This is the same rule
 `08-monorepo-and-sharing.md` states as its package-ownership contract.
 
