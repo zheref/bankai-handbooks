@@ -12,7 +12,7 @@
 **Applies to:** every React 19 + Redux Toolkit feature in {{PROJECT_NAME}}, across
 **both** render targets — {{WEB_APP}} (Next.js 15 App Router) and {{MOBILE_APP}}
 (Expo SDK 55 / React Native 0.83, New Architecture + Hermes — the versions and
-commands this handbook was verified against are in [§ Expo SDK baseline](#expo-sdk-baseline--verified-against-expo-sdk-55)).
+commands this handbook was verified against are in [`15-expo-sdk-baseline.md`](15-expo-sdk-baseline.md)).
 
 ## Repo-specific placeholders
 
@@ -56,88 +56,6 @@ not per-product choices.
 > render target against the **same** slice; the state-logic tier never forks.
 > This is the lens for every rule below: if a rule concerns state, effects, or
 > selection, it lives in {{CORE_PACKAGE}} and binds identically on both targets.
-
-## Expo SDK baseline — verified against Expo SDK 55
-
-Every Expo statement and command in this handbook was verified on 2026-10-31 against **Expo SDK
-55** — `expo@55.0.32`, the npm registry's `sdk-55` dist-tag, the SDK a consuming Expo product
-declared on that date — and against the Expo documentation dated in the table. They were checked
-against the documentation and the registry, not executed here: this repository renders nothing.
-SDK 55 is **not** the newest SDK: SDK 58 was current on the verification date. Moving this
-baseline to a newer SDK re-verifies every row and command below and bumps `handbooks/VERSION`.
-Until then, a `{{MOBILE_APP}}` on another SDK reads this section as SDK 55's facts, not its own.
-
-| What | On Expo SDK 55 | Source (page date) |
-| --- | --- | --- |
-| React Native | 0.83 | [SDK 55 reference](https://docs.expo.dev/versions/v55.0.0/) (2026-09-17) |
-| React | 19.2 | same |
-| React Native Web | 0.21 | same |
-| Node.js | 20.19.x or newer | same |
-| Platforms and toolchain | Android 7+, iOS 15.1+, Xcode 26.2+ | same |
-| Architecture | New Architecture only; the Legacy Architecture is removed | [SDK 55 changelog](https://expo.dev/changelog/sdk-55) (2026-02-25) |
-| JavaScript engine | Hermes. Hermes v1 is opt-in, not the default | same |
-| Expo package versions | every Expo SDK package shares the SDK's major (`expo-router ~55.0.x`, `expo-constants ~55.0.x`) | same |
-| Unit-test preset | `jest-expo` 55, on Jest 29 | npm registry, `jest-expo@55` dependencies |
-
-**App configuration SDK 55 no longer accepts.** "New Architecture + Hermes" above describes the
-runtime. It is not a setting to write.
-
-- **No `newArchEnabled` in `app.json` / `app.config.ts`.** SDK 55 removed the option, because the
-  New Architecture is the only one.
-- **No `edgeToEdgeEnabled`.** SDK 55 removed it too.
-- **Hermes v1 is not switched on by naming it.** It needs `expo-build-properties`' `useHermesV1`
-  together with `buildReactNativeFromSource: true` and a `hermes-compiler` override, and the SDK 55
-  changelog does not yet recommend it for Android in monorepos. Nothing in this handbook requires it.
-- **One route directory.** The SDK 55 default template puts routes in `src/app/`. Expo Router also
-  reads a root `app/`, but when both exist only `src/app/` is used and the root `app/` is silently
-  ignored ([src directory](https://docs.expo.dev/router/reference/src-directory/), 2026-07-28).
-  Keep exactly one. The paths in these rules write the route directory as `app/`. On a `src/app/`
-  project, read each of them as `src/app/`.
-- **No hand-written monorepo Metro wiring.** Expo has configured Metro for monorepos itself since
-  SDK 52. `watchFolders`, `resolver.nodeModulesPath`, `resolver.extraNodeModules` and
-  `resolver.disableHierarchicalLookup` are removed from `metro.config.js`, then
-  `npx expo start --clear` runs once. pnpm's isolated installs are supported from SDK 54. Where a
-  dependency breaks under them, the fallback is `nodeLinker: hoisted` in `pnpm-workspace.yaml`
-  ([monorepos](https://docs.expo.dev/guides/monorepos/), 2026-10-16).
-
-**Commands, as documented for SDK 55.** Each one names SDK 55 or resolves versions against the
-project's installed `expo`. Run each from `{{MOBILE_APP}}` unless it says otherwise.
-
-```sh
-# New app. A bare `create-expo-app@latest` scaffolds the newest SDK, so the template is pinned.
-npx create-expo-app@latest <path> --template default@sdk-55
-
-# Add or realign a dependency at the version this SDK expects. Never `pnpm add` an Expo package by hand.
-npx expo install <package>
-# Expo Router in an existing app; package.json then carries "main": "expo-router/entry".
-npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
-
-# Health check after any upgrade.
-npx expo-doctor@latest
-
-# Dev server.
-npx expo start
-
-# Unit and render tests (RC-53). package.json gets "jest": { "preset": "jest-expo" }.
-npx expo install jest-expo jest @types/jest @testing-library/react-native --dev
-
-# Development build: EAS in the cloud, or `--local` on this machine; or no EAS at all.
-npx expo install expo-dev-client
-eas build --platform ios --profile development
-npx expo run:ios            # or: npx expo run:android
-
-# Store builds and over-the-air updates. The CLI is `npm install --global eas-cli`, or `npx eas-cli@latest`.
-eas build --platform all
-eas update --channel <channel> --message "<message>" --environment <environment>   # --environment is required from SDK 55
-```
-
-The command sources are the Expo pages for [unit testing](https://docs.expo.dev/develop/unit-testing/)
-(2026-10-13), [Router installation](https://docs.expo.dev/router/installation/),
-[EAS Build setup](https://docs.expo.dev/build/setup/) and
-[EAS Update](https://docs.expo.dev/eas-update/getting-started/) (each 2026-10-16), and
-[development builds](https://docs.expo.dev/develop/development-builds/create-a-build/) (2026-09-10).
-Render tests use React Native Testing Library. They never call `react-test-renderer` directly,
-because the unit-testing page marks it deprecated and without React 19 support.
 
 ## The flow (canonical)
 
@@ -275,7 +193,7 @@ a second event bus.
     <Feature>Page.tsx          # stateful wrapper: useAppSelector / useAppDispatch
     <Feature>Fragment.tsx      # domain-bound, selector-read-only, dispatch via props (RC-15)
 
-{{MOBILE_APP}}/app/<route>/
+{{MOBILE_APP}}/app/<route>/           # or src/app/<route>/ — one route directory (15-expo-sdk-baseline.md)
     index.tsx                  # Expo Router screen — same <Feature>Page/Fragment,
                                 # native renderer, same {{CORE_PACKAGE}} slice
 

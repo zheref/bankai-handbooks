@@ -85,7 +85,7 @@ matches the inline `(…)` labels for grep): *framework*, *tooling*, *ci*, *runn
 ### Scenario 1 — Mobile + Web  📱🌐
 **Targets:** iOS · Android · Web App · **Language:** TypeScript · **Review stack:** [`react-uzf-v1`](stacks/react-uzf-v1/) (`RC-{n}`)
 
-- **Mobile UI** — Expo SDK 55 (RN 0.83, New Architecture only, Hermes; Hermes v1 opt-in — verified against SDK 55 in [`react-uzf-v1` § Expo SDK baseline](stacks/react-uzf-v1/rules/00-architecture-overview.md#expo-sdk-baseline--verified-against-expo-sdk-55)) *(framework)*; Expo Router — file-based nav, web-native since SDK 52 *(framework)*
+- **Mobile UI** — Expo SDK 55 (RN 0.83, New Architecture only, Hermes; Hermes v1 opt-in — verified against SDK 55 in [`react-uzf-v1` `rules/15-expo-sdk-baseline.md`](stacks/react-uzf-v1/rules/15-expo-sdk-baseline.md)) *(framework)*; Expo Router — file-based nav, web-native since SDK 52 *(framework)*
 - **Web UI** — Next.js 15 App Router — SSR + static rendering for SEO *(framework)*; Tailwind CSS v4 + shadcn/ui (React/JSX) *(tooling)*
 - **Code Sharing** — Solito v5 + Tamagui — shared components across Expo + Next.js *(framework)*; `packages/core` — shared TS logic, hooks, types *(tooling)*
 - **Backend / Edge** — Supabase Edge Functions (Deno/TS, ~0–5ms cold start) *(backend)*; Drizzle ORM + Supabase Postgres *(database)*
@@ -101,7 +101,7 @@ matches the inline `(…)` labels for grep): *framework*, *tooling*, *ci*, *runn
 **Advantages:** EAS is best-in-class mobile CI/CD — cloud iOS builds, OTA updates · Natural Next.js extension if web is added later · One language, one toolchain, one ecosystem.
 **Trade-offs:** Electron ~150–200MB installer, ~150–300MB RAM · Chromium rendering (not Skia) — consistent but heavy · Desktop perf ceiling lower than CMP.
 
-- **Mobile UI** — Expo SDK 55 (RN 0.83, New Architecture only, Hermes; Hermes v1 opt-in — verified against SDK 55 in [`react-uzf-v1` § Expo SDK baseline](stacks/react-uzf-v1/rules/00-architecture-overview.md#expo-sdk-baseline--verified-against-expo-sdk-55)) *(framework)*; Expo Router *(framework)*; Solito v5 + Tamagui — mobile ↔ web component sharing *(framework)*
+- **Mobile UI** — Expo SDK 55 (RN 0.83, New Architecture only, Hermes; Hermes v1 opt-in — verified against SDK 55 in [`react-uzf-v1` `rules/15-expo-sdk-baseline.md`](stacks/react-uzf-v1/rules/15-expo-sdk-baseline.md)) *(framework)*; Expo Router *(framework)*; Solito v5 + Tamagui — mobile ↔ web component sharing *(framework)*
 - **Desktop Shell** — Electron — pure TS/Node, Chromium, no Rust required *(framework)*; electron-vite — HMR for main + renderer *(tooling)*; electron-builder — .dmg (macOS) + .msi/.exe (Windows) *(tooling)*; electron-updater — differential auto-updates *(tooling)*
 - **Desktop UI** — React 19 + Vite — a desktop-owned render layer over the shared core, rendered in Chromium *(framework)*; Chakra UI v3 (`@chakra-ui/react`, React DOM only) *(tooling)*
 - **Code Sharing** — `packages/core` — shared TS logic, hooks, types (Expo + Electron + web) *(tooling)*

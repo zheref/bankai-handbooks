@@ -2,7 +2,7 @@
 
 Concrete UZF bindings for **React 19, Redux Toolkit 2.x, TypeScript 5.5+**, spanning
 **the render targets that share one state-logic tier** (two on scaffold scenario 1; 2A adds an Electron desktop shell, § H): **Next.js 15 (App Router)**
-for web and **Expo SDK 55 (RN 0.83, New Architecture + Hermes; verified against SDK 55, `rules/00-architecture-overview.md` § Expo SDK baseline) with Expo Router**
+for web and **Expo SDK 55 (RN 0.83, New Architecture + Hermes; verified against SDK 55, `rules/15-expo-sdk-baseline.md`) with Expo Router**
 for mobile. Sasuke cites these as `RC-{n}`. They **implement** the cross-platform
 rules in [`../../uzf-core.md`](../../uzf-core.md) (`UZF-{n}`) with React/RTK
 specifics — an `RC-{n}` rule may tighten but never contradict its `UZF-{n}` parent.
@@ -181,7 +181,7 @@ workspace dependency), and imported unmodified by every target present:
 - **`{{WEB_APP}}`** — a Next.js 15 App Router web app (its own render-target
   rules cover the Server/Client Component split, `NavigationService` over
   `next/navigation`, and `NEXT_PUBLIC_*` environment scoping).
-- **`{{MOBILE_APP}}`** — an Expo SDK 55 (RN 0.83, New Architecture + Hermes; verified against SDK 55, `rules/00-architecture-overview.md` § Expo SDK baseline) app
+- **`{{MOBILE_APP}}`** — an Expo SDK 55 (RN 0.83, New Architecture + Hermes; verified against SDK 55, `rules/15-expo-sdk-baseline.md`) app
   on Expo Router (its own render-target rules cover the route-file boundary,
   `NavigationService` over Expo Router's imperative `router`, and
   `EXPO_PUBLIC_*` environment scoping).

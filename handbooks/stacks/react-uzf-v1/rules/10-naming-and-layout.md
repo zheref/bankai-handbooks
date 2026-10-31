@@ -68,7 +68,7 @@ one app never reaches into another feature's folder in `{{CORE_PACKAGE}}`.
             app/<route>/
                 <Feature>Page.tsx         # web render entry — imports the shared feature
         {{MOBILE_APP}}/                   # Expo Router
-            app/<route>/
+            app/<route>/              # or src/app/<route>/ — one route directory (15-expo-sdk-baseline.md)
                 <Feature>Page.tsx         # native render entry — imports the shared feature
 ```
 

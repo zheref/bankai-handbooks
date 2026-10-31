@@ -15,7 +15,7 @@
 
 ---
 
-React web (`{{WEB_APP}}`, Next.js 15 App Router) and React Native (`{{MOBILE_APP}}`, Expo SDK 55, verified as [`00` § Expo SDK baseline](00-architecture-overview.md#expo-sdk-baseline--verified-against-expo-sdk-55) records) are **two render targets of one stack family**, not two stacks. The monorepo layout is how this satisfies `UZF-6` (co-locate a feature's artifacts; cross-feature/cross-app shared logic goes to a core layer, never a sibling) when the "sibling" is an entire second runtime — a browser/Node bundle and a Hermes/New-Arch bundle that cannot share a single build output. This file introduces the React-family monorepo rules **RC-49** (workspace topology), **RC-50** (`{{CORE_PACKAGE}}` ownership), **RC-51** (`{{APP_PACKAGE}}` — Solito + Tamagui), **RC-62** (apps are thin shells), **RC-48** (platform-bound Services), and **RC-52** (build graph).
+React web (`{{WEB_APP}}`, Next.js 15 App Router) and React Native (`{{MOBILE_APP}}`, Expo SDK 55, verified as [`15-expo-sdk-baseline.md`](15-expo-sdk-baseline.md) records) are **two render targets of one stack family**, not two stacks. The monorepo layout is how this satisfies `UZF-6` (co-locate a feature's artifacts; cross-feature/cross-app shared logic goes to a core layer, never a sibling) when the "sibling" is an entire second runtime — a browser/Node bundle and a Hermes/New-Arch bundle that cannot share a single build output. This file introduces the React-family monorepo rules **RC-49** (workspace topology), **RC-50** (`{{CORE_PACKAGE}}` ownership), **RC-51** (`{{APP_PACKAGE}}` — Solito + Tamagui), **RC-62** (apps are thin shells), **RC-48** (platform-bound Services), and **RC-52** (build graph).
 
 ## Workspace topology (RC-49)
 

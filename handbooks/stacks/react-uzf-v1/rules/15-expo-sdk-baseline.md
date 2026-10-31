@@ -1,0 +1,108 @@
+<!-- Canonical source: zheref/bankai-handbooks. Consumer repos carry a generated, pinned, per-surface mirror of this file (CON-13) -- never hand-edit the mirror; change it here. -->
+
+# 15 — Expo SDK baseline (verified against Expo SDK 55)
+
+## Repo-specific placeholders
+
+- `{{MOBILE_APP}}` — the Expo Router workspace member, e.g. `apps/mobile`. Every command below runs
+  from it unless the command says otherwise.
+- `{{CORE_PACKAGE}}` — the shared RTK state-logic package, e.g. `packages/core`. It is named only
+  where the install layout bears on `RC-50`.
+
+## What was verified, and against what
+
+**Expo SDK 55** is the baseline. It means `expo@55.0.32`, the npm registry's `sdk-55` dist-tag, and
+it is the SDK declared on 2026-10-31 by an Expo product built on this stack (one not yet
+registered as a consumer). The versions, app configuration and commands **in this file** were
+verified that day against two sources: the Expo pages dated below, and the npm registry's `sdk-55`
+packages. They were checked, not executed: this repository renders nothing. Expo's guide pages
+(unit testing, Router installation, monorepos, EAS) are unversioned and written for the current
+SDK, so each command taken from them was cross-checked against the `sdk-55` packages.
+
+**SDK 55 is not the newest SDK.** SDK 58 was current on the verification date (`expo@latest` →
+`58.0.22`). Moving this baseline to a newer SDK re-verifies every row and command below and bumps
+`handbooks/VERSION`. Until then, a `{{MOBILE_APP}}` on another SDK reads this file as SDK 55's facts,
+not its own.
+
+| What | On Expo SDK 55 | Source (page date) |
+| --- | --- | --- |
+| React Native | 0.83 | [SDK 55 reference](https://docs.expo.dev/versions/v55.0.0/) (2026-09-17) |
+| React | 19.2 | same |
+| React Native Web | 0.21 | same |
+| Node.js | `^20.19.4`, `^22.13.0`, `^24.3.0` or `^25.0.0` | [SDK 55 changelog](https://expo.dev/changelog/sdk-55) (2026-02-25) |
+| Platforms and toolchain | Android 7+, iOS 15.1+, Xcode 26.2+ | SDK 55 reference |
+| Architecture | New Architecture only; the Legacy Architecture is removed | SDK 55 changelog |
+| JavaScript engine | Hermes. Hermes v1 is opt-in, not the default | SDK 55 changelog |
+| Expo package versions | every Expo SDK package shares the SDK's major (`expo-router ~55.0.18`, `expo-constants ~55.0.17`) | SDK 55 changelog; `expo@55.0.32` `bundledNativeModules.json` |
+| Unit-test preset | `jest-expo` 55 (`55.0.22`), on Jest 29 | npm registry, `jest-expo@sdk-55` dependencies |
+| Render-test library | `@testing-library/react-native` 13 (`node >=18`). Release 14 needs Node `^22.13.0 \|\| >=24` | npm registry, `@testing-library/react-native` `engines` |
+
+## App configuration SDK 55 no longer accepts
+
+"New Architecture + Hermes" describes the runtime. It is not a setting to write.
+
+- **`newArchEnabled` is gone.** SDK 55 removed the option from `app.json`, because the New
+  Architecture is the only one. A config that still sets it is written for an older SDK.
+- **`edgeToEdgeEnabled` is gone too.** SDK 55 removed it as well.
+- **Hermes v1 is not switched on by naming it.** It needs `expo-build-properties`' `useHermesV1`,
+  together with `buildReactNativeFromSource: true` and a `hermes-compiler` override. The SDK 55
+  changelog does not recommend it for Android in monorepos. It also carries a later update that
+  reports memory and startup regressions under the opt-in and recommends SDK 57 (`expo@57.0.17` or
+  later) for anyone who needs Hermes v1. Nothing in this handbook requires Hermes v1.
+- **The route directory is `app/` or `src/app/`.** The SDK 55 default template creates `src/app/`.
+  Expo Router also reads a root `app/`, but "only the src/app directory will be used if you have
+  both" ([src directory](https://docs.expo.dev/router/reference/src-directory/), 2026-07-28). `RC-44`
+  and `RC-45` bind whichever one `{{MOBILE_APP}}` has, and a project has exactly one.
+- **Expo writes the monorepo Metro configuration itself.** It has done so since SDK 52. The page
+  lists `watchFolders`, `resolver.nodeModulesPath`, `resolver.extraNodeModules` and
+  `resolver.disableHierarchicalLookup` as settings to remove from `metro.config.js`, followed by one
+  `npx expo start --clear`. pnpm's isolated installs are supported from SDK 54, and the fallback for
+  a dependency that breaks under them is `nodeLinker: hoisted` in `pnpm-workspace.yaml`
+  ([monorepos](https://docs.expo.dev/guides/monorepos/), 2026-10-16). Under `hoisted`, packages
+  `{{CORE_PACKAGE}}` does not declare become resolvable. `RC-50`'s zero-platform-imports boundary is
+  then held by lint, not by the install layout.
+
+## Commands, as documented for SDK 55
+
+`npx expo install` resolves each package to the version the installed `expo` pins. `pnpm add` and
+`npm install` do not. A package outside Expo's pinned set (`@testing-library/react-native`, the EAS
+CLI) carries its version or its `@latest` explicitly below.
+
+```sh
+# New app. Pin the template: a bare `create-expo-app@latest` does not scaffold SDK 55.
+npx create-expo-app@latest <path> --template default@sdk-55
+
+# Add or realign a dependency at the version SDK 55 pins.
+npx expo install <package>
+# Expo Router in an existing app, then set "main": "expo-router/entry" in package.json by hand.
+npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
+
+# Health check after any upgrade.
+npx expo-doctor@latest
+
+# Dev server.
+npx expo start
+
+# Unit and render tests (RC-53). Then add "jest": { "preset": "jest-expo" } to package.json.
+npx expo install jest-expo jest @types/jest --dev
+npx expo install @testing-library/react-native@^13 --dev
+
+# Development build: EAS in the cloud (add --local to build on this machine), or no EAS at all.
+npx expo install expo-dev-client
+eas build --platform ios --profile development
+npx expo run:ios            # or: npx expo run:android
+
+# Store builds and over-the-air updates. The CLI is `npm install --global eas-cli`, or `npx eas-cli@latest`.
+eas build --platform all
+eas update --channel <channel> --message "<message>" --environment <environment>   # --environment is required from SDK 55
+```
+
+The command sources are the Expo pages for [unit testing](https://docs.expo.dev/develop/unit-testing/)
+(2026-10-13), [Router installation](https://docs.expo.dev/router/installation/),
+[EAS Build setup](https://docs.expo.dev/build/setup/) and
+[EAS Update](https://docs.expo.dev/eas-update/getting-started/) (each 2026-10-16), the
+[development builds](https://docs.expo.dev/develop/development-builds/create-a-build/) page
+(2026-09-10), and the SDK 55 changelog for the template flag and `--environment`. The unit-testing
+page marks `react-test-renderer` deprecated and without React 19 support. React Native Testing
+Library 13 still lists it as a peer, but render tests go through the library's API (`RC-53`) and
+never call it directly.
