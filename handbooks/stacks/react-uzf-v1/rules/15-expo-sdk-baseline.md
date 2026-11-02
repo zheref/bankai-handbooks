@@ -22,7 +22,12 @@ line exited 0, `expo-doctor` passed 20 of 20 checks, and a render test passed un
 React Native Testing Library 13.3.3 and `react-test-renderer` 19.2.0. Metro started, and
 `npx expo export --platform ios` bundled the app. `eas update` lists `--environment`. The run did not
 cover the commands that need an Expo account (`eas login`, `eas build:configure`, `eas build`,
-`eas update`) or a native build (`npx expo run:ios`). This repository renders nothing. Expo's guide pages
+`eas update`). On 2026-11-02 `npx expo run:ios` was run on the same app and failed to build under
+Xcode 27. Two pods (`SDWebImage`, `ReachabilitySwift`) set deployment targets below the 15.0 that
+Xcode 27 accepts. With those raised to 15.1 in the Podfile, `expo-router`'s own Swift then failed:
+"'subtitle' is only available in iOS 16.0 or newer". The Xcode 26.3 on that machine had no iOS 26.2
+platform installed, so it built nothing. A native build on SDK 55 is therefore unproven here, and
+Xcode 27 does not build it as shipped. This repository renders nothing. Expo's guide pages
 (unit testing, Router installation, monorepos, EAS) are unversioned and written for the current
 SDK, so each command taken from them was cross-checked against the `sdk-55` packages.
 
@@ -37,7 +42,7 @@ not its own.
 | React | 19.2 | same |
 | React Native Web | 0.21 | same |
 | Node.js | `^20.19.4`, `^22.13.0`, `^24.3.0` or `^25.0.0` | [SDK 55 changelog](https://expo.dev/changelog/sdk-55) (2026-02-25) |
-| Platforms and toolchain | Android 7+, iOS 15.1+, Xcode 26.2+ | SDK 55 reference (2026-09-17) |
+| Platforms and toolchain | Android 7+, iOS 15.1+, Xcode 26.2 or later 26.x. Xcode 27 does not build the SDK 55 template (run of 2026-11-02, above) | SDK 55 reference (2026-09-17); the 2026-11-02 run |
 | Architecture | New Architecture only; the Legacy Architecture is removed | SDK 55 changelog (2026-02-25) |
 | JavaScript engine | Hermes. Hermes v1 is opt-in, not the default | SDK 55 changelog (2026-02-25) |
 | Expo module versions | the SDK's `expo-*` modules share its major (`expo-router ~55.0.18`, `expo-constants ~55.0.17`). A few packages keep their own lines (`@expo/vector-icons ^15`, `@expo/fingerprint ~0.16`) | SDK 55 changelog; `expo@55.0.32` `bundledNativeModules.json` |
