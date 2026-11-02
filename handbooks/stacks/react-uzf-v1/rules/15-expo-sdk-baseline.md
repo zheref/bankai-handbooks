@@ -15,7 +15,14 @@
 it is the SDK declared on 2026-10-31 by an Expo product built on this stack (one not yet
 registered as a consumer). The versions, app configuration and commands **in this file** were
 verified that day against two sources: the Expo pages dated below, and the npm registry's `sdk-55`
-packages. They were checked, not executed: this repository renders nothing. Expo's guide pages
+packages. On 2026-11-01 the commands were also run in a scratch app scaffolded from
+`default@sdk-55` (Node 24.16, npm 11.13, Xcode 27, `eas-cli` 27.2.0). The run resolved `expo`
+55.0.32, React Native 0.83.10 and React 19.2.0, with the routes in `src/app/`. Every `npx expo install`
+line exited 0, `expo-doctor` passed 20 of 20 checks, and a render test passed under Jest 29.7.0,
+React Native Testing Library 13.3.3 and `react-test-renderer` 19.2.0. Metro started, and
+`npx expo export --platform ios` bundled the app. `eas update` lists `--environment`. The run did not
+cover the commands that need an Expo account (`eas login`, `eas build:configure`, `eas build`,
+`eas update`) or a native build (`npx expo run:ios`). This repository renders nothing. Expo's guide pages
 (unit testing, Router installation, monorepos, EAS) are unversioned and written for the current
 SDK, so each command taken from them was cross-checked against the `sdk-55` packages.
 
