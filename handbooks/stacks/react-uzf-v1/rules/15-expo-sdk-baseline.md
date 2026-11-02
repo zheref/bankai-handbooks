@@ -67,7 +67,7 @@ not its own.
   both" ([src directory](https://docs.expo.dev/router/reference/src-directory/), 2026-07-28). `RC-44`
   and `RC-45` bind whichever one `{{MOBILE_APP}}` has, and a project has exactly one.
 - **Expo writes the monorepo Metro configuration itself.** It has done so since SDK 52. The page
-  lists `watchFolders`, `resolver.nodeModulesPath`, `resolver.extraNodeModules` and
+  lists `watchFolders`, `resolver.nodeModulesPaths`, `resolver.extraNodeModules` and
   `resolver.disableHierarchicalLookup` as settings to remove from `metro.config.js`, followed by one
   `npx expo start --clear`. pnpm's isolated installs are supported from SDK 54, and the fallback for
   a dependency that breaks under them is `nodeLinker: hoisted` in `pnpm-workspace.yaml`
@@ -113,6 +113,11 @@ npx expo install jest@^29 @types/jest@^29 react-test-renderer@19.2.0 @testing-li
 eas login
 eas build:configure         # writes eas.json, including the development profile used below
 
+# Over-the-air updates, configured BEFORE any build that should receive them: a binary built
+# without expo-updates, or without its profile's channel in eas.json, never receives an update.
+npx expo install expo-updates
+eas update:configure        # writes the update URL and a channel per build profile
+
 # Development build: EAS in the cloud (add --local to build on this machine), or no EAS at all.
 npx expo install expo-dev-client
 eas build --platform ios --profile development
@@ -121,9 +126,7 @@ npx expo run:ios            # or: npx expo run:android
 # Store builds.
 eas build --platform all
 
-# Over-the-air updates: configure once, then publish.
-npx expo install expo-updates
-eas update:configure
+# Publish an update to the channel of a binary already installed or distributed.
 eas update --channel <channel> --message "<message>" --environment <environment>   # --environment is required from SDK 55
 ```
 
