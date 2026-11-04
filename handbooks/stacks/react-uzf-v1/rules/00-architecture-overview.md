@@ -11,7 +11,8 @@
 
 **Applies to:** every React 19 + Redux Toolkit feature in {{PROJECT_NAME}}, across
 **both** render targets — {{WEB_APP}} (Next.js 15 App Router) and {{MOBILE_APP}}
-(Expo SDK 55 / React Native 0.84, New Arch + Hermes).
+(Expo SDK 55 / React Native 0.83, New Architecture + Hermes — the versions and
+commands this handbook was verified against are in [`15-expo-sdk-baseline.md`](15-expo-sdk-baseline.md)).
 
 ## Repo-specific placeholders
 
@@ -192,7 +193,7 @@ a second event bus.
     <Feature>Page.tsx          # stateful wrapper: useAppSelector / useAppDispatch
     <Feature>Fragment.tsx      # domain-bound, selector-read-only, dispatch via props (RC-15)
 
-{{MOBILE_APP}}/app/<route>/
+{{MOBILE_APP}}/app/<route>/           # or src/app/<route>/ — one route directory (15-expo-sdk-baseline.md)
     index.tsx                  # Expo Router screen — same <Feature>Page/Fragment,
                                 # native renderer, same {{CORE_PACKAGE}} slice
 

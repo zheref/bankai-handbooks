@@ -2,7 +2,7 @@
 
 Concrete UZF bindings for **React 19, Redux Toolkit 2.x, TypeScript 5.5+**, spanning
 **the render targets that share one state-logic tier** (two on scaffold scenario 1; 2A adds an Electron desktop shell, § H): **Next.js 15 (App Router)**
-for web and **Expo SDK 55 (RN 0.84, New Architecture + Hermes) with Expo Router**
+for web and **Expo SDK 55 (RN 0.83, New Architecture + Hermes; verified against SDK 55, `rules/15-expo-sdk-baseline.md`) with Expo Router**
 for mobile. Sasuke cites these as `RC-{n}`. They **implement** the cross-platform
 rules in [`../../uzf-core.md`](../../uzf-core.md) (`UZF-{n}`) with React/RTK
 specifics — an `RC-{n}` rule may tighten but never contradict its `UZF-{n}` parent.
@@ -181,7 +181,7 @@ workspace dependency), and imported unmodified by every target present:
 - **`{{WEB_APP}}`** — a Next.js 15 App Router web app (its own render-target
   rules cover the Server/Client Component split, `NavigationService` over
   `next/navigation`, and `NEXT_PUBLIC_*` environment scoping).
-- **`{{MOBILE_APP}}`** — an Expo SDK 55 (RN 0.84, New Architecture + Hermes) app
+- **`{{MOBILE_APP}}`** — an Expo SDK 55 (RN 0.83, New Architecture + Hermes; verified against SDK 55, `rules/15-expo-sdk-baseline.md`) app
   on Expo Router (its own render-target rules cover the route-file boundary,
   `NavigationService` over Expo Router's imperative `router`, and
   `EXPO_PUBLIC_*` environment scoping).
@@ -212,7 +212,7 @@ needs from the platform (navigation, environment, secure storage, system APIs) i
 a Service/Provider interface declared in `{{CORE_PACKAGE}}`; each render target
 supplies its own `live…Service` binding, registered into `configureStore`'s
 `extraArgument` at that target's composition root (`app/providers.tsx` on
-Next.js, `app/_layout.tsx` on Expo, `renderer/main.tsx` on the 2A Electron
+Next.js, `app/_layout.tsx` (or `src/app/_layout.tsx`, `RC-45`) on Expo, `renderer/main.tsx` on the 2A Electron
 shell). This is the same rule
 `08-monorepo-and-sharing.md` states as its package-ownership contract.
 
@@ -220,7 +220,7 @@ shell). This is the same rule
 the shared UZF Page with a framework-native entry file that does **only**
 param/prop resolution and rendering — never slice logic, never a direct Service
 call. On Next.js this is the passive Server `page.tsx` plus its
-`…PageClient.tsx` wrapper (`RC-38`, `RC-39`); on Expo this is the `app/**/*.tsx`
+`…PageClient.tsx` wrapper (`RC-38`, `RC-39`); on Expo this is the `app/**/*.tsx` (or `src/app/**/*.tsx`)
 route file (`RC-44`). Each render target's own rules fix that file's line
 ceiling and forbidden imports; this rule only fixes the shape — entry file →
 shared UZF Page, one direction, no logic in between.

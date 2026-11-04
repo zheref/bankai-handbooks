@@ -16,7 +16,7 @@
 - `{{WEB_APP}}` — the Next.js App Router app directory. It contains **only** `app/**/page.tsx`
   (Server, passive) and `…PageClient.tsx` (thin Client wrapper) — the actual Page lives in
   `{{APP_PACKAGE}}`.
-- `{{MOBILE_APP}}` — the Expo Router app directory. It contains **only** thin `app/**/*.tsx`
+- `{{MOBILE_APP}}` — the Expo Router app directory. It contains **only** thin `app/**/*.tsx` (or `src/app/**/*.tsx`, exactly one)
   route files — the actual Page lives in `{{APP_PACKAGE}}`.
 
 ---
@@ -323,9 +323,11 @@ services/producers rule files).
 ## Expo Router / React Native — Route file → Page
 
 Expo Router inserts a thinner layer than Next.js — there is no Server/Client split, only a
-route-file boundary (`RC-44`–`RC-46`; implements `SYNTHESIS_EXPO.md` §1, `SYNTHESIS_REACT_NATIVE.md` §1).
+route-file boundary (`RC-44`–`RC-46`; implements `SYNTHESIS_EXPO.md` §1, `SYNTHESIS_REACT_NATIVE.md` §1). Verified
+against Expo SDK 55. `app/` below is `{{MOBILE_APP}}`'s route directory: a root `app/`, or the `src/app/` the SDK 55 template creates, exactly one of the two;
+the versions and commands are in [`15-expo-sdk-baseline.md`](15-expo-sdk-baseline.md).
 
-**RC-44 — `app/**/*.tsx` route files are route bindings only, never Pages.** A route file's entire
+**RC-44 — Route files under the route directory (`app/**/*.tsx`, or `src/app/**/*.tsx`) are route bindings only, never Pages.** A route file's entire
 job is: read route params via `useLocalSearchParams()`, forward them as plain props to the Page
 imported from `{{APP_PACKAGE}}`, ≤10 lines. It never imports `useAppSelector`/`useAppDispatch`,
 never renders markup of its own.
@@ -342,7 +344,7 @@ export default function ProfileRoute() {
 }
 ```
 
-**RC-45 — `app/_layout.tsx` is the single platform-binding point.** It is the *only* file allowed
+**RC-45 — The route directory's `_layout.tsx` (`app/_layout.tsx`, or `src/app/_layout.tsx`) is the single platform-binding point.** It is the *only* file allowed
 to import both Expo Router's imperative `router` and the Store/Theme/Service bindings —
 `initializeNavigationService(...)` is called here, exactly once. Every other file — Page, Fragment,
 Adapter, Component, reducer, shifter, selector, producer — is forbidden from importing
@@ -410,9 +412,11 @@ at all — that gap is itself the proof the split holds.
   anywhere other than `app/providers.tsx` (`RC-41`).
 - A Server Action or route handler that returns a bare value instead of a `Result`, or that is
   called and trusted directly by a Page without going through a completion event (`RC-43`).
-- Page logic written directly inside an Expo Router route file (`app/profile/[id].tsx`) instead of
+- Page logic written directly inside an Expo Router route file (`app/profile/[id].tsx`, or `src/app/profile/[id].tsx`) instead of
   being delegated to a Page under `{{APP_PACKAGE}}` (`RC-44`).
 - Importing `expo-router`'s `router`, `useRouter`, or `useNavigation` from any file other than
-  `app/_layout.tsx` (`RC-45`).
+  the route directory's `_layout.tsx` (`app/_layout.tsx`, or `src/app/_layout.tsx`) (`RC-45`).
+- Both `app/` and `src/app/` present in `{{MOBILE_APP}}`: Expo Router reads only `src/app/`, so the
+  `app/` tree is dead binding code (`RC-44`, `RC-45`).
 - A Page, Fragment, Adapter, or Component with no Storybook story, or a story with no matching
   snapshot/interaction test (`RC-11`).

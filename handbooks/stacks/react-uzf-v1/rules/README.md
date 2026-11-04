@@ -3,7 +3,7 @@
 
 The **single source** for the React 19 + Redux Toolkit UZF stack's operational rules (`CON-13`) —
 one stack family covering **both** render targets, {{WEB_APP}} (Next.js 15 App Router) and
-{{MOBILE_APP}} (Expo SDK 55 / RN 0.84, New Arch + Hermes), which share the entire RTK state-logic
+{{MOBILE_APP}} (Expo SDK 55 / RN 0.83, New Arch + Hermes; verified against SDK 55 in [`15`](15-expo-sdk-baseline.md)), which share the entire RTK state-logic
 tier in {{CORE_PACKAGE}} — and, on scaffold scenario 2A only, a **third** render target, the
 {{DESKTOP_APP}} Electron shell (`14-electron-desktop-shell`, `RC-64`–`RC-69`; the decision is
 recorded under *Reconciliation decisions* below). A consumer repo on this stack carries a **generated, pinned mirror** of
@@ -36,9 +36,10 @@ section restating only the tokens it uses.
 | `12-session-completion-checklist` | Definition-of-done gate: coverage, mermaid diagram, feature spec, flag wrapping |
 | `13-feature-documentation` | `{{DOCS_ROOT}}` language-agnostic feature specs + fenced-mermaid diagrams, shared 1:1 across both render targets |
 | `14-electron-desktop-shell` | Scenario 2A's Electron render target: the main/preload/renderer process boundary and where Feature, Store and Service live across it, IPC as a Service behind a context-isolated bridge, electron-builder packaging and signing, electron-updater auto-update, better-sqlite3 in the main process, the Chromium-shell performance budget |
+| `15-expo-sdk-baseline` | The Expo SDK this handbook was verified against (SDK 55): its versions with dated sources, the app configuration it no longer accepts, and the commands that create, test and build `{{MOBILE_APP}}` on it |
 
-There are no numbering gaps left — every topic file `01`–`14` exists and is reconciled into the
-`RC-{n}` registry below.
+There are no numbering gaps left — every topic file `01`–`15` exists. `01`–`14` are reconciled into the
+`RC-{n}` registry below, and `15` is a verification baseline that mints no `RC-{n}`.
 
 ## Reconciliation decisions (`<reference-repo>#34` Phase C-1b, then the whole-handbook pass: harmonizing every
 independently-authored rule file, plus the condensed `../architecture.md`)
@@ -179,8 +180,8 @@ Each *tightens but never contradicts* its `UZF-{n}` parent(s) (shown in parens).
 | `RC-41` | `app/layout.tsx` is a passive Server Component; `app/providers.tsx` is the one Client Component wiring Store + Theme + Navigation | UZF-16 | `05` (RC-8) |
 | `RC-42` | SSR-prefetched data enters the slice only through a dedicated `on…Hydrated` event, never bypassing the Shifter | UZF-10, UZF-17 | `05` (RC-9) |
 | `RC-43` | Server Actions and route handlers are Producers, not Page logic — they call Services and return a `Result` | UZF-3, UZF-14 | `05` (RC-10); `09` (RC-9) |
-| `RC-44` | Expo Router `app/**/*.tsx` route files are route bindings only, never Pages | UZF-4 | `05` (RC-11) |
-| `RC-45` | `app/_layout.tsx` is the single platform-binding point — the only file permitted to import Expo Router's imperative `router` | UZF-16 | `05` (RC-12) |
+| `RC-44` | Expo Router route files (`app/**/*.tsx`, or `src/app/**/*.tsx`; exactly one route directory) are route bindings only, never Pages | UZF-4 | `05` (RC-11) |
+| `RC-45` | The route directory's `_layout.tsx` (`app/` or `src/app/`) is the single platform-binding point — the only file permitted to import Expo Router's imperative `router` | UZF-16 | `05` (RC-12) |
 | `RC-46` | The same `{{APP_PACKAGE}}` Page mounts under every Tamagui render target present (`{{WEB_APP}}`, `{{MOBILE_APP}}`) unmodified; the 2A desktop shell owns its own Chakra UI Page for the same feature over the same core (`RC-64`) | UZF-4, UZF-6 | `05` (RC-13) |
 | `RC-47` | Provider — a synchronous helper module; reducers and Selectors may call it directly, never a Service | UZF-13 | `06` (RC-4) |
 | `RC-48` | Platform-bound Services ship one shared interface with platform-forked `live…` files (never a runtime `Platform.OS` branch) | UZF-16 | `06` (RC-5); `08` (RC-5) |
