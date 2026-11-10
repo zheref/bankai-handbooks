@@ -176,10 +176,15 @@
     ],
     "$comment": "What a release-proposal PR may touch and still merge itself under hatsu:getsuga section 3a: the collated changelog, the fragments it consumes, and nen/repos.json's latest key (getsuga section 3 step 4 moves it; nen 0.15.1+ reads the key-bound entry). handbooks/VERSION is deliberately NOT here: CON-7 reserves every PR touching handbooks/ to the human, and AGENTS.md section 2 rule 3 puts the VERSION bump in the delivery PR, so getsuga section 3 step 5 is a no-op in this repository."
   },
+  "classify": {
+    "publish": "label+comment",
+    "$publish": "one of: label | label+comment",
+    "$comment": "The maintainer's request of 2026-10-20: hatsu:classify always writes back. Beside the lang/ and job/ labels nen/labels.json declares, it posts one marker-keyed comment per classified issue with each decided key, never issue text; the contract is zheref/hatsu contracts/classify.taxonomy.json -> publish."
+  },
   "direct": {
-    "publish": "none",
+    "publish": "label+comment",
     "$publish": "one of: none | label | label+comment",
-    "$comment": "This repository declares no model/ label family in nen/labels.json, so hatsu:direct reports its picks and publishes nothing; opting in is a later PR that declares the family first (zheref/hatsu#240)."
+    "$comment": "The maintainer's request of 2026-10-20: hatsu:direct always writes back, as one model/ label from the family nen/labels.json now declares and one marker-keyed comment with its picks (zheref/hatsu#240)."
   },
   "aiReviewers": "optional",
   "$aiReviewers": "one of: required | optional | off",
