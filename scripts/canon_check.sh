@@ -108,7 +108,8 @@ redaction() {
   # `Bankai-Run:` (trailer keys), `Bankai-owned` (prose) and `BANKAI-AGENTS-ROSTER` (a
   # document title) are system names the policy keeps (docs/PUBLIC-REDACTION.md,
   # "What is deliberately not redacted").
-  check "a bankai-<x> slug that is not this repo, a stack id or a skill name" \
+  # `rule` (`bankai-rule`) remains admitted solely for dated changelog records after HR-394 renamed it to `hatsu:kido`.
+  check "a bankai-<x> slug that is not this repo, a stack id or a skill/historical slug" \
     '\bbankai-[a-z0-9_-]+' \
     '^bankai-(handbooks|machinery|quality|mode|rule|session)$'
   check "an owner slug outside the three public repositories" \
@@ -251,8 +252,9 @@ self_test() {
   d=$(mk dots);   printf '%s/../../acme/other\n' "https://github.com""/zheref/hatsu" > "$d/a.md"; expect "a URL walking past an admitted repo is refused" 1 "$d" redaction
   d=$(mk caps);   printf '%s\n' "https://GitHub.com""/Acme/other" > "$d/a.md"; expect "a capitalised host or owner is still detected" 1 "$d" redaction
   d=$(mk capok);  printf '%s and %s\n' "https://GitHub.com""/zheref/Hatsu.git" "Zheref""/nen" > "$d/a.md"; expect "capitalised admitted slugs pass" 0 "$d" redaction
-  d=$(mk brule);  printf '%s\n' "hatsu:bankai-""rule" > "$d/a.md";          expect "the bankai-rule skill name passes" 0 "$d" redaction
-  d=$(mk brtail); printf '%s\n' "bankai-""rules" > "$d/a.md";               expect "the bankai-rule name with a longer tail is refused" 1 "$d" redaction
+  d=$(mk brule);  printf '%s\n' "hatsu:bankai-""rule" > "$d/a.md";          expect "the historical bankai-rule skill name passes (dated records)" 0 "$d" redaction
+  d=$(mk bkido);  printf '%s\n' "hatsu:kido" > "$d/a.md";                   expect "the replacement hatsu:kido skill name passes" 0 "$d" redaction
+  d=$(mk brtail); printf '%s\n' "bankai-""rules" > "$d/a.md";               expect "the historical bankai-rule name with a longer tail is refused" 1 "$d" redaction
   d=$(mk btail);  printf '%s %s\n' "bankai-""handbooks-placeholder" "bankai-""session2" > "$d/a.md"; expect "an admitted bankai prefix with a longer tail is refused" 1 "$d" redaction
   d=$(mk bcap);   printf '%s %s\n' "Bankai-""Agent:" "Bankai-""owned" > "$d/a.md"; expect "a capitalised Bankai- term is a system name, not a slug" 0 "$d" redaction
   d=$(mk colon);  printf '%s\n' "https://github.com""/acme/other" > "$d/a:1:github.com:x.md"; git -C "$d" add -A >/dev/null; expect "a path carrying colons cannot forge the match field" 1 "$d" redaction

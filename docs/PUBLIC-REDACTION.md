@@ -61,7 +61,7 @@ and stay as they are; its preamble says so. In the handbooks the same numbers ar
 
 1. `scripts/canon_check.sh redaction` (the redaction half of `nen shu lint`; `.claude/rules/02-redaction.md`)
    prints `canon_check: redaction clean (N committable files)` and exits 0: any `bankai-<x>` other than `bankai-handbooks` / `bankai-machinery` / the admitted
-   skill and term names (`bankai-quality`, `bankai-rule`, `bankai-mode`) / the `.bankai-session` marker, any owner slug or GitHub URL other than the three
+   skill and term names (`bankai-quality`, `bankai-mode`, plus the former skill name `bankai-rule` retained for dated changelog records after HR-394 renamed it to `hatsu:kido`) / the `.bankai-session` marker, any owner slug or GitHub URL other than the three
    public repositories — the one admitted fixture being the fictional `acme` widget URL the rendered
    `scripts/release-publish.sh` carries in a comment (the `Acme` family below), that exact URL and
    nothing wider — and, by the manual grep, the product-family names kept in the maintainer's

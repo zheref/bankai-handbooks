@@ -23,7 +23,7 @@ merges, pushes `main`, or edits a rule "in passing" from another repository.
    scope statement changes. A product stack also adds its directed port pair files, rendered
    empty from Hatsu's `templates/ports/pair.md`, with their `handbooks/ports/INDEX.md` rows at a
    ruling count of `0` and their rows in `handbooks/INDEX.md`'s *Port rulings* table;
-   `hatsu:bankai-rule` appends rows on the first ruling (`CON-13`, *Port rulings*).
+   `hatsu:kido` appends rows on the first ruling (`CON-13`, *Port rulings*).
 5. **Bump `handbooks/VERSION`.** New rule / clarified wording → **MINOR**. Changed meaning,
    removal, prefix restructure → **MAJOR** (pre-1.0 carve-out: a breaking restructure may ride a
    MINOR while the taxonomy stabilises — say so in the PR).

@@ -32,7 +32,7 @@ one stack folder** for the repo under review.
 | [`stacks/compose-uzf-v2/architecture.md`](stacks/compose-uzf-v2/architecture.md) | `KT-{n}` | Sasuke | stack | Jetpack Compose + Hilt bindings (Android). Refines `UZF-{n}`. |
 | [`stacks/react-uzf-v1/architecture.md`](stacks/react-uzf-v1/architecture.md) | `RC-{n}` | Sasuke | stack | React 19 + Redux Toolkit bindings (Next.js web + Expo mobile, one shared state tier; on scaffold scenario 2A also the Electron desktop shell, `RC-64`–`RC-69`). Refines `UZF-{n}`. |
 | [`stacks/bankai-machinery/architecture.md`](stacks/bankai-machinery/architecture.md) | `BC-{n}` | Sasuke / Tenma | stack (self-review) | Framework **machinery** review rules — reusable-workflow/permission hygiene, CI trust/fork-safety, lane/authorship. Machinery repos only; **no product code**. Scenario id `bankai-machinery` (renamed at v0.6; `BC-` kept). |
-| [`ports/INDEX.md`](ports/INDEX.md) | `PT-{n}` (one global counter) | `hatsu:bankai-rule` writes; the architecture reviewer reviews | port (pair) | Port rulings: one directed pair file per pair of product stacks — how a `<from>` rule or concept is realised on the `<to>` stack. Read beside the always-load set and the target's stack handbook, never alone. |
+| [`ports/INDEX.md`](ports/INDEX.md) | `PT-{n}` (one global counter) | `hatsu:kido` writes; the architecture reviewer reviews | port (pair) | Port rulings: one directed pair file per pair of product stacks — how a `<from>` rule or concept is realised on the `<to>` stack. Read beside the always-load set and the target's stack handbook, never alone. |
 
 ## Citation families
 
@@ -69,7 +69,7 @@ the Drift table). It is not a stack handbook and changes nothing about which sta
 loads: a pair file is read **beside** the always-load set and the target's stack handbook, **never
 alone**. Ids are `PT-{n}` from **one counter across every pair file** (zheref/hatsu ROSTER HR-9; the
 counter zheref/hatsu#392 landed, re-confirmed by HR-34) — append-only, never reused, a reversal is a
-new row with `supersedes`. Rows are written by `hatsu:bankai-rule` from the maintainer's answers and
+new row with `supersedes`. Rows are written by `hatsu:kido` from the maintainer's answers and
 land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep their
 `Canonical source` marker.
 
@@ -84,7 +84,7 @@ land by G4 PR; the files are rendered from Hatsu's `templates/ports/` and keep t
    from every other product stack. Each is rendered empty (no ruling rows) from Hatsu's
    `templates/ports/pair.md` as a scaffold, and its marker names that template. The PR also adds
    each file's row in [`ports/INDEX.md`](ports/INDEX.md) at a ruling count of `0` and its row in
-   [`INDEX.md`](INDEX.md)'s *Port rulings* table. `hatsu:bankai-rule` appends rows on the first
+   [`INDEX.md`](INDEX.md)'s *Port rulings* table. `hatsu:kido` appends rows on the first
    ruling and never creates a file (`CON-13`, *Port rulings*).
 
 ## Versioning
