@@ -24,6 +24,7 @@ this repository needed.
 | `RA`, `RB`, `RC`, `RD` | Placeholder **product codes** for `<product-repo-A>` … `<product-repo-D>`. |
 | `RR-IS-#<n>` / `RR-PR-#<n>` | Issue / pull request `<n>` in `<reference-repo>`. The number is kept; the link is dropped. |
 | `RS-IS-#<n>` / `RS-PR-#<n>` | Issue / pull request `<n>` in `<scaffold-repo>`. **Added by this repository** — the plane's legend had no object-id prefix for the scaffold repository. |
+| `AK-IS-#<n>` / `AK-PR-#<n>` | Issue / pull request `<n>` in the repository of Akatsuki, the CI plane, whose constitution `CONSTITUTION.md` `CON-40` is carried from. Its code is private. The number is kept; the link is dropped. **Added by this repository**, with the product code the local plane's legend gives that repository. |
 | `RA-IS-#<n>` / `RA-PR-#<n>`, `RB-…` | Issue / pull request `<n>` in `<product-repo-A>`, `<product-repo-B>`, … |
 | `<reference-repo>#<n>` | A bare tracker number the reference implementation's own text cited as `#<n>`; the same object, without an issue/PR classification. |
 | `Acme`, `acme/acme-ios`, `acme/acme-assets`, `AcmeCore`, `com.acme.app`, … | A **fictional** product used for every illustrative `{{TOKEN}}` value. The real values live in each consumer's private `canon-values` binding, never here. |
@@ -66,7 +67,7 @@ and stay as they are; its preamble says so. In the handbooks the same numbers ar
    `scripts/release-publish.sh` carries in a comment (the `Acme` family below), that exact URL and
    nothing wider — and, by the manual grep, the product-family names kept in the maintainer's
    **private** redaction list (never spelled here).
-2. Every `RR-`/`RS-`/`RA-`/`RB-` id is unlinked. Every `[…](https://github.com/…)` link points at a
+2. Every `RR-`/`RS-`/`RA-`/`RB-`/`AK-` id is unlinked. Every `[…](https://github.com/…)` link points at a
    public repository.
 3. Every `{{TOKEN}}` example value is fictional (`Acme`-family, `octocat`, `UTC`).
 4. Anything you were unsure about is **reported**, never silently decided.
