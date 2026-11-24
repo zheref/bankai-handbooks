@@ -23,10 +23,10 @@
 > the migration is `CON-13`, which now names this repository as the canonical source.
 >
 > *Two clauses carry the successor's text.* `CON-40` is no longer the reference implementation's
-> text, and `CON-46(b)` has one clause added to a sentence. By the maintainer's rulings of 2026-11-24,
-> `CON-40` is the `CON-40` that AK-PR-#91 writes into the Akatsuki constitution (the amendment
-> numbered 0.8.0 there), and `CON-46(b)` gains the clause that pull request adds to the same
-> sub-clause there, both as the pull request states them at its commit `89e5991d`, so that a
+> text, and `CON-46(b)` has one clause added to a sentence. By the maintainer's rulings of
+> 2026-11-24, `CON-40` is the `CON-40` that AK-PR-#91 writes into the Akatsuki constitution (the
+> amendment numbered 0.8.0 there), and `CON-46(b)` gains the clause that pull request adds to the
+> same sub-clause there, both as the pull request states them at its commit `89e5991d`, so that a
 > consumer resolving either from this file reads the delivery-PR identity and how far the one-pass
 > review rule reaches. Until a further ruling, both change here by re-syncing that text. Four
 > things to know when reading `CON-40`:
