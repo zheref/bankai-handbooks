@@ -9,10 +9,11 @@
 >
 > *Redaction.* Private repositories are named by placeholder — `<reference-repo>`,
 > `<scaffold-repo>`, `<product-repo-A>`… — and their object ids by the `RR-` / `RS-` / `RA-` /
-> `RB-` prefixes with the number kept ([`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md)).
+> `RB-` / `AK-` prefixes with the number kept ([`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md)).
 > A bare `#N` is an internal cross-reference into the reference implementation's own tracker.
 > Relative paths such as `agents/…`, `schemas/…`, `scripts/…`, `.github/workflows/…`, `docs/…`
-> describe the reference implementation's machine plane and are **not** paths in this repository.
+> describe the reference implementation's machine plane and are **not** paths in this repository
+> (in `CON-40` they describe the successor CI plane's; see the last note below).
 >
 > *Scope of the text.* The machine-plane clauses (CI agents, GitHub Apps, reusable workflows,
 > release fan-out) describe the reference implementation's CI plane, whose successor is Akatsuki;
@@ -22,18 +23,32 @@
 > the migration is `CON-13`, which now names this repository as the canonical source.
 >
 > *One clause carried from the successor's constitution.* `CON-40` is no longer the reference
-> implementation's text. By the maintainer's ruling of 2026-11-24 it carries the wording of the
-> Akatsuki constitution's amendment 0.8.0 (AK-PR-#91), so that a consumer resolving `CON-40` from
-> this file reads the delivery-PR identity that amendment states. Read it in the successor CI
-> plane's vocabulary, of which three names recur: Pain and `pain-akatsuki[bot]` where the clauses
-> around it say Roy and `roy-bankai[bot]`, Kakuzu where they say Tenma, and the `akatsuki:epic`
-> label where they say `bankai:epic`. Where it says "this repository", and where it names `nen/gates.json`,
-> `nen/workflow.json`, `agents/…` or `ninjutsu/…` or quotes a declared list, it means the Akatsuki
-> CI plane's repository, never this one. It cites two things the clauses around it do not carry,
-> because they are still the reference implementation's text: a row 6 of `CON-5`'s carve-out list
-> (the stacked delivery PR), and `nen pr ready` as the readiness verdict of `CON-32`. Its links
-> into private repositories are dropped: ids of the Akatsuki CI plane's repository read
-> `AK-PR-#<n>`, and ids of the reference implementation read `RR-…` as everywhere in this file.
+> implementation's text. By the maintainer's ruling of 2026-11-24 it carries the `CON-40` that
+> AK-PR-#91 writes into the Akatsuki constitution (the amendment numbered 0.8.0 there), as that
+> pull request states it at its commit `6071902e`, so that a consumer resolving `CON-40` from this
+> file reads the delivery-PR identity it states. The clause changes here only by re-syncing that
+> text. Four things to know when reading it:
+>
+> - **Its vocabulary is the successor CI plane's.** Pain and `pain-akatsuki[bot]` where the clauses
+>   around it say Roy and `roy-bankai[bot]`; Kakuzu where they say Tenma; Madara and
+>   `akatsuki:agent/madara` where they say Yamamoto and `bankai:agent/yamamoto`; Obito where they
+>   say Kisuke; `akatsuki:epic` where they say `bankai:epic`; the reviewer workflows
+>   `sasuke-audit.yml` and `kakuzu-review.yml` where they say `sasuke-review.yml` and
+>   `tenma-review.yml`. Hidan and Konan, and their two workflows, have no counterpart in this file.
+> - **Its three facts are read against the repository the pull request is in**: the clause says
+>   "a prefix the repository declares". Everything it then quotes is the Akatsuki CI plane's
+>   repository's, never this one's: the prefix list, each "here" value, the reviewer names, "this
+>   repository", and every path (`agents/…`, `ninjutsu/…`, the workflow files). This repository
+>   has a `nen/gates.json` and a `nen/workflow.json` of its own, with their own values.
+> - **It cites things the clauses around it do not carry**, because they are still the reference
+>   implementation's text. Among them: a row 6 of `CON-5`'s carve-out list (the stacked delivery
+>   PR, `nen pr merge --delivery`); `nen pr ready` as the readiness verdict of `CON-32`, and
+>   `delivery_holistic_pass`; Madara and Obito as the lane owners under `CON-3`; the amendment
+>   numbers 0.7.0 and 0.8.0, which are the Akatsuki constitution's; and "the predecessor", which
+>   is the reference implementation the clauses around it were written for.
+> - **Its links into private repositories are dropped.** Ids of the Akatsuki CI plane's repository
+>   read `AK-PR-#<n>`, and ids of the reference implementation read `RR-…`, as everywhere in this
+>   file. Nothing else differs from the source text.
 
 The top-level system specification for the Bankai autonomous development system. It states
 the standing rules; where a topic is covered in depth elsewhere, the rule links the source.

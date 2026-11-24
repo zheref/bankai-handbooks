@@ -128,7 +128,7 @@ redaction() {
     '' \
     -i
   check "a LINKED placeholder object id (they stay unlinked)" \
-    '\[(RR|RS|RA|RB|RC|RD)-(IS|PR)-#[0-9]+\]\(' \
+    '\[(RR|RS|RA|RB|RC|RD|AK)-(IS|PR)-#[0-9]+\]\(' \
     ''
 }
 
@@ -246,6 +246,8 @@ self_test() {
   d=$(mk ghfx);   printf '%s and %s\n' "https://github.com""/acme/widget.git" "https://github.com""/zheref/hatsu#1" > "$d/a.md"; expect "the publisher fixture and a public issue link pass" 0 "$d" redaction
   d=$(mk ghpfx);  printf '%s\n' "https://github.com""/zheref""/hatsu-private" > "$d/a.md"; expect "a public prefix with more slug characters is refused" 1 "$d" redaction
   d=$(mk linked); printf '%s%s\n' "[RA-IS-#12]" "(https://x)" > "$d/a.md";      expect "a linked placeholder id is refused" 1 "$d" redaction
+  d=$(mk linked_ak); printf '%s%s\n' "[AK-PR-#12]" "(https://x)" > "$d/a.md";   expect "a linked CI-plane id is refused" 1 "$d" redaction
+  d=$(mk unlinked_ak); printf '%s\n' "AK-PR-#12 is unlinked" > "$d/a.md";            expect "an unlinked CI-plane id passes" 0 "$d" redaction
   d=$(mk adj);    printf '[\"%s\",\"%s\"]\n' "https://github.com""/zheref/hatsu" "https://github.com""/acme/other" > "$d/a.json"; expect "two URLs side by side in compact JSON are two matches" 1 "$d" redaction
   d=$(mk pipe);   printf '%s|%s\n' "https://github.com""/zheref/nen" "https://github.com""/acme/other" > "$d/a.md"; expect "a pipe-adjacent URL hides nothing" 1 "$d" redaction
   d=$(mk dots);   printf '%s/../../acme/other\n' "https://github.com""/zheref/hatsu" > "$d/a.md"; expect "a URL walking past an admitted repo is refused" 1 "$d" redaction

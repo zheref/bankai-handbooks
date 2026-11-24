@@ -43,7 +43,9 @@ machinery parses; changing one is a MAJOR-class change and needs a consumer migr
 `CONSTITUTION.md` (and `CONVENTIONS.md`) carry the reference implementation's text as written (its preamble says
 so). Change `CON-13` and § 6 (`CON-51`) here freely under G4; treat every other clause as text whose
 rewrite is decided elsewhere first — append (`CON-52`…), do not rewrite, unless the PR is that
-governance rewrite landing.
+governance rewrite landing. `CON-40` is one such landing, by the maintainer's ruling of 2026-11-24:
+it carries the successor CI plane's text, and it changes here only by re-syncing that text (the
+constitution's preamble says from where and how to read it).
 
 ## Checks a canon PR runs (there is no build)
 

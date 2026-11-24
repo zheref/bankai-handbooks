@@ -10,8 +10,8 @@ every link into one is unlinked. Facts stay — a rule that exists because of an
 so — only the name the fact was recorded against is redacted. A placeholder is **never** re-expanded
 into a real name: content that arrives redacted stays redacted.
 
-The legend below is the one the local agent plane (Hatsu) publishes, extended with the two entries
-this repository needed.
+The legend below is the one the local agent plane (Hatsu) publishes, extended with the entries this
+repository needed. One row, `AK-`, is taken from that legend with a difference this policy keeps.
 
 ## The legend
 
@@ -24,7 +24,7 @@ this repository needed.
 | `RA`, `RB`, `RC`, `RD` | Placeholder **product codes** for `<product-repo-A>` … `<product-repo-D>`. |
 | `RR-IS-#<n>` / `RR-PR-#<n>` | Issue / pull request `<n>` in `<reference-repo>`. The number is kept; the link is dropped. |
 | `RS-IS-#<n>` / `RS-PR-#<n>` | Issue / pull request `<n>` in `<scaffold-repo>`. **Added by this repository** — the plane's legend had no object-id prefix for the scaffold repository. |
-| `AK-IS-#<n>` / `AK-PR-#<n>` | Issue / pull request `<n>` in the repository of Akatsuki, the CI plane, whose constitution `CONSTITUTION.md` `CON-40` is carried from. Its code is private. The number is kept; the link is dropped. **Added by this repository**, with the product code the local plane's legend gives that repository. |
+| `AK-IS-#<n>` / `AK-PR-#<n>` | Issue / pull request `<n>` in the repository of Akatsuki, the CI plane, whose constitution `CONSTITUTION.md` `CON-40` is carried from. Its code is private. The number is kept; the link is dropped. The product code is the one the local plane's legend gives that repository. That legend also names the repository, by a ruling made for the local plane's tree; this policy carries no such exception, so here its slug is never spelled and its ids are never linked. |
 | `RA-IS-#<n>` / `RA-PR-#<n>`, `RB-…` | Issue / pull request `<n>` in `<product-repo-A>`, `<product-repo-B>`, … |
 | `<reference-repo>#<n>` | A bare tracker number the reference implementation's own text cited as `#<n>`; the same object, without an issue/PR classification. |
 | `Acme`, `acme/acme-ios`, `acme/acme-assets`, `AcmeCore`, `com.acme.app`, … | A **fictional** product used for every illustrative `{{TOKEN}}` value. The real values live in each consumer's private `canon-values` binding, never here. |
