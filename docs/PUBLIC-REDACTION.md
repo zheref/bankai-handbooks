@@ -11,8 +11,8 @@ so — only the name the fact was recorded against is redacted. A placeholder is
 into a real name: content that arrives redacted stays redacted.
 
 The legend below is the one the local agent plane (Hatsu) publishes, extended with the entries this
-repository needed. One row, `AK-`, follows that policy's section on its named private repository,
-with a difference this policy keeps.
+repository needed. One row, `AK-`, follows the local plane's policy, § *Named private
+repositories*, with a difference this policy keeps.
 
 ## The legend
 
@@ -25,7 +25,7 @@ with a difference this policy keeps.
 | `RA`, `RB`, `RC`, `RD` | Placeholder **product codes** for `<product-repo-A>` … `<product-repo-D>`. |
 | `RR-IS-#<n>` / `RR-PR-#<n>` | Issue / pull request `<n>` in `<reference-repo>`. The number is kept; the link is dropped. |
 | `RS-IS-#<n>` / `RS-PR-#<n>` | Issue / pull request `<n>` in `<scaffold-repo>`. **Added by this repository** — the plane's legend had no object-id prefix for the scaffold repository. |
-| `AK-IS-#<n>` / `AK-PR-#<n>` | Issue / pull request `<n>` in the repository of Akatsuki, the CI plane, whose constitution `CONSTITUTION.md` `CON-40` is carried from. A private repository. The number is kept; the link is dropped. `AK` is that repository's real product code, not a placeholder letter: the local plane's policy names the repository and gives its ids this form under the maintainer's ruling of 2026-10-19 recorded there. This policy has not adopted that ruling's naming, so here the slug is never spelled and the ids are never linked. |
+| `AK-IS-#<n>` / `AK-PR-#<n>` | Issue / pull request `<n>` in the repository of Akatsuki, the CI plane, whose constitution `CONSTITUTION.md` `CON-40`, and one clause of `CON-46(b)`, are carried from. A private repository. The number is kept; the link is dropped. `AK` is that repository's real product code, not a placeholder letter: the local plane's policy names the repository and gives its ids this form under the maintainer's ruling of 2026-10-19 recorded there. This policy has not adopted that ruling's naming, so here the slug is never spelled and the ids are never linked. |
 | `RA-IS-#<n>` / `RA-PR-#<n>`, `RB-…` | Issue / pull request `<n>` in `<product-repo-A>`, `<product-repo-B>`, … |
 | `<reference-repo>#<n>` | A bare tracker number the reference implementation's own text cited as `#<n>`; the same object, without an issue/PR classification. |
 | `Acme`, `acme/acme-ios`, `acme/acme-assets`, `AcmeCore`, `com.acme.app`, … | A **fictional** product used for every illustrative `{{TOKEN}}` value. The real values live in each consumer's private `canon-values` binding, never here. |

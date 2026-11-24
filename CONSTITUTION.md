@@ -23,9 +23,9 @@
 > the migration is `CON-13`, which now names this repository as the canonical source.
 >
 > *Two clauses carry the successor's text.* `CON-40` is no longer the reference implementation's
-> text, and `CON-46(b)` has one sentence added to it. By the maintainer's rulings of 2026-11-24,
+> text, and `CON-46(b)` has one clause added to a sentence. By the maintainer's rulings of 2026-11-24,
 > `CON-40` is the `CON-40` that AK-PR-#91 writes into the Akatsuki constitution (the amendment
-> numbered 0.8.0 there), and `CON-46(b)` gains the sentence that pull request adds to the same
+> numbered 0.8.0 there), and `CON-46(b)` gains the clause that pull request adds to the same
 > sub-clause there, both as the pull request states them at its commit `89e5991d`, so that a
 > consumer resolving either from this file reads the delivery-PR identity and how far the one-pass
 > review rule reaches. Until a further ruling, both change here by re-syncing that text. Four
@@ -39,8 +39,9 @@
 >   `sasuke-review.yml` and `tenma-review.yml`. Hidan and Konan, and their two workflows, have no
 >   counterpart in this file.
 > - **What it quotes is the Akatsuki CI plane's repository's, never this one's**: the prefix
->   list, each "here" value, the reviewer names, "this repository", and every path it names other
->   than the `nen/` declaration files (`agents/…`, `ninjutsu/…`, the workflow files). The
+>   list, each "here" value, the reviewer names, "this repository", and every path and code
+>   identifier it names other than the `nen/` declaration files (`agents/…`, `ninjutsu/…`, the
+>   workflow files). The
 >   readiness gate itself reads the three facts from the `delivery` block of the repository a pull
 >   request is in, as the gate documentation the clause links says; this repository has a
 >   `nen/gates.json` and a `nen/workflow.json` of its own, with their own values.
@@ -52,7 +53,7 @@
 >   is the reference implementation the clauses around it were written for.
 > - **Its links into private repositories are dropped.** Ids of the Akatsuki CI plane's repository
 >   read `AK-PR-#<n>`, and ids of the reference implementation read `RR-…`, as everywhere in this
->   file. Nothing else differs from the source text, in `CON-40` or in the sentence `CON-46(b)`
+>   file. Nothing else differs from the source text, in `CON-40` or in the clause `CON-46(b)`
 >   gains; the rest of `CON-46` is still the reference implementation's.
 
 The top-level system specification for the Bankai autonomous development system. It states

@@ -264,8 +264,9 @@ Applied per [`docs/PUBLIC-REDACTION.md`](docs/PUBLIC-REDACTION.md), against the 
    `bankai.yml` callers. They are carried as written (the preamble says so); Hatsu maps the local
    plane to Kurapika and the review roster to Chrollo/Feitan/Nobunaga, and the governance rewrite for
    the successor planes is decided in the private migration tracker. Only `CON-13` was rewritten.
-   *(By the maintainer's rulings of 2026-11-24, `CON-40` and one sentence of `CON-46(b)` are the
-   exception: they carry the successor CI plane's text. The constitution's preamble says from where and how to read it.)*
+   *(By the maintainer's rulings of 2026-11-24, `CON-40` and one clause of `CON-46(b)` are the
+   exception: they carry the successor CI plane's text. The constitution's preamble says from
+   where and how to read it.)*
 2. **`BC-11` / `BC-12` carry reference-implementation facts** — a frozen set of six Python scripts,
    named shell scripts, the `v0.11.x` frozen line and `v0.12.0` TypeScript line. They are true of
    `<reference-repo>` and are cited as precedent; whether they bind Akatsuki/Nen as written is a
