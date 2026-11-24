@@ -22,24 +22,28 @@
 > migration tracker, private) and lands here by G4 PR when ratified. The one clause rewritten in
 > the migration is `CON-13`, which now names this repository as the canonical source.
 >
-> *One clause carried from the successor's constitution.* `CON-40` is no longer the reference
-> implementation's text. By the maintainer's ruling of 2026-11-24 it carries the `CON-40` that
-> AK-PR-#91 writes into the Akatsuki constitution (the amendment numbered 0.8.0 there), as that
-> pull request states it at its commit `6071902e`, so that a consumer resolving `CON-40` from this
-> file reads the delivery-PR identity it states. The clause changes here only by re-syncing that
-> text. Four things to know when reading it:
+> *Two clauses carry the successor's text.* `CON-40` is no longer the reference implementation's
+> text, and `CON-46(b)` has one sentence added to it. By the maintainer's rulings of 2026-11-24,
+> `CON-40` is the `CON-40` that AK-PR-#91 writes into the Akatsuki constitution (the amendment
+> numbered 0.8.0 there), and `CON-46(b)` gains the sentence that pull request adds to the same
+> sub-clause there, both as the pull request states them at its commit `89e5991d`, so that a
+> consumer resolving either from this file reads the delivery-PR identity and how far the one-pass
+> review rule reaches. Until a further ruling, both change here by re-syncing that text. Four
+> things to know when reading `CON-40`:
 >
 > - **Its vocabulary is the successor CI plane's.** Pain and `pain-akatsuki[bot]` where the clauses
 >   around it say Roy and `roy-bankai[bot]`; Kakuzu where they say Tenma; Madara and
 >   `akatsuki:agent/madara` where they say Yamamoto and `bankai:agent/yamamoto`; Obito where they
->   say Kisuke; `akatsuki:epic` where they say `bankai:epic`; the reviewer workflows
->   `sasuke-audit.yml` and `kakuzu-review.yml` where they say `sasuke-review.yml` and
->   `tenma-review.yml`. Hidan and Konan, and their two workflows, have no counterpart in this file.
-> - **Its three facts are read against the repository the pull request is in**: the clause says
->   "a prefix the repository declares". Everything it then quotes is the Akatsuki CI plane's
->   repository's, never this one's: the prefix list, each "here" value, the reviewer names, "this
->   repository", and every path (`agents/…`, `ninjutsu/…`, the workflow files). This repository
->   has a `nen/gates.json` and a `nen/workflow.json` of its own, with their own values.
+>   say Kisuke; `akatsuki:epic` where they say `bankai:epic`; and the reviewer workflows
+>   `sasuke-audit.yml` and `kakuzu-review.yml`, where the reference text of this clause named
+>   `sasuke-review.yml` and `tenma-review.yml`. Hidan and Konan, and their two workflows, have no
+>   counterpart in this file.
+> - **What it quotes is the Akatsuki CI plane's repository's, never this one's**: the prefix
+>   list, each "here" value, the reviewer names, "this repository", and every path it names other
+>   than the `nen/` declaration files (`agents/…`, `ninjutsu/…`, the workflow files). The
+>   readiness gate itself reads the three facts from the `delivery` block of the repository a pull
+>   request is in, as the gate documentation the clause links says; this repository has a
+>   `nen/gates.json` and a `nen/workflow.json` of its own, with their own values.
 > - **It cites things the clauses around it do not carry**, because they are still the reference
 >   implementation's text. Among them: a row 6 of `CON-5`'s carve-out list (the stacked delivery
 >   PR, `nen pr merge --delivery`); `nen pr ready` as the readiness verdict of `CON-32`, and
@@ -48,7 +52,8 @@
 >   is the reference implementation the clauses around it were written for.
 > - **Its links into private repositories are dropped.** Ids of the Akatsuki CI plane's repository
 >   read `AK-PR-#<n>`, and ids of the reference implementation read `RR-…`, as everywhere in this
->   file. Nothing else differs from the source text.
+>   file. Nothing else differs from the source text, in `CON-40` or in the sentence `CON-46(b)`
+>   gains; the rest of `CON-46` is still the reference implementation's.
 
 The top-level system specification for the Bankai autonomous development system. It states
 the standing rules; where a topic is covered in depth elsewhere, the rule links the source.
@@ -2403,8 +2408,10 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
   assembly delivery gets exactly ONE holistic review pass, on `opened`, with the reviewers
   abstaining green on every later `synchronize`.** (Amendment 0.8.0: a delivery PR is identified by
   its head branch, its author and its base, so an agent's own branch counts, by the maintainer's
-  ruling of 2026-11-24, quoted in AK-PR-#91; the
-  question was put in [zheref/nen#677](https://github.com/zheref/nen/pull/677).)
+  ruling of 2026-11-24 at 09:39 COT, and the one-pass rule does not reach an agent's own delivery
+  branch, by the maintainer's ruling of 2026-11-24 at 11:11 COT, both quoted in
+  AK-PR-#91; the question was put in
+  [zheref/nen#677](https://github.com/zheref/nen/pull/677).)
   A pull request MUST be read as a delivery PR, in this clause's and the readiness gate's sense,
   when, and only when, all three of these facts hold: **(1)** its head branch starts with a prefix
   the repository declares for delivery — `nen/gates.json` → `delivery.head_ref_prefixes`, which
@@ -2421,22 +2428,27 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
   kinds are the two **assembly** deliveries — a **product epic** delivery (`integration/epic-<N>`,
   `CON-23`/`CON-31`, opened by `pain-akatsuki[bot]`) and a **framework chore** delivery
   (`integration/<chore>`, `CON-36`, opened by the human maintainer) — and an **agent's own delivery
-  branch**, a declared-prefix head other than `integration/` opened by a declared delivery author.
+  branch**: a declared-prefix head other than `integration/`, opened by a declared delivery author,
+  that the machinery flag's predicate below does not read as a product epic — every such PR except
+  one Pain's App opens carrying the epic label.
   An `integration/` head by a declared author that matches neither assembly shape — Pain's App off
   a non-epic `integration/<x>`, the maintainer off `integration/epic-<N>`, or the maintainer off an
   `integration/` head carrying the epic label — is a delivery PR by identity too; the reviewer
   workflows read the first as a product epic and the other two as ordinary PRs, and this amendment
   does not rule on any of the three. The **stacked delivery PR** of `CON-5` row 6, whose base is
   not the default branch, is a different object — the run's own PR in the
-  `nen pr merge --delivery` sense — and this identity does not describe it. **Two label paths diverge from this
-  identity, and this amendment records both without ruling on either:** the readiness gate admits
+  `nen pr merge --delivery` sense — and this identity does not describe it. **Two label paths
+  diverge from this identity, and this amendment records both without ruling on either:** the
+  readiness gate admits
   a `delivery.labels` label (here `akatsuki:epic`) in place of the head prefix, for any declared
   author (zheref/nen's
   [gate documentation, *delivery-PR identity*](https://github.com/zheref/nen/blob/main/docs/USAGE.md#delivery-pr-identity));
   the reviewer workflows admit that label for Pain's App only, and then give the one-pass treatment
-  to such a PR off any head into the default branch — a head the identity does not admit (Pain's
-  own `pain/<issue-number>-<slug>`) and an agent's own delivery branch included (the machinery flag
-  below).
+  to such a PR off any head into the default branch, a head the identity does not admit (Pain's
+  own `pain/<issue-number>-<slug>`) included (the machinery flag below). Off a declared-prefix head
+  other than `integration/`, such a PR is a delivery PR by identity that the predicate reads as a
+  product epic, and so, by the definition above, not an agent's own delivery branch; this amendment
+  does not rule on it either.
   **An assembly delivery's safety premise.** An assembly delivery is not an ordinary PR:
   **every** child/sub-PR in it was already reviewed molecularly at child-PR time and built green
   (`CON-16`/`CON-19`) before it was merged onto the integration branch. Content reaches the
@@ -2447,14 +2459,18 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
   delivery body is regenerated on each child merge — also burns the turn budget that dead-caps a
   reviewer mid-run (`CON-35`).
   **An agent's own delivery branch.** It is a delivery PR by the identity above, and the one-pass
-  rule and the abstain below do **not** bind it: it assembles no gauntleted children, so the
-  premise above does not hold for it. It is reviewed as an ordinary PR (`CON-16`; for one on the
-  maintainer's account, `CON-46(b)`). Pain's own branches are `pain/<issue-number>-<slug>`
+  rule and the abstain below MUST NOT be applied to it, by the maintainer's ruling of 2026-11-24 at
+  11:11 COT: it assembles no gauntleted children, so the premise above does not hold for it. It
+  MUST be reviewed as an ordinary PR (`CON-16`; for one on the maintainer's account, `CON-46(b)`,
+  which says so too). Pain's own branches are `pain/<issue-number>-<slug>`
   (`agents/pain/AGENT.md`), a prefix the list does not carry. What the identity changes for it is
   the readiness gate's reading alone: `nen pr ready` (`CON-32`) reads the round of a
   reviewer that declares `delivery_holistic_pass` in `nen/gates.json` — `sasuke`, `hidan` and
   `kakuzu` declare it; `konan`, `copilot` and `bugbot` do not — as that gate documentation
-  describes, for that reviewer alone.
+  describes, for that reviewer alone. That reading — a review at the current head, or else a
+  prior holistic review with a definitive current-head review-check `SUCCESS` — is the one-pass
+  rule's gate half, so on an agent's own delivery branch the readiness gate diverges from the
+  ruling above; this amendment records the divergence and does not change the gate.
   - **On `opened`: one pass, holistic scope.** Sasuke and Kakuzu each review the assembly delivery
     **once**, at the **cross-child integration level** — composition, cross-feature interaction,
     regressions across the assembled delivery, and the assembly delivery's own `## How to verify`
@@ -2489,10 +2505,12 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
   `integration/` head into the default branch, and the four workflows' `cancel-in-progress`
   exemption covers an `integration/*` → default-branch PR. On the label path the verb also reads a
   Pain's App PR that carries the epic label as a product epic, off any head (the second label
-  path, above).
-  So an agent's own delivery branch gets the ordinary review (`CON-16`; for one on the
-  maintainer's account, `CON-46(b)`) when the maintainer opens it, and when Pain's App opens it
-  only if it carries no epic label. **The readiness gate's
+  path, above), which by the definition above is not an agent's own delivery branch.
+  So the workflows apply neither the one-pass rule nor the abstain to an agent's own delivery
+  branch, as the ruling requires, and give it the ordinary review (`CON-16`; for one on the
+  maintainer's account, `CON-46(b)`): read in `deliveryKind` at amendment 0.8.0, a maintainer PR
+  off a head other than `integration/`, and a Pain's App PR off one with no epic label, are no
+  delivery to the verb. **The readiness gate's
   identity matches amendment 0.8.0's on the head path:** `nen/gates.json` → `delivery` declares
   the prefix list and the author pattern above, and `nen pr ready` (`CON-32`) reads that block.
   **What the predecessor
@@ -2518,7 +2536,10 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
   **The predicate MUST match BOTH `integration/epic-<N> → main` and `integration/<chore> → main`**,
   which is the whole of what the predecessor left undone. On the head path that predicate is the
   one-pass rule's reach, the assembly deliveries, and is narrower than the identity this clause
-  opens with by design; its epic-label fallback is the second label path recorded above. The
+  opens with by design; its epic-label fallback is the second label path recorded above. Where that
+  fallback reads a Pain's App PR off a declared-prefix head as a product epic, this predicate takes
+  precedence over the agent-branch definition, which leaves that PR out, so no PR is both an
+  agent's own delivery branch and a delivery the predicate reads. The
   matching reviewer-side clauses in
   `agents/sasuke/AGENT.md` and `agents/kakuzu/AGENT.md` are canon and so **Madara's** lane
   (`akatsuki:agent/madara`); the workflows are **Obito's**. Both landed in amendment 0.7.0, so a
@@ -2865,7 +2886,10 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
   **(b) What replaces the identity boundary.** The safety property `CON-3` buys is supplied here by
   two independent controls, both of which must hold: **(i) review** — a local PR is authored on the
   human's own account, so Sasuke and Tenma review it as an ordinary human-authored PR through the
-  full `CON-16` gauntlet, with no author-gate exemption; and **(ii) the human's merge gate** —
+  full `CON-16` gauntlet, with no author-gate exemption — and a local PR off an agent's own
+  delivery branch, a delivery PR by `CON-40`'s identity, is still reviewed so: `CON-40`'s one-pass
+  rule MUST NOT be applied to it (the maintainer's ruling of 2026-11-24 at 11:11 COT, quoted in
+  AK-PR-#91); and **(ii) the human's merge gate** —
   every local PR reaches `main` only at **G2** (`CON-5`) or **G4** (`CON-7`). A cross-lane local PR
   is thus *more* scrutinized than a single-lane bot PR, not less. The cost is legibility, so it is
   charged back explicitly: the persona **states which nature it is acting as**, in every reply and

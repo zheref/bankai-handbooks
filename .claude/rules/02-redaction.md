@@ -21,7 +21,7 @@ working checklist.
 | `<scaffold-repo>` | the scaffolding repository |
 | `<product-repo-A>` / `-B` / `-C` / `-D` | consuming products (iOS/macOS, Android, web, …) |
 | `RR-` / `RS-` / `RA-` / `RB-` + `IS`/`PR` + `-#<n>` | object ids in those repositories, number kept |
-| `AK-` + `IS`/`PR` + `-#<n>` | object ids in the repository of Akatsuki, the CI plane (private code), number kept, never linked |
+| `AK-` + `IS`/`PR` + `-#<n>` | object ids in the repository of Akatsuki, the CI plane (a private repository), number kept, never linked |
 | `<reference-repo>#<n>` | a bare tracker number the reference implementation cited as `#<n>` |
 | `Acme`, `acme/acme-ios`, `acme/acme-assets`, `AcmeCore`, `AcmeUI`, `AcmeTests`, `Acme.xcodeproj`, `Acme/Application`, `com.acme.app` | the fictional illustrative product |
 

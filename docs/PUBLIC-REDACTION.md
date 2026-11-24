@@ -11,7 +11,8 @@ so — only the name the fact was recorded against is redacted. A placeholder is
 into a real name: content that arrives redacted stays redacted.
 
 The legend below is the one the local agent plane (Hatsu) publishes, extended with the entries this
-repository needed. One row, `AK-`, is taken from that legend with a difference this policy keeps.
+repository needed. One row, `AK-`, follows that policy's section on its named private repository,
+with a difference this policy keeps.
 
 ## The legend
 
@@ -24,7 +25,7 @@ repository needed. One row, `AK-`, is taken from that legend with a difference t
 | `RA`, `RB`, `RC`, `RD` | Placeholder **product codes** for `<product-repo-A>` … `<product-repo-D>`. |
 | `RR-IS-#<n>` / `RR-PR-#<n>` | Issue / pull request `<n>` in `<reference-repo>`. The number is kept; the link is dropped. |
 | `RS-IS-#<n>` / `RS-PR-#<n>` | Issue / pull request `<n>` in `<scaffold-repo>`. **Added by this repository** — the plane's legend had no object-id prefix for the scaffold repository. |
-| `AK-IS-#<n>` / `AK-PR-#<n>` | Issue / pull request `<n>` in the repository of Akatsuki, the CI plane, whose constitution `CONSTITUTION.md` `CON-40` is carried from. Its code is private. The number is kept; the link is dropped. The product code is the one the local plane's legend gives that repository. That legend also names the repository, by a ruling made for the local plane's tree; this policy carries no such exception, so here its slug is never spelled and its ids are never linked. |
+| `AK-IS-#<n>` / `AK-PR-#<n>` | Issue / pull request `<n>` in the repository of Akatsuki, the CI plane, whose constitution `CONSTITUTION.md` `CON-40` is carried from. A private repository. The number is kept; the link is dropped. `AK` is that repository's real product code, not a placeholder letter: the local plane's policy names the repository and gives its ids this form under the maintainer's ruling of 2026-10-19 recorded there. This policy has not adopted that ruling's naming, so here the slug is never spelled and the ids are never linked. |
 | `RA-IS-#<n>` / `RA-PR-#<n>`, `RB-…` | Issue / pull request `<n>` in `<product-repo-A>`, `<product-repo-B>`, … |
 | `<reference-repo>#<n>` | A bare tracker number the reference implementation's own text cited as `#<n>`; the same object, without an issue/PR classification. |
 | `Acme`, `acme/acme-ios`, `acme/acme-assets`, `AcmeCore`, `com.acme.app`, … | A **fictional** product used for every illustrative `{{TOKEN}}` value. The real values live in each consumer's private `canon-values` binding, never here. |
@@ -32,7 +33,8 @@ repository needed. One row, `AK-`, is taken from that legend with a difference t
 ## The object-id rule, stated once
 
 Object ids of **any** private repository take the placeholder-letter prefix, in both directions
-(`-IS-` and `-PR-`). **The number is kept**: a bare number identifies nothing on its own, and the
+(`-IS-` and `-PR-`). (`AK-` is the one prefix that is a real code, not a placeholder letter; its legend
+row says why.) **The number is kept**: a bare number identifies nothing on its own, and the
 canon's incident cross-references must stay checkable against themselves.
 
 Bare `#<n>` inside `CONSTITUTION.md` are the reference implementation's internal cross-references
