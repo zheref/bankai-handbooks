@@ -48,11 +48,11 @@ load a stack folder other than the repo's own.
 
 [`ports/`](ports/INDEX.md) holds the **port rulings**: how a rule or concept of one product stack
 is realised on another, one **directed** pair file per pair of scenarios in
-[`stack-matrix.md`](stack-matrix.md) that Hatsu's `bankai-rule` can target — the three product
+[`stack-matrix.md`](stack-matrix.md) that `hatsu:kido` can target — the three product
 stacks, both directions, never `bankai-machinery` and never a stack to itself. Each ruling is a
 row with an id `PT-{n}` from **one global counter across every pair file** (zheref/hatsu ROSTER
 HR-9, the counter landed by zheref/hatsu#392 and re-confirmed by HR-34); ids are append-only, a
-reversal is a new row with `supersedes`. Rows are written only by `hatsu:bankai-rule` from the
+reversal is a new row with `supersedes`. Rows are written only by `hatsu:kido` from the
 maintainer's answers and land by G4 PR; the architecture reviewer reviews them and never authors them.
 
 **Who reads it:** a port — a builder or reviewer realising work from the `<from>` stack on the

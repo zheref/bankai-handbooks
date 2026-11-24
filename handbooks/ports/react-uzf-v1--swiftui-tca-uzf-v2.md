@@ -1,4 +1,4 @@
-<!-- Canonical source: zheref/bankai-handbooks · handbooks/ports/react-uzf-v1--swiftui-tca-uzf-v2.md · rendered from Hatsu's templates/ports/pair.md -->
+<!-- Canonical source: zheref/bankai-handbooks · handbooks/ports/react-uzf-v1--swiftui-tca-uzf-v2.md · rendered by hatsu:kido from templates/ports/pair.md -->
 <!-- pair: react-uzf-v1 -> swiftui-tca-uzf-v2 · prefix: PT · numbering: global (one counter across every pair file of the rulings directory; zheref/hatsu docs/ROSTER.md § Rulings of 2026-10-21 — the port rule prefix (HA#355)) -->
 
 # Port rulings — `react-uzf-v1` → `swiftui-tca-uzf-v2`
@@ -28,6 +28,6 @@ append-only — a reversal is a new row with `supersedes`, the old row is never 
 | id | source | target | handling | rationale | date | supersedes |
 |---|---|---|---|---|---|---|
 
-<!-- The rows are the only counter, and it is global: an id is reserved by hatsu:bankai-rule § 3 against
+<!-- The rows are the only counter, and it is global: an id is reserved by hatsu:kido § 3 against
      every pair file of the rulings directory at the tip, the run's own branch, every pushed rulings branch
      and every open pull request, never from a header field. -->

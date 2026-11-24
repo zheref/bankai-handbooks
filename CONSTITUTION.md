@@ -447,7 +447,7 @@ Reviewers (Sasuke, Tenma, the design reviewer) and every agent may cite these ru
     as a second stack folder, so it does not change which one stack handbook applies.
     A pair file is empty until its first ruling. The PR that adds a product stack renders that
     stack's empty pair files from Hatsu's `templates/ports/pair.md` (a scaffold, not a ruling
-    write), and each file's marker names that template. `hatsu:bankai-rule` appends rows on a
+    write), and each file's marker names that template. `hatsu:kido` appends rows on a
     ruling and never creates a file, so a present file with no ruling row means *no rulings
     yet*. An absent pair file for two product stacks at that tag is a canon error at any tag
     from `v0.11.0`, and at a tag before
