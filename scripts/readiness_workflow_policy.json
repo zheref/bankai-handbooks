@@ -1,0 +1,9 @@
+{
+  "contract": "hatsu.tenkai.workflow-policy/v1",
+  "repository": "zheref/bankai-handbooks",
+  "workflows": {
+    ".github/workflows/pr-readiness.yml": {
+      "current": "b6e90c6f40cabe6b68dd28e5855bfec81cc579ae2b725ce09be2aae547041a07"
+    }
+  }
+}
